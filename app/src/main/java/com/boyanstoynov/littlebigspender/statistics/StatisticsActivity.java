@@ -1,14 +1,15 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.statistics;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.BindView;
 
-public class RecurringActivity extends BaseActivity {
-@BindView(R.id.toolbar_recurring) Toolbar toolbar;
+public class StatisticsActivity extends BaseActivity {
+@BindView(R.id.toolbar_statistics) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,12 +17,12 @@ public class RecurringActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.all_recurring);
-
+        getSupportActionBar().setTitle(R.string.all_statistics);
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_recurring;
+        return R.layout.activity_statistics;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +16,18 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.main.accounts.AccountsFragment;
+import com.boyanstoynov.littlebigspender.BaseActivity;
+import com.boyanstoynov.littlebigspender.main.overview.OverviewFragment;
+import com.boyanstoynov.littlebigspender.main.transactions.TransactionsFragment;
 
+import com.boyanstoynov.littlebigspender.about.AboutActivity;
 import butterknife.BindView;
+import com.boyanstoynov.littlebigspender.categories.CategoriesActivity;
+import com.boyanstoynov.littlebigspender.intro.IntroActivity;
+import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
+import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
+import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.drawer) DrawerLayout drawer;

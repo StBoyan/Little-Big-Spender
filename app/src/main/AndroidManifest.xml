@@ -9,31 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="com.boyanstoynov.littlebigspender.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.IntroActivity" />
-        <activity android:name=".ui.AddTransactionActivity" />
+        <activity android:name="com.boyanstoynov.littlebigspender.intro.IntroActivity" />
+        <activity android:name="com.boyanstoynov.littlebigspender.main.transactions.AddTransactionActivity" />
         <activity
-            android:name=".ui.StatisticsActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:name="com.boyanstoynov.littlebigspender.statistics.StatisticsActivity"
+            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
         <activity
-            android:name=".ui.RecurringActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:name="com.boyanstoynov.littlebigspender.recurring.RecurringActivity"
+            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
         <activity
-            android:name=".ui.CategoriesActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:name="com.boyanstoynov.littlebigspender.categories.CategoriesActivity"
+            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
         <activity
-            android:name=".ui.SettingsActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:name="com.boyanstoynov.littlebigspender.settings.SettingsActivity"
+            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
         <activity
-            android:name=".ui.AboutActivity"
-            android:parentActivityName=".ui.MainActivity" />
-        <activity android:name=".ui.AddAccountActivity"></activity>
+            android:name="com.boyanstoynov.littlebigspender.about.AboutActivity"
+            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
+        <activity android:name="com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,7 @@ public abstract class BaseFragment extends Fragment {
     public BaseFragment() {
         // Required empty public constructor
     }
-    // TODO consider putting title in actionbar in here if I can make it accept null so as not to intefere with intro fragments
+    // TODO consider putting title in actionbar in here if I can make it accept null so as not to intefere with com.boyanstoynov.littlebigspender.intro fragments
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

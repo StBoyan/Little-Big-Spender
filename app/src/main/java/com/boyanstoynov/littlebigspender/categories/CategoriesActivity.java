@@ -1,14 +1,15 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.categories;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.BindView;
 
-public class StatisticsActivity extends BaseActivity {
-@BindView(R.id.toolbar_statistics) Toolbar toolbar;
+public class CategoriesActivity extends BaseActivity {
+@BindView(R.id.toolbar_categories) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,12 +17,11 @@ public class StatisticsActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.all_statistics);
+        getSupportActionBar().setTitle(R.string.all_categories);
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_statistics;
+        return R.layout.activity_categories;
     }
-
 }

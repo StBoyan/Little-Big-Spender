@@ -1,14 +1,15 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.recurring;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.BindView;
 
-public class CategoriesActivity extends BaseActivity {
-@BindView(R.id.toolbar_categories) Toolbar toolbar;
+public class RecurringActivity extends BaseActivity {
+@BindView(R.id.toolbar_recurring) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,11 +17,12 @@ public class CategoriesActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.all_categories);
+        getSupportActionBar().setTitle(R.string.all_recurring);
+
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_categories;
+        return R.layout.activity_recurring;
     }
 }

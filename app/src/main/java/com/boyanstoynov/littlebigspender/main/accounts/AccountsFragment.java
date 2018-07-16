@@ -1,4 +1,4 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.main.accounts;
 
 
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.BaseFragment;
 
 public class AccountsFragment extends BaseFragment {
 

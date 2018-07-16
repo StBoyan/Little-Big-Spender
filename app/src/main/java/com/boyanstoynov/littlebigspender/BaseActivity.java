@@ -1,4 +1,4 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

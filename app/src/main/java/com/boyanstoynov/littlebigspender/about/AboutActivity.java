@@ -1,9 +1,10 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.about;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.BindView;
 

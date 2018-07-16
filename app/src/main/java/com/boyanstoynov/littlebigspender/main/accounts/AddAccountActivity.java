@@ -1,9 +1,10 @@
-package com.boyanstoynov.littlebigspender.ui;
+package com.boyanstoynov.littlebigspender.main.accounts;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.OnClick;
 
