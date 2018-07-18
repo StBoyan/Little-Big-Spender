@@ -8,6 +8,11 @@ import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.BindView;
 
+/**
+ * Controller for About activity.
+ *
+ * @author Boyan Stoynov
+ */
 public class AboutActivity extends BaseActivity {
     @BindView(R.id.toolbar_about)
     Toolbar toolbar;
@@ -21,6 +26,9 @@ public class AboutActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.all_about);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_about;

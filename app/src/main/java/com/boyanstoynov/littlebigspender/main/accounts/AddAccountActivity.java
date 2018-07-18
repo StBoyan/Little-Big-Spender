@@ -8,6 +8,11 @@ import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.OnClick;
 
+/**
+ * Controller for Add account activity.
+ *
+ * @author Boyan Stoynov
+ */
 public class AddAccountActivity extends BaseActivity {
 
     @Override
@@ -15,6 +20,9 @@ public class AddAccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_add_account;

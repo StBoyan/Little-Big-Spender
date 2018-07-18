@@ -3,6 +3,7 @@ package com.boyanstoynov.littlebigspender.main.accounts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,10 +15,15 @@ import android.view.ViewGroup;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseFragment;
 
+/**
+ * Controller for Accounts fragment of main screen.
+ *
+ * @author Boyan Stoynov
+ */
 public class AccountsFragment extends BaseFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -26,6 +32,9 @@ public class AccountsFragment extends BaseFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_accounts;
@@ -50,7 +59,5 @@ public class AccountsFragment extends BaseFragment {
 
         return true;
     }
-
-
 }
 

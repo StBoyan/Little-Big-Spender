@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 
-import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseActivity;
+import com.boyanstoynov.littlebigspender.R;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * Controller for settings activity.
+ *
+ * @author Boyan Stoynov
+ */
 public class SettingsActivity extends BaseActivity {
-@BindView(R.id.toolbar_settings) Toolbar toolbar;
+    @BindView(R.id.toolbar_settings) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,9 @@ public class SettingsActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.all_settings);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_settings;

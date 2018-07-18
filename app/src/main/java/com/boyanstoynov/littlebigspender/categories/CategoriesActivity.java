@@ -8,6 +8,11 @@ import com.boyanstoynov.littlebigspender.BaseActivity;
 
 import butterknife.BindView;
 
+/**
+ * Controller for Categories activity.
+ *
+ * @author Boyan Stoynov
+ */
 public class CategoriesActivity extends BaseActivity {
 @BindView(R.id.toolbar_categories) Toolbar toolbar;
 
@@ -20,6 +25,9 @@ public class CategoriesActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.all_categories);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_categories;

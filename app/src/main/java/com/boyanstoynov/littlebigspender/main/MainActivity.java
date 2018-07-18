@@ -29,6 +29,11 @@ import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
 import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 
+/**
+ * Controller for main screen activity.
+ *
+ * @author Boyan Stoynov
+ */
 public class MainActivity extends BaseActivity {
     @BindView(R.id.drawer) DrawerLayout drawer;
     @BindView(R.id.toolbar_main) Toolbar toolbar;
@@ -46,6 +51,7 @@ public class MainActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer_menu);
+
 
         //TODO consider putting listener methods separately to reduce size of onCreate
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -115,12 +121,17 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;
     }
 
-    //TODO change calls to shared preferences to a helper class
+    /**
+     * Launch Intro activity upon first launch.
+     */
     public void startIntroOnFirstLaunch() {
         Thread t = new Thread(new Runnable() {
             @Override

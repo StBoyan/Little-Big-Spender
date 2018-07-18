@@ -10,6 +10,11 @@ import com.boyanstoynov.littlebigspender.BaseActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * Controller for Add transaction activity.
+ *
+ * @author Boyan Stoynov
+ */
 public class AddTransactionActivity extends BaseActivity {
     @BindView(R.id.toolbar_addtransaction) Toolbar toolbar;
 
@@ -20,6 +25,9 @@ public class AddTransactionActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_add_transaction;

@@ -9,6 +9,11 @@ import com.boyanstoynov.littlebigspender.main.MainActivity;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
+/**
+ * Introduction activity controller.
+ *
+ * @author Boyan Stoynov
+ */
 public class IntroActivity extends AppIntro {
 
     @Override

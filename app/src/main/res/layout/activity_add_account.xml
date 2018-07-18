@@ -64,33 +64,13 @@
         app:layout_constraintTop_toBottomOf="@+id/text_addaccount_name" />
 
     <TextView
-        android:id="@+id/text_addaccount_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/addaccount_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_addaccount_name" />
-
-    <Spinner
-        android:id="@+id/spinner_addaccount_type"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addaccount_type" />
-
-    <TextView
         android:id="@+id/text_addaccount_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/addacount_balance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_addaccount_type" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_addaccount" />
 
     <EditText
         android:id="@+id/numberinput_addaccount_balance"
@@ -102,5 +82,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_addaccount_balance" />
+
+    <View
+        android:id="@+id/divider_addaccount"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/textinput_addaccount_name"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>
