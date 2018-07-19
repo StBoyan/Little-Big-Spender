@@ -16,6 +16,7 @@ import butterknife.OnClick;
  * @author Boyan Stoynov
  */
 public class AddTransactionActivity extends BaseActivity {
+
     @BindView(R.id.toolbar_addtransaction) Toolbar toolbar;
 
     @Override

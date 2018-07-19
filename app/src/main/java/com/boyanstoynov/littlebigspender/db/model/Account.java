@@ -1,4 +1,4 @@
-package com.boyanstoynov.littlebigspender.model;
+package com.boyanstoynov.littlebigspender.db.model;
 
 import java.math.BigDecimal;
 
@@ -11,6 +11,7 @@ import io.realm.annotations.PrimaryKey;
  * @author Boyan Stoynov
  */
 public class Account extends RealmObject {
+    // TODO consider adding constructors to use instead of set for creation
     @PrimaryKey
     private String name;
 
@@ -25,7 +26,7 @@ public class Account extends RealmObject {
     }
 
     public BigDecimal getBalance() {
-        return new BigDecimal(balance).divide(new BigDecimal(100), BigDecimal.ROUND_UNNECESSARY);
+        return new BigDecimal(balance).divide(new BigDecimal(100));
     }
 
     public void setBalance(BigDecimal bdBalance) {

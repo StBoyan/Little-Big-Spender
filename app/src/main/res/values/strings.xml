@@ -15,6 +15,8 @@
     <string name="all_amount">Amount</string>
     <string name="all_date">Date</string>
     <string name="all_about">About</string>
+    <string name="all_edit">Edit</string>
+    <string name="all_delete">Delete</string>
 
     <string name="addtransaction_recurring">Recurring?</string>
 

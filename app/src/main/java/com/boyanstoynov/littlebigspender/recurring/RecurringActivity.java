@@ -14,6 +14,7 @@ import butterknife.BindView;
  * @author Boyan Stoynov
  */
 public class RecurringActivity extends BaseActivity {
+
     @BindView(R.id.toolbar_recurring)
     Toolbar toolbar;
 

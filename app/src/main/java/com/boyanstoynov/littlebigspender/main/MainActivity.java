@@ -30,7 +30,7 @@ import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 
 /**
- * Controller for main screen activity.
+ * Controller for home screen activity.
  *
  * @author Boyan Stoynov
  */

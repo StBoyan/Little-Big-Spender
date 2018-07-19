@@ -14,8 +14,8 @@ import butterknife.BindView;
  * @author Boyan Stoynov
  */
 public class AboutActivity extends BaseActivity {
-    @BindView(R.id.toolbar_about)
-    Toolbar toolbar;
+
+    @BindView(R.id.toolbar_about) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

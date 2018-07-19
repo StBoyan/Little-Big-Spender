@@ -17,6 +17,7 @@ import butterknife.OnClick;
  * @author Boyan Stoynov
  */
 public class SettingsActivity extends BaseActivity {
+
     @BindView(R.id.toolbar_settings) Toolbar toolbar;
 
     @Override

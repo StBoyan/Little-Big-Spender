@@ -14,6 +14,7 @@ import butterknife.BindView;
  * @author Boyan Stoynov
  */
 public class StatisticsActivity extends BaseActivity {
+
     @BindView(R.id.toolbar_statistics) Toolbar toolbar;
 
     @Override
