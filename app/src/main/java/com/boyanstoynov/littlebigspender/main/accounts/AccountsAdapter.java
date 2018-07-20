@@ -20,7 +20,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Recycler View adapter for Account entities.
+ * Recycler View adapter to provide access to Account
+ * entities and dynamically make View for each item.
  *
  * @author Boyan Stoynov
  */
@@ -28,7 +29,6 @@ public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<Account> accountsDataSet;
     private AccountsFragment accountsFragment;
-
 
     public AccountsAdapter(AccountsFragment fragment) {
         accountsDataSet = new ArrayList<>();
@@ -44,7 +44,11 @@ public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        initAccounts(holder, position);
+        AccountViewHolder viewHolder = (AccountViewHolder) holder;
+        Account acc = accountsDataSet.get(position);
+
+        viewHolder.textAccount.setText(acc.getName());
+        viewHolder.textBalance.setText(acc.getBalance().toString());
     }
 
     @Override
@@ -57,14 +61,10 @@ public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         accountsDataSet.addAll(accounts);
     }
 
-    private void initAccounts(@NonNull RecyclerView.ViewHolder holder, int position) {
-        AccountViewHolder viewHolder = (AccountViewHolder) holder;
-        Account acc = accountsDataSet.get(position);
-
-        viewHolder.textAccount.setText(acc.getName());
-        viewHolder.textBalance.setText(acc.getBalance().toString());
-    }
-
+    /**
+     * Static inner class to describe how data in
+     * each View is displayed.
+     */
     public static class AccountViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.text_itemaccount_account) TextView textAccount;
@@ -73,11 +73,13 @@ public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.button_itemaccount_edit) Button editButton;
         @BindView(R.id.divider_itemaccount) View divider;
 
+        /* Whether view is clicked */
         boolean isExpanded;
         AccountsFragment fragment;
 
         public AccountViewHolder(View v, AccountsFragment fragment) {
             super(v);
+            // Bind ButterKnife to View
             ButterKnife.bind(this, v);
             this.fragment = fragment;
 

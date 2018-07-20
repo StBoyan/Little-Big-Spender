@@ -39,21 +39,23 @@ public class AddAccountActivity extends BaseActivity {
 
     @OnClick(R.id.button_addaccount_add)
     public void addAccount() {
-        // TODO either refactor or make realmmanager protected in base activity to be accessable
-        // TODO actually may be better to just store the accountDAO reference
-        // TODO but need to log and see if the super onDestroy closes realm
-        Account newAccount = new Account();
-        newAccount.setName(accountNameInput.getText().toString());
-        newAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
-        AccountDao ad = getRealmManager().createAccountDao();
-        ad.save(newAccount);
-        Toast.makeText(getApplicationContext(), "Account added", Toast.LENGTH_SHORT).show();
+        //TODO need to validate input here
+        createAccount();
+        Toast.makeText(getApplicationContext(), R.string.addaccount_add_message, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
     @OnClick(R.id.button_addaccount_cancel)
     public void cancelAddAccount() {
-        Toast.makeText(getApplicationContext(), "Account discarded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.addaccount_discard_message, Toast.LENGTH_SHORT).show();
         onBackPressed();
+    }
+
+    private void createAccount() {
+        Account newAccount = new Account();
+        newAccount.setName(accountNameInput.getText().toString());
+        newAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
+        AccountDao accountDao = getRealmManager().createAccountDao();
+        accountDao.save(newAccount);
     }
 }

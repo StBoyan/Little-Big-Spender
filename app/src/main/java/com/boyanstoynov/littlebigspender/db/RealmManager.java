@@ -5,7 +5,8 @@ import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import io.realm.Realm;
 
 /**
- * Manage Realm instance and create Data Access Objects.
+ * Provides abstraction over Realm instance management
+ * and creation of Data Access Objects.
  *
  * @author Boyan Stoynov
  */

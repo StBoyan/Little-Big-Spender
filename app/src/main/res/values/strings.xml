@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Little Big Spender</string>
 
+    <!--Strings used throughout the app-->
     <string name="all_overview">Overview</string>
     <string name="all_transactions">Transactions</string>
     <string name="all_accounts">Accounts</string>
@@ -17,12 +18,21 @@
     <string name="all_about">About</string>
     <string name="all_edit">Edit</string>
     <string name="all_delete">Delete</string>
+    <string name="all_yes">Yes</string>
+    <string name="all_no">No</string>
 
+    <!--Strings used in Add Transaction Activity-->
     <string name="addtransaction_recurring">Recurring?</string>
 
+    <!--String used in Add Account activity-->
     <string name="addacount_name">Name</string>
     <string name="addaccount_type">Type</string>
-    <string name="addacount_balance">Balance</string>
+    <string name="addaccount_balance">Balance</string>
+    <string name="addaccount_add_message">New account added</string>
+    <string name="addaccount_discard_message">New account discarded</string>
 
+    <!--Strings used in Accounts fragment-->
+    <string name="accounts_warning_message">Are you sure you want to delete</string>
+    <string name="accounts_yes_confirm_toast">Account deleted</string>
 
 </resources>

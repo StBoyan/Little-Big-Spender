@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.boyanstoynov.littlebigspender.db.RealmManager;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Base class for Fragments.
+ * Base class for Fragments. Binds and unbinds ButterKnife
+ * and provides access to parent activity's RealmManager
+ * instance so subclasses.
  *
  * @author Boyan Stoynov
  */
@@ -46,4 +50,13 @@ public abstract class BaseFragment extends Fragment {
      * @return int layout id
      */
     protected abstract int getLayoutResource();
+
+    /**
+     * Gets the RealmManager from parent activity.
+     * @return RealmManager object
+     */
+    protected RealmManager getRealmManager() {
+        return ((BaseActivity)getActivity()).getRealmManager();
+
+    }
 }

@@ -8,7 +8,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
- * Data access object for Account entity.
+ * Data access object to abstract database operations
+ * on Account entities.
  *
  * @author Boyan Stoynov
  */
@@ -19,6 +20,7 @@ public class AccountDao {
     public AccountDao(@NonNull Realm realm) {
         this.realm = realm;
     }
+
 
     public void save(final Account account) {
         realm.executeTransaction(new Realm.Transaction() {

@@ -8,7 +8,9 @@ import com.boyanstoynov.littlebigspender.db.RealmManager;
 import butterknife.ButterKnife;
 
 /**
- * Base class for Activities.
+ * Base class for Activities. Binds ButterKnife, opens
+ * and closes RealmManager instance and provide access to
+ * it to subclasses.
  *
  * @author Boyan Stoynov
  */

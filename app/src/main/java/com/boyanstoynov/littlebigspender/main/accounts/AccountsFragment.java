@@ -15,10 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseFragment;
-import com.boyanstoynov.littlebigspender.db.RealmManager;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 
@@ -38,6 +38,8 @@ public class AccountsFragment extends BaseFragment {
     @BindView(R.id.recyclerview_accounts) RecyclerView recyclerView;
 
     private AccountsAdapter adapter;
+    private RealmResults<Account> accountsRealmResults;
+    private AccountDao accountDao;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,6 +84,9 @@ public class AccountsFragment extends BaseFragment {
         return true;
     }
 
+    /**
+     * Initialise RecyclerView and its adapter.
+     */
     private void initViews() {
         adapter = new AccountsAdapter(this);
 
@@ -92,22 +97,28 @@ public class AccountsFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Load Account objects into view.
+     */
     private void loadAccountList() {
-        RealmManager rm = new RealmManager();
-        rm.open();
-        AccountDao ad = rm.createAccountDao();
-        RealmResults<Account> accountsRealmResults = ad.getAll();
-        // TODO may need to unregister listener onDestroyView
+        accountDao = getRealmManager().createAccountDao();
+        accountsRealmResults = accountDao.getAll();
         accountsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Account>>() {
             @Override
             public void onChange(RealmResults<Account> accounts) {
-                updateRecyclerView(accounts);
+                populateRecyclerView(accounts);
             }
         });
-        updateRecyclerView(accountsRealmResults);
+
+        populateRecyclerView(accountsRealmResults);
     }
 
-    private void updateRecyclerView(List<Account> accountsList) {
+    /**
+     * Populate view with accounts and notify adapter of
+     * data change.
+     * @param accountsList List of Account objects
+     */
+    private void populateRecyclerView(List<Account> accountsList) {
         if (adapter != null && accountsList != null) {
             adapter.setData(accountsList);
             adapter.notifyDataSetChanged();
@@ -115,24 +126,25 @@ public class AccountsFragment extends BaseFragment {
 
     }
 
-    // TODO refactor
+    /**
+     * Creates an AlertDialog upon delete button clicked
+     * to confirm deletion. Delete if yes is clicked.
+     * @param accountName name of account to be deleted
+     */
     public void onDeleteButtonClicked(final String accountName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);
-        builder.setMessage("Are you sure you want to delete " + accountName + "?");
-        builder.setIcon(R.drawable.ic_launcher_foreground);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.accounts_warning_message), accountName));
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                RealmManager rm = new RealmManager();
-                rm.open();
-                AccountDao ad = rm.createAccountDao();
-                ad.deleteByName(accountName);
-                rm.close();
+                accountDao.deleteByName(accountName);
+                Toast.makeText(getContext(), R.string.accounts_yes_confirm_toast, Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
