@@ -3,6 +3,7 @@ Personal money management Android application developed in part fulfillment of t
 
 ## Libraries 
 - [AppIntro](https://github.com/apl-devs/AppIntro)
+- [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
 - [Butter Knife](https://github.com/JakeWharton/butterknife)
 - [Realm](https://github.com/realm/realm-java)
 
