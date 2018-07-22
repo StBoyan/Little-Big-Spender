@@ -1,5 +1,4 @@
-package com.boyanstoynov.littlebigspender.main.accounts;
-
+package com.boyanstoynov.littlebigspender.categories;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.boyanstoynov.littlebigspender.R;
-import com.boyanstoynov.littlebigspender.db.model.Account;
+import com.boyanstoynov.littlebigspender.db.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,64 +19,62 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Recycler View adapter to provide access to Account
+ * Recycler View adapter to provide access to Category
  * entities and dynamically make View for each item.
  *
  * @author Boyan Stoynov
  */
-public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    //TODO consider a common adapater superclass for all shared attributes
+    private List<Category> categoriesDataSet;
+    private CategoriesFragment categoriesFragment;
 
-    private List<Account> accountsDataSet;
-    private AccountsFragment accountsFragment;
-
-    public AccountsAdapter(AccountsFragment fragment) {
-        accountsDataSet = new ArrayList<>();
-        accountsFragment = fragment;
+    public CategoriesAdapter(CategoriesFragment fragment) {
+        categoriesDataSet = new ArrayList<>();
+        categoriesFragment = fragment;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_account, parent, false);
-        return new AccountViewHolder(view, accountsFragment);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
+        return new CategoryViewHolder(view, categoriesFragment);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        AccountViewHolder viewHolder = (AccountViewHolder) holder;
-        Account acc = accountsDataSet.get(position);
+        CategoryViewHolder viewHolder = (CategoryViewHolder) holder;
+        Category cat = categoriesDataSet.get(position);
 
-        viewHolder.textAccount.setText(acc.getName());
-        viewHolder.textBalance.setText(acc.getBalance().toString());
+        viewHolder.textCategory.setText(cat.getName());
     }
 
     @Override
     public int getItemCount() {
-        return accountsDataSet.size();
+        return categoriesDataSet.size();
     }
 
-    public void setData(@NonNull List<Account> accounts) {
-        accountsDataSet.clear();
-        accountsDataSet.addAll(accounts);
+    public void setData(@NonNull List<Category> categories) {
+        categoriesDataSet.clear();
+        categoriesDataSet.addAll(categories);
     }
 
     /**
      * Static ViewHolder inner class to describe how data
      * in each View is displayed.
      */
-    public static class AccountViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.text_itemaccount_account) TextView textAccount;
-        @BindView(R.id.text_itemaccount_balance) TextView textBalance;
-        @BindView(R.id.button_itemaccount_delete) Button deleteButton;
-        @BindView(R.id.button_itemaccount_edit) Button editButton;
-        @BindView(R.id.divider_itemaccount) View divider;
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+     //TODO consider making a common ViewHolder parent if all of them will be expandable (and have butterknife)
+        @BindView(R.id.text_itemcategory_category) TextView textCategory;
+        @BindView(R.id.button_itemcategory_delete) Button deleteButton;
+        @BindView(R.id.button_itemcategory_edit) Button editButton;
+        @BindView(R.id.divider_itemcategory) View divider;
 
         /* Whether view is clicked */
         boolean isExpanded;
-        AccountsFragment fragment;
+        CategoriesFragment fragment;
 
-        public AccountViewHolder(View v, AccountsFragment fragment) {
+        public CategoryViewHolder(View v, CategoriesFragment fragment) {
             super(v);
             // Bind ButterKnife to View
             ButterKnife.bind(this, v);
@@ -102,9 +99,9 @@ public class AccountsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
         }
 
-        @OnClick(R.id.button_itemaccount_delete)
+        @OnClick(R.id.button_itemcategory_delete)
         public void onDeleteButtonClicked() {
-            fragment.onDeleteButtonClicked(textAccount.getText().toString());
+            fragment.onDeleteButtonClicked(textCategory.getText().toString());
         }
     }
 }

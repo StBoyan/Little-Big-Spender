@@ -1,6 +1,7 @@
 package com.boyanstoynov.littlebigspender.db;
 
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
+import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 
 import io.realm.Realm;
 
@@ -28,8 +29,13 @@ public class RealmManager {
         return new AccountDao(realm);
     }
 
+    public CategoryDao createCategoryDao() {
+        checkForOpenRealm();
+        return new CategoryDao(realm);
+    }
+
     private void checkForOpenRealm() {
         if (realm == null || realm.isClosed())
-            throw new IllegalStateException("Realm is closed.");
+            throw new IllegalStateException("Realm is closed. Call open() first.");
     }
 }

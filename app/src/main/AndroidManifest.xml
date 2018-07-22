@@ -3,38 +3,39 @@
     package="com.boyanstoynov.littlebigspender">
 
     <application
+        android:name=".LittleBigSpender"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".LittleBigSpender"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.boyanstoynov.littlebigspender.main.MainActivity">
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.boyanstoynov.littlebigspender.intro.IntroActivity" />
-        <activity android:name="com.boyanstoynov.littlebigspender.main.transactions.AddTransactionActivity" />
+        <activity android:name=".intro.IntroActivity" />
+        <activity android:name=".main.transactions.AddTransactionActivity" />
         <activity
-            android:name="com.boyanstoynov.littlebigspender.statistics.StatisticsActivity"
-            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
+            android:name=".statistics.StatisticsActivity"
+            android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name="com.boyanstoynov.littlebigspender.recurring.RecurringActivity"
-            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
+            android:name=".recurring.RecurringActivity"
+            android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name="com.boyanstoynov.littlebigspender.categories.CategoriesActivity"
-            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
+            android:name=".categories.CategoriesActivity"
+            android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name="com.boyanstoynov.littlebigspender.settings.SettingsActivity"
-            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
+            android:name=".settings.SettingsActivity"
+            android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name="com.boyanstoynov.littlebigspender.about.AboutActivity"
-            android:parentActivityName="com.boyanstoynov.littlebigspender.main.MainActivity" />
-        <activity android:name="com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity" />
+            android:name=".about.AboutActivity"
+            android:parentActivityName=".main.MainActivity" />
+        <activity android:name=".main.accounts.AddAccountActivity" />
+        <activity android:name=".categories.AddCategoryActivity" />
     </application>
 
 </manifest>

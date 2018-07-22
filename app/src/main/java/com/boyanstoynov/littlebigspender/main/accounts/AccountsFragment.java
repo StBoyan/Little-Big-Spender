@@ -66,7 +66,7 @@ public class AccountsFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.accounts_toolbar, menu);
+        inflater.inflate(R.menu.addbutton_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -74,7 +74,7 @@ public class AccountsFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_addaccount:
+            case R.id.item_add:
                 AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
                 final Intent i = new Intent(parentActivity, AddAccountActivity.class);
                 startActivity(i);

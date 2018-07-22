@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
-                            case R.id.item_addaccount:
+                            case R.id.item_add:
                                 selectedFragment = new OverviewFragment();
                                 break;
                             case R.id.item_transactions:

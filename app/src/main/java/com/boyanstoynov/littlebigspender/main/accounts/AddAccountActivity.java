@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseActivity;
-import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 
 import java.math.BigDecimal;
@@ -55,7 +54,6 @@ public class AddAccountActivity extends BaseActivity {
         Account newAccount = new Account();
         newAccount.setName(accountNameInput.getText().toString());
         newAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
-        AccountDao accountDao = getRealmManager().createAccountDao();
-        accountDao.save(newAccount);
+        getRealmManager().createAccountDao().save(newAccount);
     }
 }

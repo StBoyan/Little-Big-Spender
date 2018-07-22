@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity">
+    tools:context=".categories.AddCategoryActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_addaccount"
+        android:id="@+id/toolbar_addcategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -20,7 +20,7 @@
             android:paddingEnd="16dp">
 
             <ImageButton
-                android:id="@+id/button_addaccount_cancel"
+                android:id="@+id/button_addcategory_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/actionBarItemBackground"
@@ -30,7 +30,7 @@
                 app:srcCompat="@drawable/ic_cancel" />
 
             <ImageButton
-                android:id="@+id/button_addaccount_add"
+                android:id="@+id/button_addcategory_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/actionBarItemBackground"
@@ -38,22 +38,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_confirm" />
-
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/text_addaccount_name"
+        android:id="@+id/text_addcategory_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/all_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_addaccount" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_addcategory" />
 
     <EditText
-        android:id="@+id/textinput_addaccount_name"
+        android:id="@+id/textinput_addcategory_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -61,34 +62,35 @@
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addaccount_name" />
-
-    <TextView
-        android:id="@+id/text_addaccount_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addaccount_balance"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_addaccount" />
-
-    <EditText
-        android:id="@+id/numberinput_addaccount_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="numberDecimal"
-        android:ems="5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addaccount_balance" />
+        app:layout_constraintTop_toBottomOf="@+id/text_addcategory_name" />
 
     <View
-        android:id="@+id/divider_addaccount"
+        android:id="@+id/divider_addcategory"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="5dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_addaccount_name"/>
+        app:layout_constraintTop_toBottomOf="@id/textinput_addcategory_name"/>
+
+    <TextView
+        android:id="@+id/text_addcategory_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/all_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_addcategory" />
+
+    <Spinner
+        android:id="@+id/spinner_addcategory_type"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:entries="@array/category_types"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_addcategory_type" />
 
 </android.support.constraint.ConstraintLayout>
