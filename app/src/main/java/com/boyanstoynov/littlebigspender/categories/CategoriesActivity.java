@@ -60,6 +60,7 @@ public class CategoriesActivity extends BaseActivity {
             }
         });
         // TODO make this get the previously selected tab from bundle and select it instead
+        tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
     }
 
