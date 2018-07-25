@@ -1,6 +1,15 @@
 # Little Big Spender
 Personal money management Android application developed in part fulfillment of the requirements of the Degree of Master of Science at the University of Glasgow.
 
+## Features
+This section will contain a list of the app's features.
+
+## Screenshots
+This section will contain screenshots from the app.
+
+## Documentation
+Javadoc documentation of the whole project, including private methods can be found [here](https://stboyan.github.io/Little-Big-Spender/).
+
 ## Libraries 
 - [AppIntro](https://github.com/apl-devs/AppIntro)
 - [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
