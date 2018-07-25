@@ -1,0 +1,14 @@
+com.boyanstoynov.littlebigspender
+com.boyanstoynov.littlebigspender.about
+com.boyanstoynov.littlebigspender.categories
+com.boyanstoynov.littlebigspender.db
+com.boyanstoynov.littlebigspender.db.dao
+com.boyanstoynov.littlebigspender.db.model
+com.boyanstoynov.littlebigspender.intro
+com.boyanstoynov.littlebigspender.main
+com.boyanstoynov.littlebigspender.main.accounts
+com.boyanstoynov.littlebigspender.main.overview
+com.boyanstoynov.littlebigspender.main.transactions
+com.boyanstoynov.littlebigspender.recurring
+com.boyanstoynov.littlebigspender.settings
+com.boyanstoynov.littlebigspender.statistics
