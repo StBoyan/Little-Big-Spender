@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.boyanstoynov.littlebigspender.main.transactions.TransactionsFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_transactions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_transactions"
@@ -13,4 +18,5 @@
         android:layout_gravity="end|bottom"
         android:src="@drawable/ic_add"
         android:layout_margin="16dp" />
+
 </FrameLayout>

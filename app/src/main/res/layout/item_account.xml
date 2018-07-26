@@ -25,7 +25,9 @@
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_itemaccount"
-                android:text="@string/all_edit" />
+                android:text="@string/all_edit"
+                tools:visibility="visible"
+                tools:text="@string/all_edit"/>
 
             <Button
                 android:id="@+id/button_itemaccount_delete"
@@ -35,7 +37,9 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_itemaccount"
-                android:text="@string/all_delete" />
+                android:text="@string/all_delete"
+                tools:visibility="visible"
+                tools:text="@string/all_delete"/>
 
             <View
                 android:id="@+id/divider_itemaccount"
@@ -45,7 +49,8 @@
                 android:layout_marginBottom="2dp"
                 android:background="?android:attr/listDivider"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/text_itemaccount_balance"/>
+                app:layout_constraintTop_toBottomOf="@id/text_itemaccount_balance"
+                tools:visibility="visible"/>
 
             <TextView
                 android:id="@+id/text_itemaccount_account"
@@ -55,7 +60,8 @@
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Bank Account"/>
 
             <TextView
                 android:id="@+id/text_itemaccount_balance"
@@ -65,7 +71,8 @@
                 android:layout_marginTop="8dp"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="150"/>
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

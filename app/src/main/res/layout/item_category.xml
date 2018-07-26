@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -22,9 +23,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:textSize="30sp"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Groceries"/>
 
             <View
                 android:id="@+id/divider_itemcategory"
@@ -34,7 +36,8 @@
                 android:layout_marginBottom="2dp"
                 android:visibility="gone"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintTop_toBottomOf="@id/text_itemcategory_category"/>
+                app:layout_constraintTop_toBottomOf="@id/text_itemcategory_category"
+                tools:visibility="visible"/>
 
             <Button
                 android:id="@+id/button_itemcategory_edit"
@@ -44,7 +47,8 @@
                 android:background="@color/colorPrimary"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_itemcategory"/>
+                app:layout_constraintTop_toBottomOf="@id/divider_itemcategory"
+                tools:visibility="visible"/>
 
             <Button
                 android:id="@+id/button_itemcategory_delete"
@@ -54,7 +58,8 @@
                 android:background="@color/colorWarningRed"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_itemcategory"/>
+                app:layout_constraintTop_toBottomOf="@id/divider_itemcategory"
+                tools:visibility="visible"/>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

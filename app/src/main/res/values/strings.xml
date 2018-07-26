@@ -22,26 +22,29 @@
     <string name="all_no">No</string>
     <string name="all_name">Name</string>
     <string name="all_type">Type</string>
+    <string name="all_warning_delete_message">Are you sure you want to delete</string>
 
     <!--Strings used in Add Transaction Activity-->
     <string name="addtransaction_recurring">Recurring?</string>
 
     <!--String used in Add Account activity-->
     <string name="addaccount_balance">Balance</string>
-    <string name="addaccount_add_message">New account added</string>
-    <string name="addaccount_discard_message">New account discarded</string>
+    <string name="addaccount_add_toast">New account added</string>
+    <string name="addaccount_discard_toast">New account discarded</string>
 
     <!--Strings used in Accounts fragment-->
-    <string name="accounts_warning_message">Are you sure you want to delete</string>
-    <string name="accounts_yes_confirm_toast">Account deleted</string>
+    <string name="accounts_delete_toast">Account deleted</string>
 
     <!--Strings used in Categories Fragment-->
-    <string name="categories_warning_message">Are you sure you want to delete</string>
-    <string name="categories_yes_confirm_toast">Category deleted</string>
+    <string name="categories_delete_toast">Category deleted</string>
 
     <!--Strings used in Add Category activity-->
-    <string name="addcategory_add_message">New category added</string>
-    <string name="addcategory_discard_message">New category discarded</string>
+    <string name="addcategory_add_toast">New category added</string>
+    <string name="addcategory_discard_toast">New category discarded</string>
+
+    <!--Strings used in Transactions fragment-->
+    <string name="transaction_warning_delete_message">Are you sure you want to delete transaction?</string>
+    <string name="transaction_delete_toast">Transaction deleted</string>
 
     <!--Strings used in About fragment-->
     <string name="about_description">
