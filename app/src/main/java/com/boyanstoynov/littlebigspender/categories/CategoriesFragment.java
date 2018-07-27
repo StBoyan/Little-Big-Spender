@@ -107,14 +107,14 @@ public class CategoriesFragment extends BaseFragment {
     public void onDeleteButtonClicked(final String categoryName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);
-        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.categories_warning_message), categoryName));
+        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), categoryName));
         builder.setIcon(R.drawable.ic_warning);
         builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 categoryDao.deleteByName(categoryName);
-                Toast.makeText(getContext(), R.string.categories_yes_confirm_toast, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.categories_delete_toast, Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {

@@ -40,13 +40,13 @@ public class AddCategoryActivity extends BaseActivity {
     public void addCategory() {
         //TODO need to validate input here
         createCategory();
-        Toast.makeText(this, R.string.addcategory_add_message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.addcategory_add_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
     @OnClick(R.id.button_addcategory_cancel)
     public void cancelAddCategory() {
-        Toast.makeText(this, R.string.addcategory_discard_message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.addcategory_discard_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
