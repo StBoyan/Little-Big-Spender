@@ -5,7 +5,7 @@ import android.app.Application;
 import io.realm.Realm;
 
 /**
- * Class to maintain application-wide state.
+ * Application class which initialises Realm database.
  *
  * @author Boyan Stoynov
  */
