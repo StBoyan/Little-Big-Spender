@@ -31,6 +31,11 @@ public class Category extends RealmObject {
         return Type.valueOf(type);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public enum Type {
         EXPENSE, INCOME
     }

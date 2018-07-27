@@ -8,40 +8,18 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
- * Data access object to abstract database operations
- * on Account entities.
+ * Data access object that defines queries for Account
+ * entities.
  *
  * @author Boyan Stoynov
  */
-public class AccountDao {
-
-    private Realm realm;
+public class AccountDao extends BaseDao<Account> {
 
     public AccountDao(@NonNull Realm realm) {
-        this.realm = realm;
-    }
-
-
-    public void save(final Account account) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(account);
-            }
-        });
+        super(realm);
     }
 
     public RealmResults<Account> getAll() {
         return realm.where(Account.class).findAll();
-    }
-
-    public void deleteByName(String name) {
-        final Account account = realm.where(Account.class).equalTo("name", name).findFirst();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                account.deleteFromRealm();
-            }
-        });
     }
 }

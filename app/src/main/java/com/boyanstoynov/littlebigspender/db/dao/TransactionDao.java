@@ -1,5 +1,7 @@
 package com.boyanstoynov.littlebigspender.db.dao;
 
+import android.support.annotation.NonNull;
+
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import io.realm.Realm;
@@ -13,7 +15,7 @@ import io.realm.RealmResults;
  */
 public class TransactionDao extends BaseDao<Transaction> {
 
-    public TransactionDao(Realm realm) {
+    public TransactionDao(@NonNull Realm realm) {
         super(realm);
     }
 

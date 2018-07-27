@@ -11,10 +11,8 @@ import io.realm.annotations.PrimaryKey;
  * @author Boyan Stoynov
  */
 public class Account extends RealmObject {
-    // TODO consider adding constructors to use instead of set for creation
     @PrimaryKey
     private String name;
-
     private long balance;
 
     public String getName() {
@@ -29,8 +27,12 @@ public class Account extends RealmObject {
         return new BigDecimal(balance).divide(new BigDecimal(100));
     }
 
-    public void setBalance(BigDecimal bdBalance) {
-        balance = bdBalance.multiply(new BigDecimal(100)).longValue();
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance.multiply(new BigDecimal(100)).longValue();
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

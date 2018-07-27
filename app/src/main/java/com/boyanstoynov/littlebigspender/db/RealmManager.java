@@ -2,6 +2,7 @@ package com.boyanstoynov.littlebigspender.db;
 
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
+import com.boyanstoynov.littlebigspender.db.dao.RecurringDao;
 import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
 
 import io.realm.Realm;
@@ -38,6 +39,11 @@ public class RealmManager {
     public TransactionDao createTransactionDao() {
         checkForOpenRealm();
         return new TransactionDao(realm);
+    }
+
+    public RecurringDao createRecurringDao() {
+        checkForOpenRealm();
+        return new RecurringDao(realm);
     }
 
     private void checkForOpenRealm() {

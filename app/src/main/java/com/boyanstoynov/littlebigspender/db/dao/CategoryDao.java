@@ -1,31 +1,22 @@
 package com.boyanstoynov.littlebigspender.db.dao;
 
+import android.support.annotation.NonNull;
+
 import com.boyanstoynov.littlebigspender.db.model.Category;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
- * Data access object to abstract database operations
- * on Category entities.
+ * Data access object that defines queries for Category
+ * entities.
  *
  * @author Boyan Stoynov
  */
-public class CategoryDao {
+public class CategoryDao extends BaseDao<Category> {
 
-    private Realm realm;
-
-    public CategoryDao(Realm realm) {
-        this.realm = realm;
-    }
-
-    public void save(final Category category) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(category);
-            }
-        });
+    public CategoryDao(@NonNull Realm realm) {
+        super(realm);
     }
 
     public RealmResults<Category> getAllIncomeCategories() {
@@ -34,15 +25,5 @@ public class CategoryDao {
 
     public RealmResults<Category> getAllExpenseCategories() {
         return realm.where(Category.class).equalTo("type", Category.Type.EXPENSE.toString()).findAll();
-    }
-
-    public void deleteByName(String name) {
-        final Category category = realm.where(Category.class).equalTo("name", name).findFirst();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                category.deleteFromRealm();
-            }
-        });
     }
 }
