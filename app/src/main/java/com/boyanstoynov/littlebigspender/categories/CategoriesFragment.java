@@ -48,9 +48,6 @@ public class CategoriesFragment extends BaseFragment {
         return view;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_categories;
@@ -93,27 +90,19 @@ public class CategoriesFragment extends BaseFragment {
     }
 
     private void populateRecyclerView(List<Category> categoriesList) {
-        if (adapter != null && categoriesList != null) {
-            adapter.setData(categoriesList);
-            adapter.notifyDataSetChanged();
-        }
+        adapter.setData(categoriesList);
     }
 
-    /**
-     * Creates an AlertDialog upon delete button clicked
-     * to confirm deletion. Delete if yes is clicked.
-     * @param categoryName name of category to be deleted
-     */
-    public void onDeleteButtonClicked(final String categoryName) {
+    public void onDeleteButtonClicked(final Category category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);
-        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), categoryName));
+        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), category.getName()));
         builder.setIcon(R.drawable.ic_warning);
         builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                categoryDao.deleteByName(categoryName);
+                categoryDao.delete(category);
                 Toast.makeText(getContext(), R.string.categories_delete_toast, Toast.LENGTH_SHORT).show();
             }
         });

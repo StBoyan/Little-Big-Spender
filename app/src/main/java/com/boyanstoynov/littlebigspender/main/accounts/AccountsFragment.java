@@ -56,9 +56,6 @@ public class AccountsFragment extends BaseFragment {
         return view;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_accounts;
@@ -119,29 +116,20 @@ public class AccountsFragment extends BaseFragment {
      * @param accountsList List of Account objects
      */
     private void populateRecyclerView(List<Account> accountsList) {
-        if (adapter != null && accountsList != null) {
-            adapter.setData(accountsList);
-            adapter.notifyDataSetChanged();
-        }
-
+        adapter.setData(accountsList);
     }
 
-    /**
-     * Creates an AlertDialog upon delete button clicked
-     * to confirm deletion. Delete if yes is clicked.
-     * @param accountName name of account to be deleted
-     */
-    public void onDeleteButtonClicked(final String accountName) {
+    public void onDeleteButtonClicked(final Account account) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);
-        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.accounts_warning_message), accountName));
+        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), account.getName()));
         builder.setIcon(R.drawable.ic_warning);
         builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                accountDao.deleteByName(accountName);
-                Toast.makeText(getContext(), R.string.accounts_yes_confirm_toast, Toast.LENGTH_SHORT).show();
+                accountDao.delete(account);
+                Toast.makeText(getContext(), R.string.accounts_delete_toast, Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {

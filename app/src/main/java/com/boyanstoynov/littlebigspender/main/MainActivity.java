@@ -30,11 +30,12 @@ import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 
 /**
- * Controller for home screen activity.
+ * Controller for main screen activity.
  *
  * @author Boyan Stoynov
  */
 public class MainActivity extends BaseActivity {
+
     @BindView(R.id.drawer) DrawerLayout drawer;
     @BindView(R.id.toolbar_main) Toolbar toolbar;
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
@@ -82,7 +83,6 @@ public class MainActivity extends BaseActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        item.setChecked(true);
                         drawer.closeDrawers();
                         Intent i = null;
 
@@ -133,6 +133,7 @@ public class MainActivity extends BaseActivity {
      * Launch Intro activity upon first launch.
      */
     public void startIntroOnFirstLaunch() {
+        // TODO use shared preference class
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

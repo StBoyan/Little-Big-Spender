@@ -19,6 +19,7 @@ import butterknife.OnClick;
  * @author Boyan Stoynov
  */
 public class AddCategoryActivity extends BaseActivity {
+
     @BindView(R.id.textinput_addcategory_name) EditText categoryNameInput;
     @BindView(R.id.spinner_addcategory_type) Spinner categoryTypeSpinner;
 
@@ -28,9 +29,6 @@ public class AddCategoryActivity extends BaseActivity {
 
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_add_category;
@@ -57,6 +55,6 @@ public class AddCategoryActivity extends BaseActivity {
             newCategory.setType(Category.Type.INCOME);
         else
             newCategory.setType(Category.Type.EXPENSE);
-        getRealmManager().createCategoryDao().save(newCategory);
+        getRealmManager().createCategoryDao().saveOrUpdate(newCategory);
     }
 }

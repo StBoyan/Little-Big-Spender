@@ -28,9 +28,6 @@ public class AddAccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_add_account;
@@ -40,13 +37,13 @@ public class AddAccountActivity extends BaseActivity {
     public void addAccount() {
         //TODO need to validate input here
         createAccount();
-        Toast.makeText(getApplicationContext(), R.string.addaccount_add_message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.addaccount_add_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
     @OnClick(R.id.button_addaccount_cancel)
     public void cancelAddAccount() {
-        Toast.makeText(getApplicationContext(), R.string.addaccount_discard_message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.addaccount_discard_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
@@ -54,6 +51,6 @@ public class AddAccountActivity extends BaseActivity {
         Account newAccount = new Account();
         newAccount.setName(accountNameInput.getText().toString());
         newAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
-        getRealmManager().createAccountDao().save(newAccount);
+        getRealmManager().createAccountDao().saveOrUpdate(newAccount);
     }
 }
