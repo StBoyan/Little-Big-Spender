@@ -1,9 +1,11 @@
 package com.boyanstoynov.littlebigspender.main.transactions;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,8 +19,12 @@ import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,7 +35,7 @@ import io.realm.RealmResults;
  *
  * @author Boyan Stoynov
  */
-public class AddTransactionActivity extends BaseActivity {
+public class AddTransactionActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.toolbar_addtransaction) Toolbar toolbar;
     @BindView(R.id.tablayout_addtransaction) TabLayout tabLayout;
@@ -40,6 +46,7 @@ public class AddTransactionActivity extends BaseActivity {
 
     CategoryDao categoryDao;
     AccountDao accountDao;
+    Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +91,9 @@ public class AddTransactionActivity extends BaseActivity {
         ArrayAdapter<Account> accountsAdapter = new ArrayAdapter<>(this, R.layout.item_spinner, accounts);
         accountSpinner.setAdapter(accountsAdapter);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
-
-        inputDate.setText(df.format(new Date()));
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        date = new Date();
+        inputDate.setText(df.format(date));
     }
 
     @Override
@@ -107,12 +114,31 @@ public class AddTransactionActivity extends BaseActivity {
         onBackPressed();
     }
 
+    @OnClick(R.id.dateinput_addtransaction)
+    public void showDatePicker() {
+        Calendar calendar = new GregorianCalendar(Locale.getDefault());
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, year, month, day);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        date = new GregorianCalendar(year, month, dayOfMonth).getTime();
+        inputDate.setText(df.format(date));
+    }
+
     public void createTransaction() {
         Transaction newTransaction = new Transaction();
         newTransaction.setAccount((Account)accountSpinner.getSelectedItem());
         newTransaction.setCategory((Category)categorySpinner.getSelectedItem());
         newTransaction.setAmount(new BigDecimal(inputAmount.getText().toString()));
-        newTransaction.setDate(new Date());
+        newTransaction.setDate(date);
+
         getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
     }
-}
+ }

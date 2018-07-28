@@ -7,14 +7,17 @@ This section will contain a list of the app's features.
 ## Screenshots
 This section will contain screenshots from the app.
 
+## How to build and run project from Android Studio
+Instructions on how to build and run project in Android Studio.
+
 ## Documentation
-Javadoc documentation of the whole project, including private methods can be found [here](https://stboyan.github.io/Little-Big-Spender/).
+Javadoc documentation of the whole project, including private methods can be found [**here**](https://stboyan.github.io/Little-Big-Spender/).
 
 ## Libraries 
-- [AppIntro](https://github.com/apl-devs/AppIntro)
-- [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
-- [Butter Knife](https://github.com/JakeWharton/butterknife)
-- [Realm](https://github.com/realm/realm-java)
+- [**AppIntro**](https://github.com/apl-devs/AppIntro)
+- [**AboutLibraries**](https://github.com/mikepenz/AboutLibraries)
+- [**Butter Knife**](https://github.com/JakeWharton/butterknife)
+- [**Realm**](https://github.com/realm/realm-java)
 
 ## License
     MIT License

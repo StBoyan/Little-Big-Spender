@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        item.setChecked(true);
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.item_add:

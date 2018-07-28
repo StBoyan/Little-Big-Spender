@@ -10,6 +10,9 @@ import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -65,10 +68,11 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction, Transa
 
         @Override
         protected void setItemPresentation(Transaction transaction) {
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             textAccount.setText(transaction.getAccount().getName());
             textCategory.setText(transaction.getCategory().getName());
             textAmount.setText(transaction.getAmount().toString());
-            textDate.setText(transaction.getDate().toString());
+            textDate.setText(df.format(transaction.getDate()));
         }
 
         @OnClick(R.id.button_itemtransaction_delete)

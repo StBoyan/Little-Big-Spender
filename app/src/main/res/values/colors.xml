@@ -6,5 +6,6 @@
     <color name="colorAccent">#4caf50</color>
 
     <!--Other app colours-->
-    <color name="colorWarningRed">#ff3333</color>
+    <color name="warningRed">#ff3333</color>
+    <color name="softGray">#d9d9d9</color>
 </resources>
