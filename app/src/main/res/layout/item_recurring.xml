@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent" >
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -17,7 +17,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/text_itemtransaction_category"
+                android:id="@+id/text_itemrecurring_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -25,10 +25,10 @@
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Groceries" />
+                tools:text="Salary" />
 
             <TextView
-                android:id="@+id/text_itemtransaction_amount"
+                android:id="@+id/text_itemrecurring_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -36,68 +36,78 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="70" />
+                tools:text="1800" />
 
             <View
-                android:id="@+id/divider_itemtransaction_upper_hidden"
+                android:id="@+id/divider_itemrecurring_upper_hidden"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@+id/text_itemtransaction_category" />
+                app:layout_constraintTop_toBottomOf="@+id/text_itemrecurring_category" />
 
             <TextView
-                android:id="@+id/text_itemtransaction_date"
+                android:id="@+id/text_itemrecurring_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_itemtransaction_upper_hidden"
+                app:layout_constraintTop_toBottomOf="@+id/divider_itemrecurring_upper_hidden"
                 tools:text="07/02/2018" />
 
             <TextView
-                android:id="@+id/text_itemtransaction_account"
+                android:id="@+id/text_itemrecurring_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/text_itemrecurring_date"
+                app:layout_constraintTop_toBottomOf="@+id/divider_itemrecurring_upper_hidden"
+                tools:text="Monthly" />
+
+            <TextView
+                android:id="@+id/text_itemrecurring_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_itemtransaction_upper_hidden"
+                app:layout_constraintTop_toBottomOf="@+id/divider_itemrecurring_upper_hidden"
                 tools:text="Bank Account" />
 
             <View
-                android:id="@+id/divider_itemtransaction_lower"
+                android:id="@+id/divider_itemrecurring_lower"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
                 android:background="?android:attr/listDivider"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/text_itemtransaction_date"
+                app:layout_constraintTop_toBottomOf="@+id/text_itemrecurring_date"
                 tools:visibility="visible" />
 
             <Button
-                android:id="@+id/button_itemtransaction_edit"
+                android:id="@+id/button_itemrecurring_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/all_edit"
                 android:background="@color/colorPrimary"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_itemtransaction_lower"
+                app:layout_constraintTop_toBottomOf="@id/divider_itemrecurring_lower"
                 tools:visibility="visible"/>
 
             <Button
-                android:id="@+id/button_itemtransaction_delete"
+                android:id="@+id/button_itemrecurring_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/all_delete"
                 android:background="@color/warningRed"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_itemtransaction_lower"
+                app:layout_constraintTop_toBottomOf="@id/divider_itemrecurring_lower"
                 tools:visibility="visible"/>
 
         </android.support.constraint.ConstraintLayout>

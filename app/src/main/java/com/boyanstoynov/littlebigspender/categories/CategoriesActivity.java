@@ -64,9 +64,6 @@ public class CategoriesActivity extends BaseActivity {
         tabLayout.getTabAt(0).select();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_categories;

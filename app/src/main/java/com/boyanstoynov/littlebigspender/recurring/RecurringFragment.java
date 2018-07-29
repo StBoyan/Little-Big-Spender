@@ -1,10 +1,10 @@
-package com.boyanstoynov.littlebigspender.categories;
+package com.boyanstoynov.littlebigspender.recurring;
 
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +16,9 @@ import android.widget.Toast;
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.RealmManager;
-import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
+import com.boyanstoynov.littlebigspender.db.dao.RecurringDao;
 import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.db.model.Recurring;
 
 import java.util.List;
 
@@ -26,48 +27,48 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 /**
- * Controller for Categories fragment.
+ * Controller for Recurring fragment.
  *
  * @author Boyan Stoynov
  */
-public class CategoriesFragment extends BaseFragment {
+public class RecurringFragment extends BaseFragment {
 
-    @BindView(R.id.recyclerview_categories) RecyclerView recyclerView;
+    @BindView(R.id.recyclerview_recurring) RecyclerView recyclerView;
 
-    private CategoriesAdapter adapter;
-    private RealmResults<Category> categoriesRealmResults;
-    private CategoryDao categoryDao;
+    private RecurringAdapter adapter;
+    private RealmResults<Recurring> recurringRealmResults;
+    private RecurringDao recurringDao;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         initViews();
-        loadCategoryList();
+        loadRecurringList();
 
         return view;
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_categories;
+        return R.layout.fragment_recurring;
     }
 
     protected void setCategoryType(Category.Type type) {
-        //TODO figure out how to initialise categoryDao
+        //TODO remove temp solution
         RealmManager rm = new RealmManager();
         rm.open();
-        categoryDao = rm.createCategoryDao();
+        recurringDao = rm.createRecurringDao();
 
         if (type == Category.Type.INCOME)
-            categoriesRealmResults = categoryDao.getAllIncomeCategories();
+            recurringRealmResults = recurringDao.getAllIncomeRecurringTransactions();
         else
-            categoriesRealmResults = categoryDao.getAllExpenseCategories();
+            recurringRealmResults = recurringDao.getAllExpenseRecurringTransactions();
     }
 
     private void initViews() {
-        adapter = new CategoriesAdapter(this);
+        adapter = new RecurringAdapter(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -76,35 +77,36 @@ public class CategoriesFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private void loadCategoryList() {
-        if (categoriesRealmResults == null)
+    private void loadRecurringList() {
+        if (recurringRealmResults == null) {
             throw new IllegalStateException("Categories type unspecified. Call setCategoryType() first.");
+        }
 
-        categoriesRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
+        recurringRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Recurring>>() {
             @Override
-            public void onChange(RealmResults<Category> categories) {
-                populateRecyclerView(categories);
+            public void onChange(RealmResults<Recurring> recurrings) {
+                populateRecyclerView(recurrings);
             }
         });
 
-        populateRecyclerView(categoriesRealmResults);
+        populateRecyclerView(recurringRealmResults);
     }
 
-    private void populateRecyclerView(List<Category> categoriesList) {
-        adapter.setData(categoriesList);
+    private void populateRecyclerView(List<Recurring> recurringList) {
+        adapter.setData(recurringList);
     }
 
-    public void onDeleteButtonClicked(final Category category) {
+    public void onDeleteButtonClicked(final Recurring recurring) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);
-        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), category.getName()));
+        builder.setMessage(R.string.recurring_warning_delete_message);
         builder.setIcon(R.drawable.ic_warning);
         builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                categoryDao.delete(category);
-                Toast.makeText(getContext(), R.string.categories_delete_toast, Toast.LENGTH_SHORT).show();
+                recurringDao.delete(recurring);
+                Toast.makeText(getContext(), R.string.recurring_delete_toast, Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
