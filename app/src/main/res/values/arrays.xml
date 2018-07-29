@@ -4,4 +4,10 @@
         <item>Income</item>
         <item>Expense</item>
     </string-array>
+
+    <string-array name="recurring_modes">
+        <item>Monthly</item>
+        <item>Biweekly</item>
+        <item>Weekly</item>
+    </string-array>
 </resources>

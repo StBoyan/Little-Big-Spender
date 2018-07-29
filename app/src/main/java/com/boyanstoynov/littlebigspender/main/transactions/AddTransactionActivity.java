@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.db.model.Recurring;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.math.BigDecimal;
@@ -43,10 +45,12 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
     @BindView(R.id.spinner_addtransaction_account) Spinner accountSpinner;
     @BindView(R.id.dateinput_addtransaction) EditText inputDate;
     @BindView(R.id.numberinput_addtransaction_amount) EditText inputAmount;
+    @BindView(R.id.spinner_addtransaction_recurringmode) Spinner recurringModeSpinner;
 
     CategoryDao categoryDao;
     AccountDao accountDao;
     Date date;
+    boolean isRecurring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +125,12 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, year, month, day);
+
+        if (isRecurring)
+            datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+
         datePickerDialog.show();
     }
 
@@ -132,13 +141,54 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
         inputDate.setText(df.format(date));
     }
 
-    public void createTransaction() {
-        Transaction newTransaction = new Transaction();
-        newTransaction.setAccount((Account)accountSpinner.getSelectedItem());
-        newTransaction.setCategory((Category)categorySpinner.getSelectedItem());
-        newTransaction.setAmount(new BigDecimal(inputAmount.getText().toString()));
-        newTransaction.setDate(date);
+    @OnClick(R.id.checkbox_addtransaction_recurring)
+    public void onCheckboxClicked() {
+        isRecurring = !isRecurring;
 
-        getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
+        if (isRecurring && date.compareTo(new Date()) < 0) {
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            date = new Date();
+            inputDate.setText(df.format(date));
+        }
+        // TODO better combine with previous if
+        if (isRecurring)
+            recurringModeSpinner.setVisibility(View.VISIBLE);
+        else
+            recurringModeSpinner.setVisibility(View.GONE);
+    }
+
+    public void createTransaction() {
+        if (!isRecurring) {
+            Transaction newTransaction = new Transaction();
+            newTransaction.setAccount((Account) accountSpinner.getSelectedItem());
+            newTransaction.setCategory((Category) categorySpinner.getSelectedItem());
+            newTransaction.setAmount(new BigDecimal(inputAmount.getText().toString()));
+            newTransaction.setDate(date);
+
+            getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
+        }
+        else {
+            Recurring newRecurring = new Recurring();
+            newRecurring.setAccount((Account) accountSpinner.getSelectedItem());
+            newRecurring.setCategory((Category) categorySpinner.getSelectedItem());
+            newRecurring.setAmount(new BigDecimal(inputAmount.getText().toString()));
+            newRecurring.setStartDate(date);
+
+            switch (recurringModeSpinner.getSelectedItemPosition()) {
+                case 0:
+                    newRecurring.setMode(Recurring.Mode.MONTHLY);
+                    break;
+                case 1:
+                    newRecurring.setMode(Recurring.Mode.BIWEEKLY);
+                    break;
+                case 2:
+                    newRecurring.setMode(Recurring.Mode.WEEKLY);
+                    break;
+            }
+
+            //TODO need to implement smart next transaction calculation
+            newRecurring.setNextTransaction(new Date());
+            getRealmManager().createRecurringDao().saveOrUpdate(newRecurring);
+        }
     }
  }
