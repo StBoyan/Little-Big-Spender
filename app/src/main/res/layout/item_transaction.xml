@@ -26,6 +26,17 @@
                 tools:text="Groceries" />
 
             <TextView
+                android:id="@+id/text_itemtransaction_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/text_itemtransaction_amount"
+                tools:text="£" />
+
+            <TextView
                 android:id="@+id/text_itemtransaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

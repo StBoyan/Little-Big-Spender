@@ -61,6 +61,17 @@
                 tools:text="Bank Account"/>
 
             <TextView
+                android:id="@+id/text_itemaccount_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:textSize="30sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/text_itemaccount_balance"
+                tools:text="£"/>
+
+            <TextView
                 android:id="@+id/text_itemaccount_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

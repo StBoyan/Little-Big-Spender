@@ -50,6 +50,9 @@
     <string name="recurring_warning_delete_message">Are you sure you want to delete recurring transaction?</string>
     <string name="recurring_delete_toast">Recurring transaction deleted</string>
 
+    <!--Strings used in Settings activity-->
+    <string name="settings_currency">Currency</string>
+
     <!--Strings used in About fragment-->
     <string name="about_description">
         <![CDATA[

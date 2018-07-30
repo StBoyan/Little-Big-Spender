@@ -21,7 +21,6 @@ import com.boyanstoynov.littlebigspender.db.model.Recurring;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -186,9 +185,26 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
                     break;
             }
 
-            //TODO need to implement smart next transaction calculation
+            //TODO temporary solution below. need to implement smart next transaction calculation
             newRecurring.setNextTransaction(new Date());
             getRealmManager().createRecurringDao().saveOrUpdate(newRecurring);
+
+            // TODO create date utils class to take care of everything related to date
+            Calendar cal1 = Calendar.getInstance();
+            Calendar cal2 = Calendar.getInstance();
+            cal1.setTime(date);
+            cal2.setTime(new Date());
+            boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                    cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+            if (sameDay) {
+                Transaction newTransaction = new Transaction();
+                newTransaction.setAccount((Account) accountSpinner.getSelectedItem());
+                newTransaction.setCategory((Category) categorySpinner.getSelectedItem());
+                newTransaction.setAmount(new BigDecimal(inputAmount.getText().toString()));
+                newTransaction.setDate(date);
+
+                getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
+            }
         }
     }
  }

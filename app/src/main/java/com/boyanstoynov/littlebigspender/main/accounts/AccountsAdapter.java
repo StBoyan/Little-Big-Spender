@@ -1,6 +1,8 @@
 package com.boyanstoynov.littlebigspender.main.accounts;
 
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account, AccountsFragme
 
         @BindView(R.id.text_itemaccount_account) TextView textAccount;
         @BindView(R.id.text_itemaccount_balance) TextView textBalance;
+        @BindView(R.id.text_itemaccount_currency) TextView textCurrency;
         @BindView(R.id.button_itemaccount_delete) Button deleteButton;
         @BindView(R.id.button_itemaccount_edit) Button editButton;
         @BindView(R.id.divider_itemaccount) View divider;
@@ -66,6 +69,9 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account, AccountsFragme
         protected void setItemPresentation(Account account) {
             textAccount.setText(account.getName());
             textBalance.setText(account.getBalance().toString());
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+            textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
         }
 
         @OnClick(R.id.button_itemaccount_delete)

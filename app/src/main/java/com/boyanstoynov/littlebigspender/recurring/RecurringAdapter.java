@@ -1,5 +1,7 @@
 package com.boyanstoynov.littlebigspender.recurring;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring, RecurringFr
         @BindView(R.id.text_itemrecurring_amount) TextView textAmount;
         @BindView(R.id.text_itemrecurring_date) TextView textDate;
         @BindView(R.id.text_itemrecurring_mode) TextView textMode;
+        @BindView(R.id.text_itemrecurring_currency) TextView textCurrency;
         @BindView(R.id.button_itemrecurring_delete) Button deleteButton;
         @BindView(R.id.button_itemrecurring_edit) Button editButton;
         @BindView(R.id.divider_itemrecurring_lower) View divider;
@@ -75,6 +78,9 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring, RecurringFr
             textAmount.setText(recurring.getAmount().toString());
             textDate.setText(df.format(recurring.getStartDate()));
             textMode.setText(recurring.getMode().toString());
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+            textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
         }
 
         @OnClick(R.id.button_itemrecurring_delete)

@@ -1,5 +1,7 @@
 package com.boyanstoynov.littlebigspender.main.transactions;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,7 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction, Transa
         @BindView(R.id.text_itemtransaction_category) TextView textCategory;
         @BindView(R.id.text_itemtransaction_amount) TextView textAmount;
         @BindView(R.id.text_itemtransaction_date) TextView textDate;
+        @BindView(R.id.text_itemtransaction_currency) TextView textCurrency;
         @BindView(R.id.button_itemtransaction_delete) Button deleteButton;
         @BindView(R.id.button_itemtransaction_edit) Button editButton;
         @BindView(R.id.divider_itemtransaction_lower) View divider;
@@ -73,6 +76,10 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction, Transa
             textCategory.setText(transaction.getCategory().getName());
             textAmount.setText(transaction.getAmount().toString());
             textDate.setText(df.format(transaction.getDate()));
+
+            // TODO change this usage and other adapters to use some helper class
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+            textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
         }
 
         @OnClick(R.id.button_itemtransaction_delete)

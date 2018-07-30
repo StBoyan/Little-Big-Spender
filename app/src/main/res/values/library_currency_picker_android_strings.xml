@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Manually added information for Currency Picker library to be used by AboutLibraries.-->
+<resources>
+	<string name="define_int_currency_picker_android"></string>
+	<!-- Author section -->
+	<string name="library_currency_picker_android_author">Midori Koçak</string>
+	<string name="library_currency_picker_android_authorWebsite">mynameismidori.com</string>
+	<!-- Library section -->
+	<string name="library_currency_picker_android_libraryName">Currency Picker</string>
+	<string name="library_currency_picker_android_libraryDescription">CurrencyPicker is a simple library that show a currency picker.</string>
+	<string name="library_currency_picker_android_libraryWebsite">https://midorikocak.github.io/currency-picker-android/</string>
+	<string name="library_currency_picker_android_libraryVersion">1.2.1</string>
+	<!-- OpenSource section -->
+	<string name="library_currency_picker_android_isOpenSource">true</string>
+	<string name="library_currency_picker_android_repositoryLink">https://github.com/midorikocak/currency-picker-android</string>
+	<!-- ClassPath for autoDetect section -->
+	<string name="library_currency_picker_android_classPath">com.mynameismidori.currencypicker.CurrencyPicker</string>
+	<!-- License section -->
+	<string name="library_currency_picker_android_licenseId">apache_2_0</string>
+	<!-- Custom variables section -->
+</resources>
