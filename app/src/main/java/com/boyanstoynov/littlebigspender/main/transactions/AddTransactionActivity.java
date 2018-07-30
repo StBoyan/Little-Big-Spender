@@ -159,10 +159,18 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
     public void createTransaction() {
         if (!isRecurring) {
             Transaction newTransaction = new Transaction();
-            newTransaction.setAccount((Account) accountSpinner.getSelectedItem());
-            newTransaction.setCategory((Category) categorySpinner.getSelectedItem());
-            newTransaction.setAmount(new BigDecimal(inputAmount.getText().toString()));
+            Account transactionAccount = (Account) accountSpinner.getSelectedItem();
+            BigDecimal transactionAmount = new BigDecimal(inputAmount.getText().toString());
+            Category transactionCategory = (Category) categorySpinner.getSelectedItem();
+            newTransaction.setAccount(transactionAccount);
+            newTransaction.setCategory(transactionCategory);
+            newTransaction.setAmount(transactionAmount);
             newTransaction.setDate(date);
+
+            if (transactionCategory.getType() == Category.Type.INCOME)
+                accountDao.addToAccount(transactionAccount, transactionAmount);
+            else
+                accountDao.subtractFromAccount(transactionAccount, transactionAmount);
 
             getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
         }

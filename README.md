@@ -17,7 +17,9 @@ Javadoc documentation of the whole project, including private methods can be fou
 - [**AppIntro**](https://github.com/apl-devs/AppIntro)
 - [**AboutLibraries**](https://github.com/mikepenz/AboutLibraries)
 - [**Butter Knife**](https://github.com/JakeWharton/butterknife)
+- [**Currency Picker**](https://github.com/midorikocak/currency-picker-android)
 - [**Realm**](https://github.com/realm/realm-java)
+
 
 ## License
     MIT License

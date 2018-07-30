@@ -96,6 +96,7 @@ public class RecurringFragment extends BaseFragment {
         adapter.setData(recurringList);
     }
 
+    //TODO could try to extract alert dialog to a helper class with getResponse() to check for yes/no
     public void onDeleteButtonClicked(final Recurring recurring) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);

@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.boyanstoynov.littlebigspender.db.model.Account;
 
+import java.math.BigDecimal;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -21,5 +23,18 @@ public class AccountDao extends BaseDao<Account> {
 
     public RealmResults<Account> getAll() {
         return realm.where(Account.class).findAll();
+    }
+
+    //TODO change comments in Base and in here that DaO also perform operations not only queries
+    public void addToAccount(Account account, BigDecimal amount) {
+        realm.beginTransaction();
+        account.setBalance(account.getBalance().add(amount));
+        realm.commitTransaction();
+    }
+
+    public void subtractFromAccount(Account account, BigDecimal amount) {
+        realm.beginTransaction();
+        account.setBalance(account.getBalance().subtract(amount));
+        realm.commitTransaction();
     }
 }
