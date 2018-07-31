@@ -18,6 +18,7 @@ Javadoc documentation of the whole project, including private methods can be fou
 - [**AboutLibraries**](https://github.com/mikepenz/AboutLibraries)
 - [**Butter Knife**](https://github.com/JakeWharton/butterknife)
 - [**Currency Picker**](https://github.com/midorikocak/currency-picker-android)
+- [**Material Dialogs**](https://github.com/afollestad/material-dialogs)
 - [**Realm**](https://github.com/realm/realm-java)
 
 
