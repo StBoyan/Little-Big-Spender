@@ -43,6 +43,13 @@ public class IntroActivity extends AppIntro2 {
         featurePage2.setBgColor(getResources().getColor(R.color.colorPrimary));
         addSlide(AppIntroFragment.newInstance(featurePage2));
 
+        SliderPage featurePage3 = new SliderPage();
+        featurePage3.setTitle(getResources().getString(R.string.intro_feature3_title));
+        featurePage3.setDescription(getResources().getString(R.string.intro_feature3_text));
+        featurePage3.setImageDrawable(R.drawable.ic_feature3);
+        featurePage3.setBgColor(getResources().getColor(R.color.colorPrimary));
+        addSlide(AppIntroFragment.newInstance(featurePage3));
+
         showSkipButton(false);
     }
 

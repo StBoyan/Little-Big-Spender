@@ -7,8 +7,8 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsActivity;
 
 /**
- * Sets up the about activity with LibsBuilder from
- * AboutLibraries library.
+ * About Activity that displays the app's description, license
+ * information, and a list of the libraries used.
  *
  * @author Boyan Stoynov
  */
