@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 /**
- * Realm model of Recurring Transaction.
+ * Realm model of Recurring Transaction entity.
  *
  * @author Boyan Stoynov
  */
@@ -22,7 +22,7 @@ public class Recurring extends RealmObject {
     @Required
     private Date startDate;
     @Required
-    private Date nextTransaction;
+    private Date nextTransactionDate;
     private long amount;
     @Required
     private String mode;
@@ -51,12 +51,12 @@ public class Recurring extends RealmObject {
         this.startDate = startDate;
     }
 
-    public Date getNextTransaction() {
-        return nextTransaction;
+    public Date getNextTransactionDate() {
+        return nextTransactionDate;
     }
 
-    public void setNextTransaction(Date nextTransaction) {
-        this.nextTransaction = nextTransaction;
+    public void setNextTransactionDate(Date nextTransactionDate) {
+        this.nextTransactionDate = nextTransactionDate;
     }
 
     public BigDecimal getAmount() {
@@ -75,6 +75,9 @@ public class Recurring extends RealmObject {
         this.mode = mode.toString();
     }
 
+    /**
+     * Recurrence mode of the transaction.
+     */
     public enum Mode {
         MONTHLY, BIWEEKLY, WEEKLY
     }

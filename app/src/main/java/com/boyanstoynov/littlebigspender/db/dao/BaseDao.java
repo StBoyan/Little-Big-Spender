@@ -9,10 +9,10 @@ import io.realm.RealmObject;
  * Base Data Access Object that serves to abstract database
  * operations on entities stored in the Realm database. It provides
  * implementation for storing an instance of the database to work with
- * and for saving/updating and deleting RealmObjects to/from the database.
+ * and for saving and deleting RealmObjects to/from the database.
  *
- * Subclasses need to call the super constructor and implement queries for
- * their particular model.
+ * Subclasses need to call the super constructor and implement queries and
+ * edit transactions for their particular model.
  *
  * @author Boyan Stoynov
  */
@@ -30,14 +30,14 @@ public abstract class BaseDao<T extends RealmObject> {
     }
 
     /**
-     * Save or update a RealmObject to the database.
-     * @param realmObject RealmObject to save or update
+     * Save a RealmObject to the database.
+     * @param realmObject RealmObject to save
      */
-    public void saveOrUpdate(final T realmObject) {
+    public void save(final T realmObject) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(@NonNull Realm realm) {
-                realm.copyToRealmOrUpdate(realmObject);
+                realm.copyToRealm(realmObject);
             }
         });
     }

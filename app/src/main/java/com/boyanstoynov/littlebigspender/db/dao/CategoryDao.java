@@ -8,8 +8,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
- * Data access object that defines queries for Category
- * entities.
+ * Data access object for queries and transactions on a
+ * Category entity.
  *
  * @author Boyan Stoynov
  */
@@ -25,5 +25,17 @@ public class CategoryDao extends BaseDao<Category> {
 
     public RealmResults<Category> getAllExpenseCategories() {
         return realm.where(Category.class).equalTo("type", Category.Type.EXPENSE.toString()).findAll();
+    }
+
+    public void editName(Category category, String newName) {
+        realm.beginTransaction();
+        category.setName(newName);
+        realm.commitTransaction();
+    }
+
+    public void editType(Category category, Category.Type newType) {
+        realm.beginTransaction();
+        category.setType(newType);
+        realm.commitTransaction();
     }
 }

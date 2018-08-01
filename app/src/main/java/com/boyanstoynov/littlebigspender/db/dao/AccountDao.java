@@ -10,8 +10,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
- * Data access object that defines queries for Account
- * entities.
+ * Data access object for queries and transactions on an
+ * Account entity.
  *
  * @author Boyan Stoynov
  */
@@ -25,16 +25,27 @@ public class AccountDao extends BaseDao<Account> {
         return realm.where(Account.class).findAll();
     }
 
-    //TODO change comments in Base and in here that DaO also perform operations not only queries
-    public void addToAccount(Account account, BigDecimal amount) {
+    public void addAmount(Account toAccount, BigDecimal amount) {
         realm.beginTransaction();
-        account.setBalance(account.getBalance().add(amount));
+        toAccount.setBalance(toAccount.getBalance().add(amount));
         realm.commitTransaction();
     }
 
-    public void subtractFromAccount(Account account, BigDecimal amount) {
+    public void subtractAmount(Account fromAccount, BigDecimal amount) {
         realm.beginTransaction();
-        account.setBalance(account.getBalance().subtract(amount));
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+        realm.commitTransaction();
+    }
+
+    public void editBalance(Account account, BigDecimal newBalance) {
+        realm.beginTransaction();
+        account.setBalance(newBalance);
+        realm.commitTransaction();
+    }
+
+    public void editName(Account account, String newName) {
+        realm.beginTransaction();
+        account.setName(newName);
         realm.commitTransaction();
     }
 }

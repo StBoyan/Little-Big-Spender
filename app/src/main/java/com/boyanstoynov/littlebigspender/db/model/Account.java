@@ -1,9 +1,11 @@
 package com.boyanstoynov.littlebigspender.db.model;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Realm Model of Account entity.
@@ -11,7 +13,10 @@ import io.realm.annotations.PrimaryKey;
  * @author Boyan Stoynov
  */
 public class Account extends RealmObject {
+
     @PrimaryKey
+    private String id = UUID.randomUUID().toString();
+    @Required
     private String name;
     private long balance;
 

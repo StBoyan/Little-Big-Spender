@@ -1,16 +1,21 @@
 package com.boyanstoynov.littlebigspender.db.model;
 
+import java.util.UUID;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 /**
- * Realm model of Category Entity.
+ * Realm model of Category entity.
  *
  * @author Boyan Stoynov
  */
 public class Category extends RealmObject {
+
     @PrimaryKey
+    private String id = UUID.randomUUID().toString();
+    @Required
     private String name;
     @Required
     private String type;
