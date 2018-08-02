@@ -32,6 +32,10 @@ public class RecurringDao extends BaseDao<Recurring> {
         return realm.where(Recurring.class).equalTo("category.type", Category.Type.EXPENSE.toString()).findAll();
     }
 
+    public Recurring getById(String id) {
+        return realm.where(Recurring.class).equalTo("id", id).findFirst();
+    }
+
     public void editCategory(Recurring recurring, Category newCategory) {
         realm.beginTransaction();
         recurring.setCategory(newCategory);

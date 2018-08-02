@@ -20,6 +20,10 @@ public class Category extends RealmObject {
     @Required
     private String type;
 
+    public String getId() {
+        return this.id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

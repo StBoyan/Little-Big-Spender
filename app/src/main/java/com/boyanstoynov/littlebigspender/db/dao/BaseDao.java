@@ -9,7 +9,8 @@ import io.realm.RealmObject;
  * Base Data Access Object that serves to abstract database
  * operations on entities stored in the Realm database. It provides
  * implementation for storing an instance of the database to work with
- * and for saving and deleting RealmObjects to/from the database.
+ * and for saving and deleting RealmObjects to/from the database. It also
+ * provides a mean to get an unmanaged copy of a managed RealmObject.
  *
  * Subclasses need to call the super constructor and implement queries and
  * edit transactions for their particular model.
@@ -53,5 +54,17 @@ public abstract class BaseDao<T extends RealmObject> {
                 realmObject.deleteFromRealm();
             }
         });
+    }
+
+    /**
+     * Get an unmanaged copy of the RealmObject.
+     *
+     * Note: Unmanaged RealmObjects are not persisted in the Realm
+     * and can be edited outside of a transaction.
+     * @param realmObject managed (live) RealmObject
+     * @return unmanaged RealmObject
+     */
+    public T getUnmanaged(T realmObject) {
+        return realm.copyFromRealm(realmObject);
     }
 }

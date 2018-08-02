@@ -7,6 +7,7 @@ import com.boyanstoynov.littlebigspender.db.model.Account;
 import java.math.BigDecimal;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
@@ -23,6 +24,10 @@ public class AccountDao extends BaseDao<Account> {
 
     public RealmResults<Account> getAll() {
         return realm.where(Account.class).findAll();
+    }
+
+    public Account getById(String id) {
+        return realm.where(Account.class).equalTo("id", id).findFirst();
     }
 
     public void addAmount(Account toAccount, BigDecimal amount) {

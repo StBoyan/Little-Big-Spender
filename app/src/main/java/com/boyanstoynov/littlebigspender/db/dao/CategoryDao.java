@@ -27,15 +27,13 @@ public class CategoryDao extends BaseDao<Category> {
         return realm.where(Category.class).equalTo("type", Category.Type.EXPENSE.toString()).findAll();
     }
 
+    public Category getById(String id) {
+        return realm.where(Category.class).equalTo("id", id).findFirst();
+    }
+
     public void editName(Category category, String newName) {
         realm.beginTransaction();
         category.setName(newName);
-        realm.commitTransaction();
-    }
-
-    public void editType(Category category, Category.Type newType) {
-        realm.beginTransaction();
-        category.setType(newType);
         realm.commitTransaction();
     }
 }

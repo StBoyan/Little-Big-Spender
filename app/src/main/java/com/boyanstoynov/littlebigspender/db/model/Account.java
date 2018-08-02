@@ -20,6 +20,10 @@ public class Account extends RealmObject {
     private String name;
     private long balance;
 
+    public String getId() {
+        return this.id;
+    }
+
     public String getName() {
         return name;
     }

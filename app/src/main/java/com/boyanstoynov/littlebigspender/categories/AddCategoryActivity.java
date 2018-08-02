@@ -20,8 +20,8 @@ import butterknife.OnClick;
  */
 public class AddCategoryActivity extends BaseActivity {
 
-    @BindView(R.id.textinput_addcategory_name) EditText categoryNameInput;
-    @BindView(R.id.spinner_addcategory_type) Spinner categoryTypeSpinner;
+    @BindView(R.id.textInput_category_name) EditText categoryNameInput;
+    @BindView(R.id.spinner_category_type) Spinner categoryTypeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class AddCategoryActivity extends BaseActivity {
         return R.layout.activity_add_category;
     }
 
-    @OnClick(R.id.button_addcategory_add)
+    @OnClick(R.id.button_addCategory_add)
     public void addCategory() {
         //TODO need to validate input here
         createCategory();
@@ -42,7 +42,7 @@ public class AddCategoryActivity extends BaseActivity {
         onBackPressed();
     }
 
-    @OnClick(R.id.button_addcategory_cancel)
+    @OnClick(R.id.button_addCategory_cancel)
     public void cancelAddCategory() {
         Toast.makeText(this, R.string.addcategory_discard_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();

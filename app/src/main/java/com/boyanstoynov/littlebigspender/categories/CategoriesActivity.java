@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseActivity;
+import com.boyanstoynov.littlebigspender.BaseEditorDialog;
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
@@ -24,7 +25,7 @@ import butterknife.BindView;
  *
  * @author Boyan Stoynov
  */
-public class CategoriesActivity extends BaseActivity implements CategoryDialog.NoticeDialogListener, BaseRecyclerAdapter.RecyclerViewListener<Category>{
+public class CategoriesActivity extends BaseActivity implements BaseRecyclerAdapter.RecyclerViewListener<Category>,BaseEditorDialog.DialogListener<Category>{
 
     @BindView(R.id.toolbar_categories) Toolbar toolbar;
     @BindView(R.id.tablayout_categories) TabLayout tabLayout;
@@ -84,7 +85,6 @@ public class CategoriesActivity extends BaseActivity implements CategoryDialog.N
         return super.onCreateOptionsMenu(menu);
     }
 
-    // TODO need to refactor if no other items will be in toolbar (i.e. remove switch)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -99,12 +99,6 @@ public class CategoriesActivity extends BaseActivity implements CategoryDialog.N
         }
 
         return true;
-    }
-
-    @Override
-    public void onDialogPositiveClick(Category category) {
-//        categoryDao = getRealmManager().createCategoryDao();
-//        categoryDao.saveOrUpdate(category);
     }
 
     @Override
@@ -134,8 +128,14 @@ public class CategoriesActivity extends BaseActivity implements CategoryDialog.N
 
     @Override
     public void onEditButtonClicked(Category category) {
-//        CategoryDialog cd = new CategoryDialog();
-//        cd.setData(category);
-//        cd.show(getActivity().getFragmentManager(), "CATEGORY_DIALOG");
+        CategoryDialog cd = new CategoryDialog();
+        cd.setData(categoryDao.getUnmanaged(category));
+        cd.show(getSupportFragmentManager(), "CATEGORY_DIALOG");
+    }
+
+    @Override
+    public void onDialogPositiveClick(Category editedCategory) {
+        Category category = categoryDao.getById(editedCategory.getId());
+        categoryDao.editName(category, editedCategory.getName());
     }
 }

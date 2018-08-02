@@ -7,7 +7,7 @@
     tools:context=".categories.AddCategoryActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_addcategory"
+        android:id="@+id/toolbar_addCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/android:colorPrimary"
@@ -17,80 +17,39 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            tools:ignore="RtlSymmetry">
 
             <ImageButton
-                android:id="@+id/button_addcategory_cancel"
+                android:id="@+id/button_addCategory_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/android:actionBarItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_cancel" />
+                app:srcCompat="@drawable/ic_cancel"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
-                android:id="@+id/button_addcategory_add"
+                android:id="@+id/button_addCategory_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/android:actionBarItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_confirm" />
+                app:srcCompat="@drawable/ic_confirm"
+                tools:ignore="ContentDescription" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/text_addcategory_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/all_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_addcategory" />
-
-    <EditText
-        android:id="@+id/textinput_addcategory_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="text"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addcategory_name" />
-
-    <View
-        android:id="@+id/divider_addcategory"
+    <include layout="@layout/category_input"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="5dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/textinput_addcategory_name"/>
-
-    <TextView
-        android:id="@+id/text_addcategory_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/all_type"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_addcategory" />
-
-    <Spinner
-        android:id="@+id/spinner_addcategory_type"
-        android:layout_width="168dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:entries="@array/category_types"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addcategory_type" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

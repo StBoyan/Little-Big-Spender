@@ -21,7 +21,7 @@ import butterknife.Unbinder;
  */
 public abstract class BaseFragment extends Fragment {
 
-    protected Unbinder unbinder;
+    private Unbinder unbinder;
 
     public BaseFragment() {
         // Required empty public constructor

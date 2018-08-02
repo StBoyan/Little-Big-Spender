@@ -18,6 +18,7 @@ import com.github.paolorotolo.appintro.model.SliderPage;
  */
 public class IntroActivity extends AppIntro2 {
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -23,6 +23,10 @@ public class Transaction extends RealmObject {
     private Date date;
     private long amount;
 
+    public String getId() {
+        return this.id;
+    }
+
     public Category getCategory() {
         return category;
     }

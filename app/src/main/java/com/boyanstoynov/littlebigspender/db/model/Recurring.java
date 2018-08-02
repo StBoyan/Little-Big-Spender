@@ -27,6 +27,10 @@ public class Recurring extends RealmObject {
     @Required
     private String mode;
 
+    public String getId() {
+        return this.id;
+    }
+
     public Category getCategory() {
         return category;
     }

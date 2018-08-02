@@ -40,6 +40,10 @@ public class TransactionDao extends BaseDao<Transaction> {
         return realm.where(Transaction.class).equalTo("date", date).findAll();
     }
 
+    public Transaction getById(String id) {
+        return realm.where(Transaction.class).equalTo("id", id).findFirst();
+    }
+
     public void editCategory(Transaction transaction, Category newCategory) {
         realm.beginTransaction();
         transaction.setCategory(newCategory);

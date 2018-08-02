@@ -33,7 +33,7 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
      * Interface that must be implemented by controllers that want to be
      * notified whenever the Delete or Edit buttons has been clicked on
      * one of the ViewHolders.
-     * @param <E>
+     * @param <E> RealmObject model
      */
     public interface RecyclerViewListener<E extends RealmObject> {
         void onDeleteButtonClicked(E item);
@@ -42,14 +42,14 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
 
     private final List<E> dataSet = new ArrayList<>();
     private final List<ViewHolder> viewHolders = new ArrayList<>();
-    private final RecyclerViewListener listener;
+    private final RecyclerViewListener<E> listener;
 
     /**
      * Constructor that takes the listener that will process the events
      * passed from this RecyclerView.
      * @param listener Controller that implements RecyclerViewListener interface
      */
-    public BaseRecyclerAdapter(RecyclerViewListener listener) {
+    public BaseRecyclerAdapter(RecyclerViewListener<E> listener) {
         this.listener = listener;
     }
 
@@ -129,7 +129,7 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
         @BindView(R.id.divider_expandableButtons) View divider;
 
         protected E item;
-        private RecyclerViewListener listener;
+        private RecyclerViewListener<E> listener;
         private BaseRecyclerAdapter adapter;
         private boolean isExpanded;
 
@@ -200,17 +200,15 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
         }
 
 
-        private void setListener(RecyclerViewListener listener) {
+        private void setListener(RecyclerViewListener<E> listener) {
             this.listener = listener;
         }
 
-        @SuppressWarnings("unchecked")
         @OnClick(R.id.button_delete)
         public void onDeleteButtonClicked() {
             listener.onDeleteButtonClicked(item);
         }
 
-        @SuppressWarnings("unchecked")
         @OnClick(R.id.button_edit)
         public void onEditButtonClicked() {
             listener.onEditButtonClicked(item);
