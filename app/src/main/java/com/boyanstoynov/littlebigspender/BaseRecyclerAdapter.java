@@ -4,33 +4,53 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.RealmObject;
 
 /**
  * Base class for Recycler View Adapters which provides storage of dataSet
- * that is used and means to update it. Subclasses need only implement the
- * onBindViewHolder method to return the concrete ViewHolder they are using.
+ * that is used and means to update it. It also observes its ViewHolders to
+ * notify them to hide their expanded buttons when another ViewHolder has
+ * them opened.
+ *
+ * Subclasses need only implement the onBindViewHolder method to return
+ * the concrete ViewHolder they are using.
  *
  * @author Boyan Stoynov
  */
-public abstract class BaseRecyclerAdapter<E extends RealmObject, T extends BaseFragment> extends RecyclerView.Adapter<BaseRecyclerAdapter.ViewHolder> {
-
-    private final List<E> dataSet = new ArrayList<>();
-    protected final T fragment;
+public abstract class BaseRecyclerAdapter<E extends RealmObject> extends RecyclerView.Adapter<BaseRecyclerAdapter.ViewHolder> {
 
     /**
-     * Constructor which takes the Fragment that serves as controller
-     * for this RecyclerView adapter.
-     * @param fragment controller
+     * Interface that must be implemented by controllers that want to be
+     * notified whenever the Delete or Edit buttons has been clicked on
+     * one of the ViewHolders.
+     * @param <E>
      */
-    public BaseRecyclerAdapter(T fragment) {
-        this.fragment = fragment;
+    public interface RecyclerViewListener<E extends RealmObject> {
+        void onDeleteButtonClicked(E item);
+        void onEditButtonClicked(E item);
+    }
+
+    private final List<E> dataSet = new ArrayList<>();
+    private final List<ViewHolder> viewHolders = new ArrayList<>();
+    private final RecyclerViewListener listener;
+
+    /**
+     * Constructor that takes the listener that will process the events
+     * passed from this RecyclerView.
+     * @param listener Controller that implements RecyclerViewListener interface
+     */
+    public BaseRecyclerAdapter(RecyclerViewListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -42,6 +62,18 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject, T extends BaseF
         dataSet.clear();
         dataSet.addAll(data);
         notifyDataSetChanged();
+    }
+
+    /**
+     * Hides the buttons of all ViewHolders except the last expanded
+     * one.
+     * @param expandedViewHolder last expanded ViewHolder
+     */
+    private void hideViewHolderButtons(ViewHolder expandedViewHolder) {
+        for (ViewHolder viewHolder: viewHolders) {
+            if (viewHolder != expandedViewHolder)
+                viewHolder.hideButtons();
+        }
     }
 
     /**
@@ -57,6 +89,8 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject, T extends BaseF
     @Override
     public void onBindViewHolder(@NonNull BaseRecyclerAdapter.ViewHolder holder, int position) {
         holder.bindItem(getItemAt(position));
+        holder.setItemPresentation(getItemAt(position));
+        holder.setListener(listener);
     }
 
     @Override
@@ -64,31 +98,63 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject, T extends BaseF
         return dataSet.size();
     }
 
+    @Override
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+
+        viewHolders.add(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+
+        viewHolders.remove(holder);
+    }
+
     /**
      * Base ViewHolder inner static class which stores the item that
-     * populates it and the controlling fragment, and binds ButterKnife.
+     * populates it and binds ButterKnife. It also responds to clicks on the View
+     * which show and hide the edit and delete buttons. Upon button press the listener
+     * registered with the ViewHolder is notified.
+
      * Subclasses need to provide an implementation of the presentation
      * and provide the ID of the layout that will be used.
      * @param <E> RealmObject data item
-     * @param <T> BaseFragment controller
      */
-    public static abstract class ViewHolder<E extends RealmObject, T extends BaseFragment> extends RecyclerView.ViewHolder {
+    public static abstract class ViewHolder<E extends RealmObject> extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.button_delete) Button deleteButton;
+        @BindView(R.id.button_edit) Button editButton;
+        @BindView(R.id.divider_expandableButtons) View divider;
 
         protected E item;
-        protected T fragment;
+        private RecyclerViewListener listener;
+        private BaseRecyclerAdapter adapter;
+        private boolean isExpanded;
 
         /**
          * ViewHolder constructor.
          * @param parent parent's ViewGroup
-         * @param layoutId id of layout that will inflate the ViewHolder
-         * @param fragment fragment which contains ViewHolder
+         * @param layoutId ID of layout that will inflate into the ViewHOlder
+         * @param adapter adapter that created the ViewHolder
          */
-        public ViewHolder(ViewGroup parent, @LayoutRes int layoutId, T fragment) {
+        public ViewHolder(ViewGroup parent, @LayoutRes int layoutId,BaseRecyclerAdapter adapter) {
             super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
-            this.fragment = fragment;
+            this.adapter = adapter;
 
             // Bind ButterKnife to ViewHolder
             ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isExpanded)
+                        showButtons();
+                    else
+                        hideButtons();
+                }
+            });
         }
 
         /**
@@ -97,14 +163,57 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject, T extends BaseF
          */
         void bindItem(E item) {
             this.item = item;
-            setItemPresentation(item);
         }
 
         /**
-         * Subclasses need to provide their own implementation of how
-         * data is presented in the ViewHolder. This method is called as
-         * soon as an item is bound.
+         * Sets the presentation of the data for this ViewHolder.
+         *
+         * Subclasses need to provide their own implementations according
+         * to the model they are bound to. This method is called after
+         * an item is bound.
          */
         protected abstract void setItemPresentation(E item);
+
+        /**
+         * Shows buttons on this ViewHolder and notify adapter
+         * to hide open buttons on other ViewHolders.
+         */
+        private void showButtons() {
+            editButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+            isExpanded = true;
+
+            adapter.hideViewHolderButtons(this);
+        }
+
+        /**
+         * Hides buttons on this ViewHolder.
+         */
+        private void hideButtons() {
+            if (isExpanded) {
+                editButton.setVisibility(View.GONE);
+                deleteButton.setVisibility(View.GONE);
+                divider.setVisibility(View.GONE);
+                isExpanded = false;
+            }
+        }
+
+
+        private void setListener(RecyclerViewListener listener) {
+            this.listener = listener;
+        }
+
+        @SuppressWarnings("unchecked")
+        @OnClick(R.id.button_delete)
+        public void onDeleteButtonClicked() {
+            listener.onDeleteButtonClicked(item);
+        }
+
+        @SuppressWarnings("unchecked")
+        @OnClick(R.id.button_edit)
+        public void onEditButtonClicked() {
+            listener.onEditButtonClicked(item);
+        }
     }
 }

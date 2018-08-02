@@ -51,6 +51,6 @@ public class AddAccountActivity extends BaseActivity {
         Account newAccount = new Account();
         newAccount.setName(accountNameInput.getText().toString());
         newAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
-        getRealmManager().createAccountDao().saveOrUpdate(newAccount);
+        getRealmManager().createAccountDao().save(newAccount);
     }
 }

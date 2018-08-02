@@ -135,6 +135,7 @@ public class MainActivity extends BaseActivity {
      */
     public void startIntroOnFirstLaunch() {
         // TODO use shared preference class
+        // TODO separate first start settings in a separate util class ALSO need to initialise default currency
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {

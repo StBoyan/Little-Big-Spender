@@ -1,13 +1,19 @@
 package com.boyanstoynov.littlebigspender.recurring;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseActivity;
+import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.db.dao.RecurringDao;
 import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.db.model.Recurring;
 
 import butterknife.BindView;
 
@@ -16,10 +22,12 @@ import butterknife.BindView;
  *
  * @author Boyan Stoynov
  */
-public class RecurringActivity extends BaseActivity {
+public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapter.RecyclerViewListener<Recurring>{
 
     @BindView(R.id.toolbar_recurring) Toolbar toolbar;
     @BindView(R.id.tablayout_recurring) TabLayout tabLayout;
+
+    private RecurringDao recurringDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +66,41 @@ public class RecurringActivity extends BaseActivity {
         });
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
+
+        recurringDao = getRealmManager().createRecurringDao();
     }
 
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_recurring;
+    }
+
+    @Override
+    public void onDeleteButtonClicked(final Recurring recurring) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(R.string.recurring_warning_delete_message);
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                recurringDao.delete(recurring);
+                Toast.makeText(getBaseContext(), R.string.recurring_delete_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    public void onEditButtonClicked(Recurring item) {
+
     }
 }

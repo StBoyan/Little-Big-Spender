@@ -10,9 +10,9 @@
         android:id="@+id/toolbar_addtransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme">
+        android:background="?attr/android:colorPrimary"
+        android:minHeight="?attr/android:actionBarSize"
+        android:theme="?attr/android:actionBarTheme">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 android:id="@+id/button_addtransaction_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/actionBarItemBackground"
+                android:background="?attr/android:actionBarItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +33,7 @@
                 android:id="@+id/button_addtransaction_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/actionBarItemBackground"
+                android:background="?attr/android:actionBarItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

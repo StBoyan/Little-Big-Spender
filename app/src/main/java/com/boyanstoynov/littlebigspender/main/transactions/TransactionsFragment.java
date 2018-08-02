@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseFragment;
+import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
@@ -31,13 +32,11 @@ import io.realm.RealmResults;
  *
  * @author Boyan Stoynov
  */
-public class TransactionsFragment extends BaseFragment {
+public class TransactionsFragment extends BaseFragment implements BaseRecyclerAdapter.RecyclerViewListener<Transaction>{
 
     @BindView(R.id.recyclerview_transactions) RecyclerView recyclerView;
 
-    //TODO see if you can generalise these for all fragments that deal with a recyclerview
     private TransactionsAdapter adapter;
-    private RealmResults<Transaction> transactionsRealmResults;
     private TransactionDao transactionDao;
 
     @Override
@@ -73,7 +72,7 @@ public class TransactionsFragment extends BaseFragment {
 
     public void loadTransactionList() {
         transactionDao = getRealmManager().createTransactionDao();
-        transactionsRealmResults = transactionDao.getAll();
+        RealmResults<Transaction> transactionsRealmResults = transactionDao.getAll();
         transactionsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override
             public void onChange(@NonNull RealmResults<Transaction> transactions) {
@@ -98,7 +97,7 @@ public class TransactionsFragment extends BaseFragment {
         startActivity(i);
     }
 
-    //TODO make delete and edit methods into an interface so as not to expose whole fragment to adapter/viewholder
+    @Override
     public void onDeleteButtonClicked(final Transaction transaction) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.app_name);
@@ -120,6 +119,11 @@ public class TransactionsFragment extends BaseFragment {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onEditButtonClicked(Transaction item) {
+
     }
 }
 

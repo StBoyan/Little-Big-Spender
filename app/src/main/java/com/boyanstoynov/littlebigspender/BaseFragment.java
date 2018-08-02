@@ -57,6 +57,5 @@ public abstract class BaseFragment extends Fragment {
      */
     protected RealmManager getRealmManager() {
         return ((BaseActivity)getActivity()).getRealmManager();
-
     }
 }

@@ -1,17 +1,14 @@
 package com.boyanstoynov.littlebigspender.recurring;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
@@ -37,10 +34,9 @@ public class RecurringFragment extends BaseFragment {
 
     private RecurringAdapter adapter;
     private RealmResults<Recurring> recurringRealmResults;
-    private RecurringDao recurringDao;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -56,10 +52,10 @@ public class RecurringFragment extends BaseFragment {
     }
 
     protected void setCategoryType(Category.Type type) {
-        //TODO remove temp solution
+        //TODO remove temp solution. See CategoriesFragment for solution
         RealmManager rm = new RealmManager();
         rm.open();
-        recurringDao = rm.createRecurringDao();
+        RecurringDao recurringDao = rm.createRecurringDao();
 
         if (type == Category.Type.INCOME)
             recurringRealmResults = recurringDao.getAllIncomeRecurringTransactions();
@@ -68,7 +64,7 @@ public class RecurringFragment extends BaseFragment {
     }
 
     private void initViews() {
-        adapter = new RecurringAdapter(this);
+        adapter = new RecurringAdapter((RecurringActivity)getActivity());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -84,8 +80,8 @@ public class RecurringFragment extends BaseFragment {
 
         recurringRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Recurring>>() {
             @Override
-            public void onChange(RealmResults<Recurring> recurrings) {
-                populateRecyclerView(recurrings);
+            public void onChange(@NonNull RealmResults<Recurring> recurringList) {
+                populateRecyclerView(recurringList);
             }
         });
 
@@ -94,29 +90,5 @@ public class RecurringFragment extends BaseFragment {
 
     private void populateRecyclerView(List<Recurring> recurringList) {
         adapter.setData(recurringList);
-    }
-
-    //TODO could try to extract alert dialog to a helper class with getResponse() to check for yes/no
-    public void onDeleteButtonClicked(final Recurring recurring) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.app_name);
-        builder.setMessage(R.string.recurring_warning_delete_message);
-        builder.setIcon(R.drawable.ic_warning);
-        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                recurringDao.delete(recurring);
-                Toast.makeText(getContext(), R.string.recurring_delete_toast, Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 }

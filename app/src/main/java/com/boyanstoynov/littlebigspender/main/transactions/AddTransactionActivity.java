@@ -168,11 +168,11 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
             newTransaction.setDate(date);
 
             if (transactionCategory.getType() == Category.Type.INCOME)
-                accountDao.addToAccount(transactionAccount, transactionAmount);
+                accountDao.addAmount(transactionAccount, transactionAmount);
             else
-                accountDao.subtractFromAccount(transactionAccount, transactionAmount);
+                accountDao.subtractAmount(transactionAccount, transactionAmount);
 
-            getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
+            getRealmManager().createTransactionDao().save(newTransaction);
         }
         else {
             Recurring newRecurring = new Recurring();
@@ -194,8 +194,8 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
             }
 
             //TODO temporary solution below. need to implement smart next transaction calculation
-            newRecurring.setNextTransaction(new Date());
-            getRealmManager().createRecurringDao().saveOrUpdate(newRecurring);
+            newRecurring.setNextTransactionDate(new Date());
+            getRealmManager().createRecurringDao().save(newRecurring);
 
             // TODO create date utils class to take care of everything related to date
             Calendar cal1 = Calendar.getInstance();
@@ -211,7 +211,7 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
                 newTransaction.setAmount(new BigDecimal(inputAmount.getText().toString()));
                 newTransaction.setDate(date);
 
-                getRealmManager().createTransactionDao().saveOrUpdate(newTransaction);
+                getRealmManager().createTransactionDao().save(newTransaction);
             }
         }
     }

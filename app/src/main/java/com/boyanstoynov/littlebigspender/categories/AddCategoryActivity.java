@@ -51,10 +51,11 @@ public class AddCategoryActivity extends BaseActivity {
     private void createCategory() {
         Category newCategory = new Category();
         newCategory.setName(categoryNameInput.getText().toString());
+        //TODO remove magic number for itemPosition
         if (categoryTypeSpinner.getSelectedItemPosition() == 0)
             newCategory.setType(Category.Type.INCOME);
         else
             newCategory.setType(Category.Type.EXPENSE);
-        getRealmManager().createCategoryDao().saveOrUpdate(newCategory);
+        getRealmManager().createCategoryDao().save(newCategory);
     }
 }

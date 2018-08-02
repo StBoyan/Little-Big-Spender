@@ -21,9 +21,9 @@
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:background="?attr/android:colorPrimary"
+            android:minHeight="?attr/android:actionBarSize"
+            android:theme="?attr/android:actionBarTheme" />
 
         <View
             android:layout_width="match_parent"

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
@@ -33,12 +34,11 @@ import io.realm.RealmResults;
  *
  * @author Boyan Stoynov
  */
-public class AccountsFragment extends BaseFragment {
+public class AccountsFragment extends BaseFragment implements BaseRecyclerAdapter.RecyclerViewListener<Account>{
 
     @BindView(R.id.recyclerview_accounts) RecyclerView recyclerView;
 
     private AccountsAdapter adapter;
-    private RealmResults<Account> accountsRealmResults;
     private AccountDao accountDao;
 
     @Override
@@ -99,10 +99,10 @@ public class AccountsFragment extends BaseFragment {
      */
     private void loadAccountList() {
         accountDao = getRealmManager().createAccountDao();
-        accountsRealmResults = accountDao.getAll();
+        RealmResults<Account> accountsRealmResults = accountDao.getAll();
         accountsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Account>>() {
             @Override
-            public void onChange(RealmResults<Account> accounts) {
+            public void onChange(@NonNull RealmResults<Account> accounts) {
                 populateRecyclerView(accounts);
             }
         });
@@ -110,7 +110,7 @@ public class AccountsFragment extends BaseFragment {
         populateRecyclerView(accountsRealmResults);
     }
 
-    /**
+    /** TODO change this comment here and in other fragments
      * Populate view with accounts and notify adapter of
      * data change.
      * @param accountsList List of Account objects
@@ -140,6 +140,11 @@ public class AccountsFragment extends BaseFragment {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onEditButtonClicked(Account item) {
+
     }
 }
 

@@ -17,7 +17,6 @@ public class AboutActivity extends LibsActivity {
     public void onCreate(Bundle savedInstanceState) {
         LibsBuilder builder = new LibsBuilder()
                 .withActivityTitle(getResources().getString(R.string.all_about))
-                .withLibraries("Currency Picker")
                 .withExcludedLibraries("constraint_layout", "support_annotations", "appintro", "appintro")
                 .withLicenseShown(true)
                 .withActivityTheme(R.style.AppTheme)

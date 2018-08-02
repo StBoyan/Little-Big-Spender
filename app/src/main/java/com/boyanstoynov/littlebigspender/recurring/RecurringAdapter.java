@@ -1,11 +1,10 @@
 package com.boyanstoynov.littlebigspender.recurring;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
@@ -16,57 +15,39 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * RecyclerView adapter for Recurring entities.
  *
  * @author Boyan Stoynov
  */
-public class RecurringAdapter extends BaseRecyclerAdapter<Recurring, RecurringFragment> {
+public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
 
-    RecurringAdapter(RecurringFragment fragment) {
-        super(fragment);
+    RecurringAdapter(RecyclerViewListener listener) {
+        super(listener);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RecurringViewHolder(parent, fragment);
+        return new RecurringViewHolder(parent, this);
     }
 
-    public static class RecurringViewHolder extends BaseRecyclerAdapter.ViewHolder<Recurring, RecurringFragment> {
+    public static class RecurringViewHolder extends BaseRecyclerAdapter.ViewHolder<Recurring> {
 
-        @BindView(R.id.text_itemrecurring_account) TextView textAccount;
-        @BindView(R.id.text_itemrecurring_category) TextView textCategory;
-        @BindView(R.id.text_itemrecurring_amount) TextView textAmount;
-        @BindView(R.id.text_itemrecurring_date) TextView textDate;
-        @BindView(R.id.text_itemrecurring_mode) TextView textMode;
-        @BindView(R.id.text_itemrecurring_currency) TextView textCurrency;
-        @BindView(R.id.button_itemrecurring_delete) Button deleteButton;
-        @BindView(R.id.button_itemrecurring_edit) Button editButton;
-        @BindView(R.id.divider_itemrecurring_lower) View divider;
-        boolean isExpanded;
+        @BindView(R.id.text_itemRecurring_account) TextView textAccount;
+        @BindView(R.id.text_itemRecurring_category) TextView textCategory;
+        @BindView(R.id.text_itemRecurring_amount) TextView textAmount;
+        @BindView(R.id.text_itemRecurring_date) TextView textDate;
+        @BindView(R.id.text_itemRecurring_mode) TextView textMode;
+        @BindView(R.id.text_itemRecurring_currency) TextView textCurrency;
+        // TODO remove context here and in constructor when a SharedPref helper class is there
+        Context context;
 
-        RecurringViewHolder(ViewGroup parent, RecurringFragment fragment) {
-            super(parent, R.layout.item_recurring, fragment);
+        RecurringViewHolder(ViewGroup parent, RecurringAdapter adapter) {
+            super(parent, R.layout.item_recurring, adapter);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!isExpanded) {
-                        editButton.setVisibility(View.VISIBLE);
-                        deleteButton.setVisibility(View.VISIBLE);
-                        divider.setVisibility(View.VISIBLE);
-                        isExpanded = true;
-                    } else {
-                        editButton.setVisibility(View.GONE);
-                        deleteButton.setVisibility(View.GONE);
-                        divider.setVisibility(View.GONE);
-                        isExpanded = false;
-                    }
-                }
-            });
+            context = parent.getContext();
         }
 
         @Override
@@ -79,13 +60,9 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring, RecurringFr
             textDate.setText(df.format(recurring.getStartDate()));
             textMode.setText(recurring.getMode().toString());
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
-            textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
-        }
 
-        @OnClick(R.id.button_itemrecurring_delete)
-        public void onDeleteButtonClicked() {
-            fragment.onDeleteButtonClicked(item);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
         }
     }
 }

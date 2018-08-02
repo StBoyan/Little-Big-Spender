@@ -1,8 +1,5 @@
 package com.boyanstoynov.littlebigspender.categories;
 
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
@@ -36,7 +32,6 @@ public class CategoriesFragment extends BaseFragment {
 
     private CategoriesAdapter adapter;
     private RealmResults<Category> categoriesRealmResults;
-    private CategoryDao categoryDao;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -55,10 +50,10 @@ public class CategoriesFragment extends BaseFragment {
     }
 
     protected void setCategoryType(Category.Type type) {
-        //TODO figure out how to initialise categoryDao
+        //TODO figure out how to initialise categoryDao - possible solution is to move initialisation in onCreate in BaseFragment
         RealmManager rm = new RealmManager();
         rm.open();
-        categoryDao = rm.createCategoryDao();
+        CategoryDao categoryDao = rm.createCategoryDao();
 
         if (type == Category.Type.INCOME)
             categoriesRealmResults = categoryDao.getAllIncomeCategories();
@@ -67,7 +62,7 @@ public class CategoriesFragment extends BaseFragment {
     }
 
     private void initViews() {
-        adapter = new CategoriesAdapter(this);
+        adapter = new CategoriesAdapter((CategoriesActivity)getActivity());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -82,7 +77,7 @@ public class CategoriesFragment extends BaseFragment {
 
         categoriesRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
             @Override
-            public void onChange(RealmResults<Category> categories) {
+            public void onChange(@NonNull RealmResults<Category> categories) {
                 populateRecyclerView(categories);
             }
         });
@@ -92,28 +87,5 @@ public class CategoriesFragment extends BaseFragment {
 
     private void populateRecyclerView(List<Category> categoriesList) {
         adapter.setData(categoriesList);
-    }
-
-    public void onDeleteButtonClicked(final Category category) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.app_name);
-        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), category.getName()));
-        builder.setIcon(R.drawable.ic_warning);
-        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                categoryDao.delete(category);
-                Toast.makeText(getContext(), R.string.categories_delete_toast, Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 }

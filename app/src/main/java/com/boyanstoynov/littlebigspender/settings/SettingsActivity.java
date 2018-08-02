@@ -78,6 +78,7 @@ public class SettingsActivity extends BaseActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         textCurrencyCode.setText(prefs.getString("currencyCode", "N/A"));
-        currencyImage.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), prefs.getInt("currencyDrawableId", 1)));
+        //TODO remove flag EUR
+        currencyImage.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), prefs.getInt("currencyDrawableId", R.drawable.flag_eur)));
     }
 }

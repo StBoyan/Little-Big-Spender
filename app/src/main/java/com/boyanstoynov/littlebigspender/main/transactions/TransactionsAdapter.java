@@ -1,11 +1,10 @@
 package com.boyanstoynov.littlebigspender.main.transactions;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
@@ -16,57 +15,38 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * RecyclerView adapter for Transaction entities.
  *
  * @author Boyan Stoynov
  */
-public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction, TransactionsFragment>{
+public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction>{
 
-    TransactionsAdapter(TransactionsFragment fragment) {
-        super(fragment);
+    TransactionsAdapter(RecyclerViewListener listener) {
+        super(listener);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new TransactionViewHolder(parent, fragment);
+        return new TransactionViewHolder(parent, this);
     }
 
-    public static class TransactionViewHolder extends BaseRecyclerAdapter.ViewHolder<Transaction, TransactionsFragment> {
+    public static class TransactionViewHolder extends BaseRecyclerAdapter.ViewHolder<Transaction> {
 
-        @BindView(R.id.text_itemtransaction_account) TextView textAccount;
-        @BindView(R.id.text_itemtransaction_category) TextView textCategory;
-        @BindView(R.id.text_itemtransaction_amount) TextView textAmount;
-        @BindView(R.id.text_itemtransaction_date) TextView textDate;
-        @BindView(R.id.text_itemtransaction_currency) TextView textCurrency;
-        @BindView(R.id.button_itemtransaction_delete) Button deleteButton;
-        @BindView(R.id.button_itemtransaction_edit) Button editButton;
-        @BindView(R.id.divider_itemtransaction_lower) View divider;
-        private boolean isExpanded;
+        @BindView(R.id.text_itemTransaction_account) TextView textAccount;
+        @BindView(R.id.text_itemTransaction_category) TextView textCategory;
+        @BindView(R.id.text_itemTransaction_amount) TextView textAmount;
+        @BindView(R.id.text_itemTransaction_date) TextView textDate;
+        @BindView(R.id.text_itemTransaction_currency) TextView textCurrency;
+        //TODO remove context. See RecurringAdapter
+        Context context;
 
-        TransactionViewHolder(ViewGroup parent, TransactionsFragment fragment) {
-            super(parent, R.layout.item_transaction, fragment);
+        TransactionViewHolder(ViewGroup parent, TransactionsAdapter adapter) {
+            super(parent, R.layout.item_transaction, adapter);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!isExpanded) {
-                        editButton.setVisibility(View.VISIBLE);
-                        deleteButton.setVisibility(View.VISIBLE);
-                        divider.setVisibility(View.VISIBLE);
-                        isExpanded = true;
-                    }
-                    else {
-                        editButton.setVisibility(View.GONE);
-                        deleteButton.setVisibility(View.GONE);
-                        divider.setVisibility(View.GONE);
-                        isExpanded = false;
-                    }
-                }
-            });
+            context = parent.getContext();
         }
 
         @Override
@@ -78,13 +58,8 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction, Transa
             textDate.setText(df.format(transaction.getDate()));
 
             // TODO change this usage and other adapters to use some helper class
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
-        }
-
-        @OnClick(R.id.button_itemtransaction_delete)
-        public void onDeleteButtonClicked() {
-            fragment.onDeleteButtonClicked(item);
         }
     }
 }

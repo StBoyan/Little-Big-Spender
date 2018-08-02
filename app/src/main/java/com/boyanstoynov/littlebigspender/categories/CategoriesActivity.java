@@ -1,5 +1,7 @@
 package com.boyanstoynov.littlebigspender.categories;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -7,9 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseActivity;
+import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 
 import butterknife.BindView;
@@ -19,10 +24,12 @@ import butterknife.BindView;
  *
  * @author Boyan Stoynov
  */
-public class CategoriesActivity extends BaseActivity {
+public class CategoriesActivity extends BaseActivity implements CategoryDialog.NoticeDialogListener, BaseRecyclerAdapter.RecyclerViewListener<Category>{
 
     @BindView(R.id.toolbar_categories) Toolbar toolbar;
     @BindView(R.id.tablayout_categories) TabLayout tabLayout;
+
+    private CategoryDao categoryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,8 @@ public class CategoriesActivity extends BaseActivity {
         // TODO make this get the previously selected tab from bundle and select it instead
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
+
+        categoryDao = getRealmManager().createCategoryDao();
     }
 
     @Override
@@ -90,5 +99,43 @@ public class CategoriesActivity extends BaseActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onDialogPositiveClick(Category category) {
+//        categoryDao = getRealmManager().createCategoryDao();
+//        categoryDao.saveOrUpdate(category);
+    }
+
+    @Override
+    public void onDeleteButtonClicked(final Category category) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), category.getName()));
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                categoryDao.delete(category);
+                Toast.makeText(getBaseContext(), R.string.categories_delete_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    @Override
+    public void onEditButtonClicked(Category category) {
+//        CategoryDialog cd = new CategoryDialog();
+//        cd.setData(category);
+//        cd.show(getActivity().getFragmentManager(), "CATEGORY_DIALOG");
     }
 }
