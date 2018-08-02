@@ -25,23 +25,23 @@ public class TransactionDao extends BaseDao<Transaction> {
     }
 
     public RealmResults<Transaction> getAll() {
-       return realm.where(Transaction.class).findAll();
+       return realm.where(Transaction.class).findAllAsync();
     }
 
     public RealmResults<Transaction> getByCategory(Category category) {
-       return realm.where(Transaction.class).equalTo("category.name", category.getName()).findAll();
+       return realm.where(Transaction.class).equalTo("category.name", category.getName()).findAllAsync();
     }
 
     public RealmResults<Transaction> getByAccount(Account account) {
-        return realm.where(Transaction.class).equalTo("account.name", account.getName()).findAll();
+        return realm.where(Transaction.class).equalTo("account.name", account.getName()).findAllAsync();
     }
 
     public RealmResults<Transaction> getByDate(Date date) {
-        return realm.where(Transaction.class).equalTo("date", date).findAll();
+        return realm.where(Transaction.class).equalTo("date", date).findAllAsync();
     }
 
     public Transaction getById(String id) {
-        return realm.where(Transaction.class).equalTo("id", id).findFirst();
+        return realm.where(Transaction.class).equalTo("id", id).findFirstAsync();
     }
 
     public void editCategory(Transaction transaction, Category newCategory) {

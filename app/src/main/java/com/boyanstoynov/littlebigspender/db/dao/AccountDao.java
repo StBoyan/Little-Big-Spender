@@ -23,11 +23,11 @@ public class AccountDao extends BaseDao<Account> {
     }
 
     public RealmResults<Account> getAll() {
-        return realm.where(Account.class).findAll();
+        return realm.where(Account.class).findAllAsync();
     }
 
     public Account getById(String id) {
-        return realm.where(Account.class).equalTo("id", id).findFirst();
+        return realm.where(Account.class).equalTo("id", id).findFirstAsync();
     }
 
     public void addAmount(Account toAccount, BigDecimal amount) {
