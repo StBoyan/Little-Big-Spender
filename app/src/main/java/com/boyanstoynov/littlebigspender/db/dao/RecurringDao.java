@@ -25,15 +25,15 @@ public class RecurringDao extends BaseDao<Recurring> {
     }
 
     public RealmResults<Recurring> getAllIncomeRecurringTransactions() {
-        return realm.where(Recurring.class).equalTo("category.type", Category.Type.INCOME.toString()).findAllAsync();
+        return realm.where(Recurring.class).equalTo("category.type", Category.Type.INCOME.toString()).findAll();
     }
 
     public RealmResults<Recurring> getAllExpenseRecurringTransactions() {
-        return realm.where(Recurring.class).equalTo("category.type", Category.Type.EXPENSE.toString()).findAllAsync();
+        return realm.where(Recurring.class).equalTo("category.type", Category.Type.EXPENSE.toString()).findAll();
     }
 
     public Recurring getById(String id) {
-        return realm.where(Recurring.class).equalTo("id", id).findFirstAsync();
+        return realm.where(Recurring.class).equalTo("id", id).findFirst();
     }
 
     public void editCategory(Recurring recurring, Category newCategory) {

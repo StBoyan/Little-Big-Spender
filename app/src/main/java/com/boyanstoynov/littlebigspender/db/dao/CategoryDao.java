@@ -20,15 +20,15 @@ public class CategoryDao extends BaseDao<Category> {
     }
 
     public RealmResults<Category> getAllIncomeCategories() {
-        return realm.where(Category.class).equalTo("type", Category.Type.INCOME.toString()).findAllAsync();
+        return realm.where(Category.class).equalTo("type", Category.Type.INCOME.toString()).findAll();
     }
 
     public RealmResults<Category> getAllExpenseCategories() {
-        return realm.where(Category.class).equalTo("type", Category.Type.EXPENSE.toString()).findAllAsync();
+        return realm.where(Category.class).equalTo("type", Category.Type.EXPENSE.toString()).findAll();
     }
 
     public Category getById(String id) {
-        return realm.where(Category.class).equalTo("id", id).findFirstAsync();
+        return realm.where(Category.class).equalTo("id", id).findFirst();
     }
 
     public void editName(Category category, String newName) {
