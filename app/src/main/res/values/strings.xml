@@ -37,31 +37,34 @@
     <string name="intro_feature3_text">Store cryptocurrency accounts and view their balance in your home currency.</string>
 
     <!--Add Transaction-->
-    <string name="addtransaction_recurring">Recurring?</string>
+    <string name="addTransaction_recurring">Recurring?</string>
 
     <!--Add Account-->
-    <string name="addaccount_balance">Balance</string>
-    <string name="addaccount_add_toast">New account added</string>
-    <string name="addaccount_discard_toast">New account discarded</string>
+    <string name="addAccount_balance">Balance</string>
+    <string name="addAccount_add_toast">New account added</string>
+    <string name="addAccount_discard_toast">New account discarded</string>
 
     <!--Accounts-->
     <string name="accounts_delete_toast">Account deleted</string>
+    <string name="accounts_editDialog_title">Edit Account</string>
 
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>
-    <string name="categories_editDialogue_title">Edit Category</string>
+    <string name="categories_editDialog_title">Edit Category</string>
 
     <!--Add Category-->
-    <string name="addcategory_add_toast">New category added</string>
-    <string name="addcategory_discard_toast">New category discarded</string>
+    <string name="addCategory_add_toast">New category added</string>
+    <string name="addCategory_discard_toast">New category discarded</string>
 
     <!--Transactions-->
     <string name="transaction_warning_delete_message">Are you sure you want to delete transaction?</string>
     <string name="transaction_delete_toast">Transaction deleted</string>
+    <string name="transaction_editDialog_title">Edit Transaction</string>
 
     <!--Recurring Transactions-->
     <string name="recurring_warning_delete_message">Are you sure you want to delete recurring transaction?</string>
     <string name="recurring_delete_toast">Recurring transaction deleted</string>
+    <string name="recurring_editDialog_title">Edit Recurring Transaction</string>
 
     <!--Settings-->
     <string name="settings_currency">Currency</string>

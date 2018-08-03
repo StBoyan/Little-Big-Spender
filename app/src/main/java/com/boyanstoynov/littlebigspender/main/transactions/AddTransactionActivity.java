@@ -2,8 +2,10 @@ package com.boyanstoynov.littlebigspender.main.transactions;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -22,6 +24,7 @@ import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -29,6 +32,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 /**
@@ -38,13 +42,13 @@ import io.realm.RealmResults;
  */
 public class AddTransactionActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
 
-    @BindView(R.id.toolbar_addtransaction) Toolbar toolbar;
-    @BindView(R.id.tablayout_addtransaction) TabLayout tabLayout;
-    @BindView(R.id.spinner_addtransaction_category) Spinner categorySpinner;
-    @BindView(R.id.spinner_addtransaction_account) Spinner accountSpinner;
-    @BindView(R.id.dateinput_addtransaction) EditText inputDate;
-    @BindView(R.id.numberinput_addtransaction_amount) EditText inputAmount;
-    @BindView(R.id.spinner_addtransaction_recurringmode) Spinner recurringModeSpinner;
+    @BindView(R.id.toolbar_addTransaction) Toolbar toolbar;
+    @BindView(R.id.tabLayout_addTransaction) TabLayout tabLayout;
+    @BindView(R.id.spinner_transaction_category) Spinner categorySpinner;
+    @BindView(R.id.spinner_transaction_account) Spinner accountSpinner;
+    @BindView(R.id.dateInput_transaction) EditText inputDate;
+    @BindView(R.id.numberInput_transaction_amount) EditText inputAmount;
+    @BindView(R.id.spinner_addTransaction_recurringMode) Spinner recurringModeSpinner;
 
     CategoryDao categoryDao;
     AccountDao accountDao;
@@ -103,7 +107,7 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
     protected int getLayoutResource() {
         return R.layout.activity_add_transaction;
     }
-    @OnClick(R.id.button_addtransaction_add)
+    @OnClick(R.id.button_addTransaction_add)
     public void addTransaction() {
         // TODO need to do validation here
         createTransaction();
@@ -111,13 +115,13 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
         onBackPressed();
     }
 
-    @OnClick(R.id.button_addtransaction_cancel)
+    @OnClick(R.id.button_addTransaction_cancel)
     public void cancelTransaction() {
         Toast.makeText(getApplicationContext(), "Transaction discarded", Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
-    @OnClick(R.id.dateinput_addtransaction)
+    @OnClick(R.id.dateInput_transaction)
     public void showDatePicker() {
         Calendar calendar = new GregorianCalendar(Locale.getDefault());
         int year = calendar.get(Calendar.YEAR);
@@ -140,7 +144,7 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
         inputDate.setText(df.format(date));
     }
 
-    @OnClick(R.id.checkbox_addtransaction_recurring)
+    @OnClick(R.id.checkbox_addTransaction_recurring)
     public void onCheckboxClicked() {
         isRecurring = !isRecurring;
 

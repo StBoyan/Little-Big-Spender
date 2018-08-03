@@ -20,8 +20,8 @@ import butterknife.OnClick;
  */
 public class AddAccountActivity extends BaseActivity {
 
-    @BindView(R.id.textinput_addaccount_name) EditText accountNameInput;
-    @BindView(R.id.numberinput_addaccount_balance) EditText balanceInput;
+    @BindView(R.id.textInput_account_name) EditText accountNameInput;
+    @BindView(R.id.numberInput_account_balance) EditText balanceInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +33,17 @@ public class AddAccountActivity extends BaseActivity {
         return R.layout.activity_add_account;
     }
 
-    @OnClick(R.id.button_addaccount_add)
+    @OnClick(R.id.button_addAccount_add)
     public void addAccount() {
         //TODO need to validate input here
         createAccount();
-        Toast.makeText(getApplicationContext(), R.string.addaccount_add_toast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.addAccount_add_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
-    @OnClick(R.id.button_addaccount_cancel)
+    @OnClick(R.id.button_addAccount_cancel)
     public void cancelAddAccount() {
-        Toast.makeText(getApplicationContext(), R.string.addaccount_discard_toast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.addAccount_discard_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 

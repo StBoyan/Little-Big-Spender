@@ -1,5 +1,7 @@
 package com.boyanstoynov.littlebigspender.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,15 +16,28 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.boyanstoynov.littlebigspender.BaseEditorDialog;
+import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
+import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
+import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
+import com.boyanstoynov.littlebigspender.db.model.Account;
+import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.main.accounts.AccountDialog;
 import com.boyanstoynov.littlebigspender.main.accounts.AccountsFragment;
 import com.boyanstoynov.littlebigspender.BaseActivity;
 import com.boyanstoynov.littlebigspender.main.overview.OverviewFragment;
+import com.boyanstoynov.littlebigspender.main.transactions.TransactionDialog;
 import com.boyanstoynov.littlebigspender.main.transactions.TransactionsFragment;
 
 import com.boyanstoynov.littlebigspender.about.AboutActivity;
 import butterknife.BindView;
+import io.realm.RealmObject;
+
 import com.boyanstoynov.littlebigspender.categories.CategoriesActivity;
 import com.boyanstoynov.littlebigspender.intro.IntroActivity;
 import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
@@ -34,7 +49,7 @@ import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
  *
  * @author Boyan Stoynov
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.RecyclerViewListener<RealmObject>, BaseEditorDialog.DialogListener<RealmObject> {
 
     @BindView(R.id.drawer) DrawerLayout drawer;
     @BindView(R.id.toolbar_main) Toolbar toolbar;
@@ -165,5 +180,118 @@ public class MainActivity extends BaseActivity {
         });
 
         t.start();
+    }
+
+    @Override
+    public void onDeleteButtonClicked(RealmObject item) {
+        if (item instanceof Account)
+            showDeleteAccountDialog((Account) item);
+        else if (item instanceof Transaction)
+            showDeleteTransactionDialog((Transaction) item);
+    }
+
+    @Override
+    public void onEditButtonClicked(RealmObject item) {
+        if (item instanceof Account)
+            showEditAccountDialog((Account) item);
+        else if (item instanceof Transaction)
+            showEditTransactionDialog((Transaction) item);
+    }
+
+    @Override
+    public void onDialogPositiveClick(RealmObject item) {
+        if (item instanceof Account)
+            editAccount((Account) item);
+        else if (item instanceof Transaction)
+            editTransaction((Transaction) item);
+
+    }
+    // TODO initialise Account and Transaction Dao in onCreate and store them
+    public void showDeleteAccountDialog(final Account account) {
+        final AccountDao accountDao = getRealmManager().createAccountDao();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), account.getName()));
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                accountDao.delete(account);
+                Toast.makeText(getBaseContext(), R.string.accounts_delete_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showDeleteTransactionDialog(final Transaction transaction) {
+        final TransactionDao transactionDao = getRealmManager().createTransactionDao();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(R.string.transaction_warning_delete_message);
+        builder.setIcon(R.drawable.ic_warning);
+        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                transactionDao.delete(transaction);
+                Toast.makeText(getBaseContext(), R.string.transaction_delete_toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showEditAccountDialog(Account account) {
+        AccountDao accountDao = getRealmManager().createAccountDao();
+        AccountDialog dialog = new AccountDialog();
+        dialog.setData(accountDao.getUnmanaged(account));
+        dialog.show(getSupportFragmentManager(), "ACCOUNT_DIALOG");
+    }
+
+    public void showEditTransactionDialog(Transaction transaction) {
+        TransactionDao transactionDao = getRealmManager().createTransactionDao();
+        CategoryDao categoryDao = getRealmManager().createCategoryDao();
+        AccountDao accountDao = getRealmManager().createAccountDao();
+
+        TransactionDialog dialog = new TransactionDialog();
+        dialog.setData(transactionDao.getUnmanaged(transaction));
+        dialog.setAccountsList(accountDao.getAll());
+
+        if (transaction.getCategory().getType() == Category.Type.INCOME)
+            dialog.setCategoriesList(categoryDao.getAllIncomeCategories());
+        else
+            dialog.setCategoriesList(categoryDao.getAllExpenseCategories());
+
+        dialog.show(getSupportFragmentManager(), "TRANSACTION_DIALOG");
+    }
+
+    public void editAccount(Account editedAccount) {
+        AccountDao accountDao = getRealmManager().createAccountDao();
+        Account account = accountDao.getById(editedAccount.getId());
+        accountDao.editName(account, editedAccount.getName());
+        accountDao.editBalance(account, editedAccount.getBalance());
+    }
+
+    public void editTransaction(Transaction editedTransaction) {
+        TransactionDao transactionDao = getRealmManager().createTransactionDao();
+        Transaction transaction = transactionDao.getById(editedTransaction.getId());
+        transactionDao.editAccount(transaction, editedTransaction.getAccount());
+        transactionDao.editCategory(transaction, editedTransaction.getCategory());
+        transactionDao.editAmount(transaction, editedTransaction.getAmount());
+        transactionDao.editDate(transaction, editedTransaction.getDate());
     }
 }

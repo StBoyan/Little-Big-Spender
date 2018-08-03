@@ -7,7 +7,7 @@
     tools:context="com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_addaccount"
+        android:id="@+id/toolbar_addAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/android:colorPrimary"
@@ -17,78 +17,40 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            tools:ignore="RtlSymmetry">
 
             <ImageButton
-                android:id="@+id/button_addaccount_cancel"
+                android:id="@+id/button_addAccount_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/android:actionBarItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_cancel" />
+                app:srcCompat="@drawable/ic_cancel"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
-                android:id="@+id/button_addaccount_add"
+                android:id="@+id/button_addAccount_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/android:actionBarItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_confirm" />
+                app:srcCompat="@drawable/ic_confirm"
+                tools:ignore="ContentDescription" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/text_addaccount_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/all_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_addaccount" />
-
-    <EditText
-        android:id="@+id/textinput_addaccount_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="text"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addaccount_name" />
-
-    <TextView
-        android:id="@+id/text_addaccount_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/addaccount_balance"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_addaccount" />
-
-    <EditText
-        android:id="@+id/numberinput_addaccount_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="numberDecimal"
-        android:ems="5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addaccount_balance" />
-
-    <View
-        android:id="@+id/divider_addaccount"
+    <include layout="@layout/account_input"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="5dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_addaccount_name"/>
+        android:layout_height="0dp"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

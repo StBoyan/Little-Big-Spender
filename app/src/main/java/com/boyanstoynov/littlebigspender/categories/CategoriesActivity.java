@@ -128,9 +128,9 @@ public class CategoriesActivity extends BaseActivity implements BaseRecyclerAdap
 
     @Override
     public void onEditButtonClicked(Category category) {
-        CategoryDialog cd = new CategoryDialog();
-        cd.setData(categoryDao.getUnmanaged(category));
-        cd.show(getSupportFragmentManager(), "CATEGORY_DIALOG");
+        CategoryDialog dialog = new CategoryDialog();
+        dialog.setData(categoryDao.getUnmanaged(category));
+        dialog.show(getSupportFragmentManager(), "CATEGORY_DIALOG");
     }
 
     @Override

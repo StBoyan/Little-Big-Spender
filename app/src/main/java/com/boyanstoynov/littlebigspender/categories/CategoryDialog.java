@@ -21,7 +21,7 @@ public class CategoryDialog extends BaseEditorDialog<Category> {
 
     @Override
     protected int getTitleResource() {
-        return R.string.categories_editDialogue_title;
+        return R.string.categories_editDialog_title;
     }
 
     @Override

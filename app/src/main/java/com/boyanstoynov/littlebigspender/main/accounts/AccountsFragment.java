@@ -1,7 +1,5 @@
 package com.boyanstoynov.littlebigspender.main.accounts;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,13 +13,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
+import com.boyanstoynov.littlebigspender.main.MainActivity;
 
 import java.util.List;
 
@@ -34,12 +31,11 @@ import io.realm.RealmResults;
  *
  * @author Boyan Stoynov
  */
-public class AccountsFragment extends BaseFragment implements BaseRecyclerAdapter.RecyclerViewListener<Account>{
+public class AccountsFragment extends BaseFragment {
 
     @BindView(R.id.recyclerview_accounts) RecyclerView recyclerView;
 
     private AccountsAdapter adapter;
-    private AccountDao accountDao;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -85,7 +81,7 @@ public class AccountsFragment extends BaseFragment implements BaseRecyclerAdapte
      * Initialise RecyclerView and its adapter.
      */
     private void initViews() {
-        adapter = new AccountsAdapter(this);
+        adapter = new AccountsAdapter((MainActivity)getActivity());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
@@ -98,7 +94,7 @@ public class AccountsFragment extends BaseFragment implements BaseRecyclerAdapte
      * Load Account objects into view.
      */
     private void loadAccountList() {
-        accountDao = getRealmManager().createAccountDao();
+        AccountDao accountDao = getRealmManager().createAccountDao();
         RealmResults<Account> accountsRealmResults = accountDao.getAll();
         accountsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Account>>() {
             @Override
@@ -117,34 +113,6 @@ public class AccountsFragment extends BaseFragment implements BaseRecyclerAdapte
      */
     private void populateRecyclerView(List<Account> accountsList) {
         adapter.setData(accountsList);
-    }
-
-    public void onDeleteButtonClicked(final Account account) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.app_name);
-        builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), account.getName()));
-        builder.setIcon(R.drawable.ic_warning);
-        builder.setPositiveButton(R.string.all_yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                accountDao.delete(account);
-                Toast.makeText(getContext(), R.string.accounts_delete_toast, Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton(R.string.all_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    @Override
-    public void onEditButtonClicked(Account item) {
-
     }
 }
 

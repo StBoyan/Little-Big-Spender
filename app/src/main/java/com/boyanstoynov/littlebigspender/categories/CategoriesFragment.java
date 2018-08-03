@@ -74,7 +74,7 @@ public class CategoriesFragment extends BaseFragment {
     private void loadCategoryList() {
         if (categoriesRealmResults == null)
             throw new IllegalStateException("Categories type unspecified. Call setCategoryType() first.");
-
+        //TODO IMPORTANT !!!! UNREGISTER CHANGE LISTENERS ONDESTROY SEE REALM DOC FOR MORE INFO
         categoriesRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
             @Override
             public void onChange(@NonNull RealmResults<Category> categories) {
