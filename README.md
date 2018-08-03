@@ -21,6 +21,15 @@ Javadoc documentation of the whole project, including private methods can be fou
 - [**Material Dialogs**](https://github.com/afollestad/material-dialogs)
 - [**Realm**](https://github.com/realm/realm-java)
 
+## Statistic
+The table below summarises the lines of code that make up the project, including Java and XML.
+
+| Language      | Number of files | Blank lines | Comment lines | Lines of code |
+| ------------- | --------------- | ----------- | ------------- | ------------- |
+| **Java**      |               37|          548|            424|           2100|
+| **XML**       |               35|          164|              0|           1252|
+| **Total**     |               72|          712|            424|           3352|
+
 
 ## License
     MIT License
