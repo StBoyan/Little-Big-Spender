@@ -184,7 +184,7 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
             newRecurring.setCategory((Category) categorySpinner.getSelectedItem());
             newRecurring.setAmount(new BigDecimal(inputAmount.getText().toString()));
             newRecurring.setStartDate(date);
-
+            //TODO remove magic numbers
             switch (recurringModeSpinner.getSelectedItemPosition()) {
                 case 0:
                     newRecurring.setMode(Recurring.Mode.MONTHLY);

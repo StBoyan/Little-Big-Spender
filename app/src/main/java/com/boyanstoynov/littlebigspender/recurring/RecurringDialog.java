@@ -1,7 +1,6 @@
-package com.boyanstoynov.littlebigspender.main.transactions;
+package com.boyanstoynov.littlebigspender.recurring;
 
 import android.app.DatePickerDialog;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -11,7 +10,7 @@ import com.boyanstoynov.littlebigspender.BaseEditorDialog;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
-import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.db.model.Recurring;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -26,29 +25,31 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Edit transaction dialog implementation.
+ * Edit recurring transaction dialog implementation.
  *
  * @author Boyan Stoynov
  */
-public class TransactionDialog extends BaseEditorDialog<Transaction> implements DatePickerDialog.OnDateSetListener {
+public class RecurringDialog extends BaseEditorDialog<Recurring> implements DatePickerDialog.OnDateSetListener{
 
     @BindView(R.id.spinner_transaction_category) Spinner categorySpinner;
     @BindView(R.id.spinner_transaction_account) Spinner accountSpinner;
     @BindView(R.id.numberInput_transaction_amount) EditText amountInput;
     @BindView(R.id.dateInput_transaction) EditText dateInput;
+    @BindView(R.id.spinner_dialogRecurring_mode) Spinner modeSpinner;
 
     Date date;
     List<Account> accountsList;
     List<Category> categoriesList;
 
+
     @Override
     protected int getTitleResource() {
-        return R.string.transaction_editDialog_title;
+        return R.string.recurring_editDialog_title;
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dialog_transaction;
+        return R.layout.dialog_recurring;
     }
 
     @Override
@@ -56,7 +57,20 @@ public class TransactionDialog extends BaseEditorDialog<Transaction> implements 
         item.setCategory((Category) categorySpinner.getSelectedItem());
         item.setAccount((Account) accountSpinner.getSelectedItem());
         item.setAmount(new BigDecimal(amountInput.getText().toString()));
-        item.setDate(date);
+        item.setStartDate(date);
+
+        //TODO remove magic numbers
+        switch (modeSpinner.getSelectedItemPosition()) {
+            case 0:
+                item.setMode(Recurring.Mode.MONTHLY);
+                break;
+            case 1:
+                item.setMode(Recurring.Mode.BIWEEKLY);
+                break;
+            case 2:
+                item.setMode(Recurring.Mode.WEEKLY);
+                break;
+        }
 
         //TODO implement validation
         return true;
@@ -89,8 +103,20 @@ public class TransactionDialog extends BaseEditorDialog<Transaction> implements 
         amountInput.setText(item.getAmount().toString());
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        date = item.getDate();
-        dateInput.setText(df.format(item.getDate()));
+        date = item.getStartDate();
+        dateInput.setText(df.format(item.getStartDate()));
+        //TODO remove magic numbers
+        switch (item.getMode()) {
+            case MONTHLY:
+                modeSpinner.setSelection(0);
+                break;
+            case BIWEEKLY:
+                modeSpinner.setSelection(1);
+                break;
+            case WEEKLY:
+                modeSpinner.setSelection(2);
+                break;
+        }
     }
 
     @Override

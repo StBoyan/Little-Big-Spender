@@ -78,6 +78,7 @@
         android:layout_margin="4dp"
         android:text="@string/all_date"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider_transaction_lower" />
 
     <EditText
@@ -90,6 +91,7 @@
         android:ems="6"
         android:focusable="false"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_transaction_date"
         tools:ignore="LabelFor" />
 
