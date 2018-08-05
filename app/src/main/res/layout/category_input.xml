@@ -43,6 +43,7 @@
         android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:textAlignment="center"
         android:entries="@array/category_types"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

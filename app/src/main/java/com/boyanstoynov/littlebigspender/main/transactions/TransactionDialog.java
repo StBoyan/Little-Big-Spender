@@ -98,7 +98,7 @@ public class TransactionDialog extends BaseEditorDialog<Transaction> implements 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = new GregorianCalendar(year, month, dayOfMonth).getTime();
         dateInput.setText(df.format(date));
-    }
+}
 
     @OnClick(R.id.dateInput_transaction)
     public void showDatePicker() {

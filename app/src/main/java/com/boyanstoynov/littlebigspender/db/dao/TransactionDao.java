@@ -7,7 +7,9 @@ import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -28,6 +30,10 @@ public class TransactionDao extends BaseDao<Transaction> {
        return realm.where(Transaction.class).findAll();
     }
 
+    public RealmResults<Transaction> getByType(Category.Type type) {
+        return realm.where(Transaction.class).equalTo("category.type", type.toString()).findAll();
+    }
+    //TODO change to use ID's instead of name for category and account
     public RealmResults<Transaction> getByCategory(Category category) {
        return realm.where(Transaction.class).equalTo("category.name", category.getName()).findAll();
     }
@@ -37,7 +43,16 @@ public class TransactionDao extends BaseDao<Transaction> {
     }
 
     public RealmResults<Transaction> getByDate(Date date) {
-        return realm.where(Transaction.class).equalTo("date", date).findAll();
+        //TODO move this functionality to date util
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date date1 = calendar.getTime();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        Date date2 = calendar.getTime();
+        return realm.where(Transaction.class).between("date", date1, date2).findAll();
     }
 
     public Transaction getById(String id) {

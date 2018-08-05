@@ -19,6 +19,10 @@ public class CategoryDao extends BaseDao<Category> {
         super(realm);
     }
 
+    public RealmResults<Category> getAll() {
+        return realm.where(Category.class).findAll();
+    }
+
     public RealmResults<Category> getAllIncomeCategories() {
         return realm.where(Category.class).equalTo("type", Category.Type.INCOME.toString()).findAll();
     }

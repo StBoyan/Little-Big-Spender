@@ -30,7 +30,9 @@ import com.boyanstoynov.littlebigspender.db.model.Transaction;
 import com.boyanstoynov.littlebigspender.main.accounts.AccountDialog;
 import com.boyanstoynov.littlebigspender.main.accounts.AccountsFragment;
 import com.boyanstoynov.littlebigspender.BaseActivity;
+import com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity;
 import com.boyanstoynov.littlebigspender.main.overview.OverviewFragment;
+import com.boyanstoynov.littlebigspender.main.transactions.FilterDialog;
 import com.boyanstoynov.littlebigspender.main.transactions.TransactionDialog;
 import com.boyanstoynov.littlebigspender.main.transactions.TransactionsFragment;
 
@@ -43,6 +45,8 @@ import com.boyanstoynov.littlebigspender.intro.IntroActivity;
 import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
 import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
+
+import java.util.Date;
 
 /**
  * Controller for main screen activity.
@@ -133,13 +137,50 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
             case android.R.id.home:
                 drawer.openDrawer(Gravity.START);
                 return true;
+            case R.id.item_add:
+                final Intent intent = new Intent(this, AddAccountActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.item_filter:
+                FilterDialog dialog = new FilterDialog();
+                //TODO extract in a method
+
+                dialog.show(getFragmentManager(), "FILTER_DIALOG");
+                dialog.setCategoryList(getRealmManager().createCategoryDao().getAll());
+                dialog.setAccountList(getRealmManager().createAccountDao().getAll());
+                dialog.setCallback(new FilterDialog.FilterSelectedCallback() {
+                    TransactionsFragment fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentById(R.id.frame_main);
+                    TransactionDao transactionDao = getRealmManager().createTransactionDao();
+                    @Override
+                    public void onTypeFilterSelected(Category.Type type) {
+                        fragment.populateRecyclerView(transactionDao.getByType(type));
+                    }
+
+                    @Override
+                    public void onCategoryFilterSelected(Category category) {
+                        fragment.populateRecyclerView(transactionDao.getByCategory(category));
+                    }
+
+                    @Override
+                    public void onAccountFilterSelected(Account account) {
+                        fragment.populateRecyclerView(transactionDao.getByAccount(account));
+                    }
+
+                    @Override
+                    public void onDateFilterSelected(Date date) {
+                        fragment.populateRecyclerView(transactionDao.getByDate(date));
+                    }
+
+                    @Override
+                    public void onResetSelected() {
+                        fragment.populateRecyclerView(transactionDao.getAll());
+                    }
+                });
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;

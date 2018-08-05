@@ -1,6 +1,5 @@
 package com.boyanstoynov.littlebigspender.main.accounts;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -61,20 +59,6 @@ public class AccountsFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.addbutton_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    //TODO consider tidying up method. May need to add more menu items
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_add:
-                AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
-                final Intent i = new Intent(parentActivity, AddAccountActivity.class);
-                startActivity(i);
-                break;
-        }
-
-        return true;
     }
 
     /**

@@ -64,7 +64,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_insert_chart_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_filter_list_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -74,13 +74,10 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="color" value="ffbd36" />
-                            <entry key="height" value="124" />
-                            <entry key="outputName" value="ic_feature3" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_filter" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\Boyan\Downloads\Bitcoin.svg" />
-                            <entry key="width" value="124" />
                           </map>
                         </option>
                       </PersistentState>

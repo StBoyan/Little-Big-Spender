@@ -60,6 +60,9 @@
     <string name="transaction_warning_delete_message">Are you sure you want to delete transaction?</string>
     <string name="transaction_delete_toast">Transaction deleted</string>
     <string name="transaction_editDialog_title">Edit Transaction</string>
+    <string name="transaction_filterDialog_title">Filter by</string>
+    <string name="transaction_filterDialog_positive">Apply</string>
+    <string name="transaction_filterDialog_reset">Reset</string>
 
     <!--Recurring Transactions-->
     <string name="recurring_warning_delete_message">Are you sure you want to delete recurring transaction?</string>
