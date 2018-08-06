@@ -26,7 +26,7 @@ public class CategoryDialog extends BaseEditorDialog<Category> {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dialog_category;
+        return R.layout.dialog_category_edit;
     }
 
     @Override

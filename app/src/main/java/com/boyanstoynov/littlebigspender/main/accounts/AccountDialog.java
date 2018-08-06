@@ -27,7 +27,7 @@ public class AccountDialog extends BaseEditorDialog<Account> {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dialog_account;
+        return R.layout.dialog_account_edit;
     }
 
     @Override

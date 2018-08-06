@@ -90,6 +90,7 @@
         android:inputType="date"
         android:ems="6"
         android:focusable="false"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_transaction_date"

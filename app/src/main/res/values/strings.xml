@@ -47,6 +47,10 @@
     <!--Accounts-->
     <string name="accounts_delete_toast">Account deleted</string>
     <string name="accounts_editDialog_title">Edit Account</string>
+    <string name="accounts_transferDialog_title">Balance Transfer</string>
+    <string name="accounts_transferDialog_transfer">Transfer</string>
+    <string name="accounts_transferDialog_from">From</string>
+    <string name="accounts_transferDialog_to">To</string>
 
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>

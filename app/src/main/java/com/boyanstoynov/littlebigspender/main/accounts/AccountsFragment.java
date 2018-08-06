@@ -57,7 +57,7 @@ public class AccountsFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.addbutton_toolbar, menu);
+        inflater.inflate(R.menu.accounts_toolbar, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

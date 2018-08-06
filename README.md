@@ -19,6 +19,7 @@ Javadoc documentation of the whole project, including private methods can be fou
 - [**Butter Knife**](https://github.com/JakeWharton/butterknife)
 - [**Currency Picker**](https://github.com/midorikocak/currency-picker-android)
 - [**Material Dialogs**](https://github.com/afollestad/material-dialogs)
+- [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart)
 - [**Realm**](https://github.com/realm/realm-java)
 
 ## Statistic
@@ -26,10 +27,9 @@ The table below summarises the lines of code that make up the project, including
 
 | Language      | Number of files | Blank lines | Comment lines | Lines of code |
 | ------------- | --------------- | ----------- | ------------- | ------------- |
-| **Java**      |               37|          548|            424|           2100|
-| **XML**       |               35|          164|              0|           1252|
-| **Total**     |               72|          712|            424|           3352|
-
+| **Java**      |               40|          646|            453|           2596|
+| **XML**       |               40|          177|              0|           1379|
+| **Total**     |               80|          823|            453|           3975|
 
 ## License
     MIT License

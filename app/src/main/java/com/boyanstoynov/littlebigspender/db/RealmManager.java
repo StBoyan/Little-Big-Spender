@@ -14,7 +14,8 @@ import io.realm.Realm;
  * @author Boyan Stoynov
  */
 public class RealmManager {
-
+//TODO can make realm manager same packages as DAOS and make their constructors package protected
+    //TODO in order to prevent instantiation from outside of package
     private Realm realm;
 
     public void open() {

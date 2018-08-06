@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -58,19 +59,20 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
     private List<Account> accountList;
     private FilterSelectedCallback callback;
     private Date date;
+    private View positiveButton;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (categoryList == null)
             throw new IllegalStateException("No categories set. Call setCategoryList() before show().");
         if (accountList == null)
-            throw new IllegalStateException("No accounts set. Call setAccountList() before show().");
+            throw new IllegalStateException("No accounts set. Call setFromAccountList() before show().");
         if (callback == null)
             throw new IllegalStateException("Callback not set. Call setCallback() before show().");
 
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.transaction_filterDialog_title)
-                .customView(R.layout.dialog_filter_transactions, true)
+                .customView(R.layout.dialog_transactions_filter, true)
                 .positiveText(R.string.transaction_filterDialog_positive)
                 .negativeText(R.string.all_cancel)
                 .neutralText(R.string.transaction_filterDialog_reset)
@@ -117,6 +119,9 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
         accountSpinner.setEnabled(false);
         dateInput.setEnabled(false);
 
+        positiveButton = dialog.getActionButton(DialogAction.POSITIVE);
+        positiveButton.setEnabled(false);
+
         return dialog;
     }
 
@@ -129,6 +134,7 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
     @OnClick(R.id.radio_filter_type)
     public void onTypeRadioButtonClicked() {
+        positiveButton.setEnabled(true);
         categoryRadioButton.setChecked(false);
         accountRadioButton.setChecked(false);
         dateRadioButton.setChecked(false);
@@ -140,6 +146,7 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
     @OnClick(R.id.radio_filter_category)
     public void onCategoryRadioButtonClicked() {
+        positiveButton.setEnabled(true);
         typeRadioButton.setChecked(false);
         accountRadioButton.setChecked(false);
         dateRadioButton.setChecked(false);
@@ -151,6 +158,7 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
     @OnClick(R.id.radio_filter_account)
     public void onAccountRadioButtonClicked() {
+        positiveButton.setEnabled(true);
         typeRadioButton.setChecked(false);
         categoryRadioButton.setChecked(false);
         dateRadioButton.setChecked(false);
@@ -162,6 +170,7 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
     @OnClick(R.id.radio_filter_date)
     public void onDateRadioButtonClicked() {
+        positiveButton.setEnabled(true);
         typeRadioButton.setChecked(false);
         categoryRadioButton.setChecked(false);
         accountRadioButton.setChecked(false);

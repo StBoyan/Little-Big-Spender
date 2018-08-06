@@ -31,6 +31,7 @@ import com.boyanstoynov.littlebigspender.main.accounts.AccountDialog;
 import com.boyanstoynov.littlebigspender.main.accounts.AccountsFragment;
 import com.boyanstoynov.littlebigspender.BaseActivity;
 import com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity;
+import com.boyanstoynov.littlebigspender.main.accounts.TransferDialog;
 import com.boyanstoynov.littlebigspender.main.overview.OverviewFragment;
 import com.boyanstoynov.littlebigspender.main.transactions.FilterDialog;
 import com.boyanstoynov.littlebigspender.main.transactions.TransactionDialog;
@@ -46,6 +47,7 @@ import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
 import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -137,18 +139,18 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
             case android.R.id.home:
                 drawer.openDrawer(Gravity.START);
                 return true;
-            case R.id.item_add:
+            case R.id.item_add_account:
                 final Intent intent = new Intent(this, AddAccountActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.item_filter:
-                FilterDialog dialog = new FilterDialog();
+                FilterDialog filterDialog = new FilterDialog();
                 //TODO extract in a method
 
-                dialog.show(getFragmentManager(), "FILTER_DIALOG");
-                dialog.setCategoryList(getRealmManager().createCategoryDao().getAll());
-                dialog.setAccountList(getRealmManager().createAccountDao().getAll());
-                dialog.setCallback(new FilterDialog.FilterSelectedCallback() {
+                filterDialog.show(getFragmentManager(), "FILTER_DIALOG");
+                filterDialog.setCategoryList(getRealmManager().createCategoryDao().getAll());
+                filterDialog.setAccountList(getRealmManager().createAccountDao().getAll());
+                filterDialog.setCallback(new FilterDialog.FilterSelectedCallback() {
                     TransactionsFragment fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentById(R.id.frame_main);
                     TransactionDao transactionDao = getRealmManager().createTransactionDao();
                     @Override
@@ -177,6 +179,18 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
                     }
                 });
                 return true;
+            case R.id.item_transfer_account:
+                TransferDialog transferDialog = new TransferDialog();
+                transferDialog.show(getFragmentManager(), "TRANSFER_DIALOG");
+                transferDialog.setAccountList(getRealmManager().createAccountDao().getAll());
+                transferDialog.setCallback(new TransferDialog.TransferDialogCallback() {
+                    @Override
+                    public void onTransferAccount(Account from, Account to, BigDecimal amount) {
+                        AccountDao accountDao = getRealmManager().createAccountDao();
+                        accountDao.subtractAmount(from, amount);
+                        accountDao.addAmount(to, amount);
+                    }
+                });
         }
         return super.onOptionsItemSelected(item);
     }

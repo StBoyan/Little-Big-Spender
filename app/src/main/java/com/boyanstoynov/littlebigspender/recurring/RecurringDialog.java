@@ -49,7 +49,7 @@ public class RecurringDialog extends BaseEditorDialog<Recurring> implements Date
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dialog_recurring;
+        return R.layout.dialog_recurring_edit;
     }
 
     @Override

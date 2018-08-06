@@ -1,7 +1,6 @@
 package com.boyanstoynov.littlebigspender.main.transactions;
 
 import android.app.DatePickerDialog;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -48,7 +47,7 @@ public class TransactionDialog extends BaseEditorDialog<Transaction> implements 
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.dialog_transaction;
+        return R.layout.dialog_transaction_edit;
     }
 
     @Override
