@@ -64,9 +64,21 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        startIntroOnFirstLaunch();
-
         super.onCreate(savedInstanceState);
+        // TODO use shared preference class
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!preferences.getBoolean("firstStart", false)) {
+
+            startIntroOnFirstLaunch();
+
+            firstLaunchSetUp();
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("firstStart", true);
+            editor.apply();
+        }
+
+
         //TODO consider making toolbar part of a superclass to use in other activities
         setSupportActionBar(toolbar);
 
@@ -131,6 +143,74 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
                     }
                 }
         );
+    }
+
+    private void firstLaunchSetUp() {
+        AccountDao accountDao = getRealmManager().createAccountDao();
+
+        Account acc1 = new Account();
+        acc1.setName("Bank Account");
+        acc1.setBalance(new BigDecimal(0));
+
+        Account acc2 = new Account();
+        acc2.setName("Cash");
+        acc2.setBalance(new BigDecimal(0));
+
+        accountDao.save(acc1);
+        accountDao.save(acc2);
+
+        CategoryDao categoryDao = getRealmManager().createCategoryDao();
+
+        Category cat1 = new Category();
+        cat1.setName("Household");
+        cat1.setType(Category.Type.EXPENSE);
+
+        Category cat2 = new Category();
+        cat2.setName("Entertainment");
+        cat2.setType(Category.Type.EXPENSE);
+
+        Category cat3 = new Category();
+        cat3.setName("Utilities");
+        cat3.setType(Category.Type.EXPENSE);
+
+        Category cat4 = new Category();
+        cat4.setName("Rent");
+        cat4.setType(Category.Type.EXPENSE);
+
+        Category cat5 = new Category();
+        cat5.setName("Misc");
+        cat5.setType(Category.Type.EXPENSE);
+
+        Category cat6 = new Category();
+        cat6.setName("Clothing");
+        cat6.setType(Category.Type.EXPENSE);
+
+        Category cat7 = new Category();
+        cat7.setName("Salary");
+        cat7.setType(Category.Type.INCOME);
+
+        Category cat8 = new Category();
+        cat8.setName("Interest");
+        cat8.setType(Category.Type.INCOME);
+
+        Category cat9 = new Category();
+        cat9.setName("Dividends");
+        cat9.setType(Category.Type.INCOME);
+
+        Category cat10 = new Category();
+        cat10.setName("Other");
+        cat10.setType(Category.Type.INCOME);
+
+        categoryDao.save(cat1);
+        categoryDao.save(cat2);
+        categoryDao.save(cat3);
+        categoryDao.save(cat4);
+        categoryDao.save(cat5);
+        categoryDao.save(cat6);
+        categoryDao.save(cat7);
+        categoryDao.save(cat8);
+        categoryDao.save(cat9);
+        categoryDao.save(cat10);
     }
 
     @Override
@@ -204,37 +284,10 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
      * Launch Intro activity upon first launch.
      */
     public void startIntroOnFirstLaunch() {
-        // TODO use shared preference class
-        // TODO separate first start settings in a separate util class ALSO need to initialise default currency
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SharedPreferences getPrefs = PreferenceManager
-                        .getDefaultSharedPreferences(getBaseContext());
-
-                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
-
-                if (isFirstStart) {
-
-                    final Intent i = new Intent(MainActivity.this, IntroActivity.class);
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(i);
-                        }
-                    });
-
-                    SharedPreferences.Editor e = getPrefs.edit();
-
-                    e.putBoolean("firstStart", false);
-
-                    e.apply();
-                }
-            }
-        });
-
-        t.start();
+        // TODO separate first start settings in a separate util class
+        // TODO ALSO could initialise currency to locale there too
+        Intent intent = new Intent(this, IntroActivity.class);
+        startActivity(intent);
     }
 
     @Override

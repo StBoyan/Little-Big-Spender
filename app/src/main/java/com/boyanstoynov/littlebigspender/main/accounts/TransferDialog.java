@@ -36,7 +36,7 @@ public class TransferDialog extends DialogFragment {
 
     @BindView(R.id.spinner_dialogTransfer_from) Spinner fromAccountSpinner;
     @BindView(R.id.spinner_dialogTransfer_to) Spinner toAccountSpinner;
-    // TODO implement validation for number input if needed
+    // TODO implement validation for number input if needed - this could be if number is negative display error message on inputField
     @BindView(R.id.numberInput_dialogTransfer_amount) EditText amountInput;
 
     private Unbinder unbinder;
