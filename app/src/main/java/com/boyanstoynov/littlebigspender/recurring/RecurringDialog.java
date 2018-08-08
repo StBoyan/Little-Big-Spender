@@ -41,6 +41,10 @@ public class RecurringDialog extends BaseEditorDialog<Recurring> implements Date
     List<Account> accountsList;
     List<Category> categoriesList;
 
+    private final int MODE_MONTHLY_POSITION = 0;
+    private final int MODE_BIWEEKLY_POSITION = 1;
+    private final int MODE_WEEKLY_POSITION = 2;
+
 
     @Override
     protected int getTitleResource() {
@@ -59,15 +63,14 @@ public class RecurringDialog extends BaseEditorDialog<Recurring> implements Date
         item.setAmount(new BigDecimal(amountInput.getText().toString()));
         item.setStartDate(date);
 
-        //TODO remove magic numbers
         switch (modeSpinner.getSelectedItemPosition()) {
-            case 0:
+            case MODE_MONTHLY_POSITION:
                 item.setMode(Recurring.Mode.MONTHLY);
                 break;
-            case 1:
+            case MODE_BIWEEKLY_POSITION:
                 item.setMode(Recurring.Mode.BIWEEKLY);
                 break;
-            case 2:
+            case MODE_WEEKLY_POSITION:
                 item.setMode(Recurring.Mode.WEEKLY);
                 break;
         }
@@ -105,16 +108,15 @@ public class RecurringDialog extends BaseEditorDialog<Recurring> implements Date
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = item.getStartDate();
         dateInput.setText(df.format(item.getStartDate()));
-        //TODO remove magic numbers
         switch (item.getMode()) {
             case MONTHLY:
-                modeSpinner.setSelection(0);
+                modeSpinner.setSelection(MODE_MONTHLY_POSITION);
                 break;
             case BIWEEKLY:
-                modeSpinner.setSelection(1);
+                modeSpinner.setSelection(MODE_BIWEEKLY_POSITION);
                 break;
             case WEEKLY:
-                modeSpinner.setSelection(2);
+                modeSpinner.setSelection(MODE_WEEKLY_POSITION);
                 break;
         }
     }

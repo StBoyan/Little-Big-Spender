@@ -3,7 +3,7 @@ package com.boyanstoynov.littlebigspender;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.boyanstoynov.littlebigspender.db.RealmManager;
+import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 
 import butterknife.ButterKnife;
 
@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private RealmManager realmManager;
+    private final RealmManager realmManager = new RealmManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutResource());
         // Bind ButterKnife to activity
         ButterKnife.bind(this);
-        realmManager = new RealmManager();
         realmManager.open();
     }
 
@@ -38,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Gets the instance of RealmManager for the activity.
      * @return RealmManager RealmManager instance
      */
-    protected RealmManager getRealmManager() {
+    protected final RealmManager getRealmManager() {
         return realmManager;
     }
 

@@ -61,6 +61,9 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
     private Date date;
     private View positiveButton;
 
+    private final int SPINNER_INCOME_POSITION = 0;
+    private final int SPINNER_EXPENSE_POSITION = 1;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (categoryList == null)
@@ -80,10 +83,9 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if (typeRadioButton.isChecked()) {
-                            //TODO remove magic numbers
-                            if (typeSpinner.getSelectedItemPosition() == 0)
+                            if (typeSpinner.getSelectedItemPosition() == SPINNER_INCOME_POSITION)
                                 callback.onTypeFilterSelected(Category.Type.INCOME);
-                            else
+                            else if (typeSpinner.getSelectedItemPosition() == SPINNER_EXPENSE_POSITION)
                                 callback.onTypeFilterSelected(Category.Type.EXPENSE);
                         }
                         else if (categoryRadioButton.isChecked())

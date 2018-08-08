@@ -22,7 +22,7 @@ import io.realm.RealmResults;
  */
 public class TransactionDao extends BaseDao<Transaction> {
 
-    public TransactionDao(@NonNull Realm realm) {
+    TransactionDao(@NonNull Realm realm) {
         super(realm);
     }
 
@@ -33,13 +33,13 @@ public class TransactionDao extends BaseDao<Transaction> {
     public RealmResults<Transaction> getByType(Category.Type type) {
         return realm.where(Transaction.class).equalTo("category.type", type.toString()).findAll();
     }
-    //TODO change to use ID's instead of name for category and account
+
     public RealmResults<Transaction> getByCategory(Category category) {
-       return realm.where(Transaction.class).equalTo("category.name", category.getName()).findAll();
+       return realm.where(Transaction.class).equalTo("category.id", category.getId()).findAll();
     }
 
     public RealmResults<Transaction> getByAccount(Account account) {
-        return realm.where(Transaction.class).equalTo("account.name", account.getName()).findAll();
+        return realm.where(Transaction.class).equalTo("account.id", account.getId()).findAll();
     }
 
     public RealmResults<Transaction> getByDate(Date date) {

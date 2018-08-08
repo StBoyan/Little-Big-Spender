@@ -20,7 +20,7 @@ import io.realm.RealmResults;
  */
 public class RecurringDao extends BaseDao<Recurring> {
 
-    public RecurringDao(@NonNull Realm realm) {
+    RecurringDao(@NonNull Realm realm) {
         super(realm);
     }
 

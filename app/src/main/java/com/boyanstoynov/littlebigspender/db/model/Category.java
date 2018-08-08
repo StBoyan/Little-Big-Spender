@@ -45,6 +45,9 @@ public class Category extends RealmObject {
         return name;
     }
 
+    /**
+     * Type of transaction that the category is associated with.
+     */
     public enum Type {
         EXPENSE, INCOME
     }

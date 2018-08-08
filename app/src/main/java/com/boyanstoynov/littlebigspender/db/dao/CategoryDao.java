@@ -15,7 +15,7 @@ import io.realm.RealmResults;
  */
 public class CategoryDao extends BaseDao<Category> {
 
-    public CategoryDao(@NonNull Realm realm) {
+    CategoryDao(@NonNull Realm realm) {
         super(realm);
     }
 

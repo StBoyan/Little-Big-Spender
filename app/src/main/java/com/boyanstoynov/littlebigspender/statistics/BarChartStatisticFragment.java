@@ -1,9 +1,7 @@
 package com.boyanstoynov.littlebigspender.statistics;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +12,7 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -38,7 +37,7 @@ import io.realm.RealmResults;
  *
  * @author Boyan Stoynov
  */
-public class AccountStatisticFragment extends BaseFragment {
+public class BarChartStatisticFragment extends BaseFragment {
 
     @BindView(R.id.barChart_accountStatistic) BarChart chart;
 
@@ -97,12 +96,10 @@ public class AccountStatisticFragment extends BaseFragment {
 
             data.setValueFormatter(new IValueFormatter() {
                 DecimalFormat format = new DecimalFormat("###,###,###,##0.00");
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-
-                    return preferences.getString("currencySymbol", "N/A") + " " + format.format(value);
+                    return SharedPreferencesManager.getCurrencySymbol() + " " + format.format(value);
                 }
             });
 
@@ -112,11 +109,10 @@ public class AccountStatisticFragment extends BaseFragment {
             //TODO extract formatter in separate class here and upward
             chart.getAxisLeft().setValueFormatter(new IAxisValueFormatter() {
                 DecimalFormat format = new DecimalFormat("###,###,###,##0.00");
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
-                    return preferences.getString("currencySymbol", "N/A") + " " + format.format(value);
+                    return SharedPreferencesManager.getCurrencySymbol() + " " + format.format(value);
                 }
             });
 
@@ -131,7 +127,7 @@ public class AccountStatisticFragment extends BaseFragment {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_account_statistic;
+        return R.layout.fragment_bar_chart_statistic;
     }
 
     @Override

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
-import com.boyanstoynov.littlebigspender.db.RealmManager;
+import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 

@@ -81,7 +81,7 @@
     <!--Statistics-->
     <string name="statistics_income_breakdown">Income Breakdown</string>
     <string name="statistics_expense_breakdown">Expense Breakdown</string>
-    <string name="statistics_accounts_cashFlow">Accounts Cash FLow</string>
+    <string name="statistics_accounts_cashFlow">Accounts Cash Flow</string>
 
     <!--About-->
     <string name="about_description">

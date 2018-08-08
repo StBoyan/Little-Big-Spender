@@ -2,10 +2,8 @@ package com.boyanstoynov.littlebigspender.main.transactions;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -24,7 +22,6 @@ import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,7 +29,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 /**
@@ -54,6 +50,10 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
     AccountDao accountDao;
     Date date;
     boolean isRecurring;
+
+    private final int MODE_MONTHLY_POSITION = 0;
+    private final int MODE_BIWEEKLY_POSITION = 1;
+    private final int MODE_WEEKLY_POSITION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,15 +184,14 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
             newRecurring.setCategory((Category) categorySpinner.getSelectedItem());
             newRecurring.setAmount(new BigDecimal(inputAmount.getText().toString()));
             newRecurring.setStartDate(date);
-            //TODO remove magic numbers
             switch (recurringModeSpinner.getSelectedItemPosition()) {
-                case 0:
+                case MODE_MONTHLY_POSITION:
                     newRecurring.setMode(Recurring.Mode.MONTHLY);
                     break;
-                case 1:
+                case MODE_BIWEEKLY_POSITION:
                     newRecurring.setMode(Recurring.Mode.BIWEEKLY);
                     break;
-                case 2:
+                case MODE_WEEKLY_POSITION:
                     newRecurring.setMode(Recurring.Mode.WEEKLY);
                     break;
             }

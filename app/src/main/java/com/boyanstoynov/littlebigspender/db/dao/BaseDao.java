@@ -34,7 +34,7 @@ public abstract class BaseDao<T extends RealmObject> {
      * Save a RealmObject to the database.
      * @param realmObject RealmObject to save
      */
-    public void save(final T realmObject) {
+    public final void save(final T realmObject) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(@NonNull Realm realm) {
@@ -47,7 +47,7 @@ public abstract class BaseDao<T extends RealmObject> {
      * Delete the RealmObject from the database.
      * @param realmObject RealmObject to delete
      */
-    public void delete(final T realmObject) {
+    public final void delete(final T realmObject) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(@NonNull Realm realm) {
@@ -64,7 +64,7 @@ public abstract class BaseDao<T extends RealmObject> {
      * @param realmObject managed (live) RealmObject
      * @return unmanaged RealmObject
      */
-    public T getUnmanaged(T realmObject) {
+    public final T getUnmanaged(T realmObject) {
         return realm.copyFromRealm(realmObject);
     }
 }

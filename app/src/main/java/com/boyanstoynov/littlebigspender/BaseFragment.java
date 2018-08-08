@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.boyanstoynov.littlebigspender.db.RealmManager;
+import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -55,7 +55,7 @@ public abstract class BaseFragment extends Fragment {
      * Gets the RealmManager from parent activity.
      * @return RealmManager object
      */
-    protected RealmManager getRealmManager() {
+    protected final RealmManager getRealmManager() {
         return ((BaseActivity)getActivity()).getRealmManager();
     }
 }

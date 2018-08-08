@@ -19,6 +19,9 @@ public class CategoryDialog extends BaseEditorDialog<Category> {
     @BindView(R.id.textInput_category_name) EditText nameInput;
     @BindView(R.id.spinner_category_type) Spinner typeSpinner;
 
+    private final int SPINNER_INCOME_POSITION = 0;
+    private final int SPINNER_EXPENSE_POSITION = 1;
+
     @Override
     protected int getTitleResource() {
         return R.string.categories_editDialog_title;
@@ -39,12 +42,11 @@ public class CategoryDialog extends BaseEditorDialog<Category> {
 
     @Override
     protected void populateDialog() {
-        //TODO remove magic numbers
         nameInput.setText(item.getName());
         if (item.getType() == Category.Type.INCOME)
-            typeSpinner.setSelection(0);
+            typeSpinner.setSelection(SPINNER_INCOME_POSITION);
         else
-            typeSpinner.setSelection(1);
+            typeSpinner.setSelection(SPINNER_EXPENSE_POSITION);
 
         typeSpinner.setEnabled(false);
     }

@@ -23,6 +23,9 @@ public class AddCategoryActivity extends BaseActivity {
     @BindView(R.id.textInput_category_name) EditText categoryNameInput;
     @BindView(R.id.spinner_category_type) Spinner categoryTypeSpinner;
 
+    private final int SPINNER_INCOME_POSITION = 0;
+    private final int SPINNER_EXPENSE_POSITION = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +54,10 @@ public class AddCategoryActivity extends BaseActivity {
     private void createCategory() {
         Category newCategory = new Category();
         newCategory.setName(categoryNameInput.getText().toString());
-        //TODO remove magic number for itemPosition
-        if (categoryTypeSpinner.getSelectedItemPosition() == 0)
+
+        if (categoryTypeSpinner.getSelectedItemPosition() == SPINNER_INCOME_POSITION)
             newCategory.setType(Category.Type.INCOME);
-        else
+        else if (categoryTypeSpinner.getSelectedItemPosition() == SPINNER_EXPENSE_POSITION)
             newCategory.setType(Category.Type.EXPENSE);
         getRealmManager().createCategoryDao().save(newCategory);
     }

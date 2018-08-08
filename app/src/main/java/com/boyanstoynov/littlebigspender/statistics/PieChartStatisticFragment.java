@@ -2,6 +2,7 @@ package com.boyanstoynov.littlebigspender.statistics;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +32,13 @@ import io.realm.RealmResults;
  *
  * @author Boyan Stoynov
  */
-public class IncomeExpenseStatisticFragment extends BaseFragment {
+public class PieChartStatisticFragment extends BaseFragment {
 
     @BindView(R.id.pieChart_incomeExpenseStatistic) PieChart chart;
     Category.Type statisticType;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (statisticType == null)
             throw new IllegalStateException("Statistic Type not set. Need to call setStatisticType() first.");
@@ -101,7 +102,7 @@ public class IncomeExpenseStatisticFragment extends BaseFragment {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_income_expense_statistic;
+        return R.layout.fragment_pie_chart_statistic;
     }
 
     protected void setStatisticType(Category.Type statisticType) {

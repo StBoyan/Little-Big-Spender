@@ -96,7 +96,7 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
      *
      * @param item unmanaged data item
      */
-    public void setData(E item) {
+    public final void setData(E item) {
         if (item.isManaged())
             throw new IllegalArgumentException("Object is managed by Realm. Need to use an unmanaged RealmObject instead.");
 

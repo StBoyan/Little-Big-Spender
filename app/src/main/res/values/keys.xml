@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <!--Keys for SharedPreferences values-->
+    <string name="firstStart">firstStart</string>
+    <string name="currencySymbol">currencySymbol</string>
+    <string name="currencyDrawableId">currencyDrawableId</string>
+    <string name="currencyCode">currencyCode</string>
+
+</resources>

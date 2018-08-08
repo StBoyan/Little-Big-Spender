@@ -1,21 +1,16 @@
-package com.boyanstoynov.littlebigspender.db;
-
-import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
-import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
-import com.boyanstoynov.littlebigspender.db.dao.RecurringDao;
-import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
+package com.boyanstoynov.littlebigspender.db.dao;
 
 import io.realm.Realm;
 
 /**
- * Provides abstraction over Realm instance management
- * and creation of Data Access Objects.
+ * Provides abstraction over Realm instance management and creation of
+ * Data Access Objects. DAOs can only be instantiated via the RealmManager
+ * since they all have package private constructors.
  *
  * @author Boyan Stoynov
  */
 public class RealmManager {
-//TODO can make realm manager same packages as DAOS and make their constructors package protected
-    //TODO in order to prevent instantiation from outside of package
+
     private Realm realm;
 
     public void open() {

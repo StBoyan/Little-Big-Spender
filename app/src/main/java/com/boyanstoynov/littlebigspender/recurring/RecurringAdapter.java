@@ -1,8 +1,5 @@
 package com.boyanstoynov.littlebigspender.recurring;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,6 +7,7 @@ import android.widget.TextView;
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
+import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -41,13 +39,9 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
         @BindView(R.id.text_itemRecurring_date) TextView textDate;
         @BindView(R.id.text_itemRecurring_mode) TextView textMode;
         @BindView(R.id.text_itemRecurring_currency) TextView textCurrency;
-        // TODO remove context here and in constructor when a SharedPref helper class is there
-        Context context;
 
         RecurringViewHolder(ViewGroup parent, RecurringAdapter adapter) {
             super(parent, R.layout.item_recurring, adapter);
-
-            context = parent.getContext();
         }
 
         @Override
@@ -59,10 +53,7 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
             textAmount.setText(recurring.getAmount().toString());
             textDate.setText(df.format(recurring.getStartDate()));
             textMode.setText(recurring.getMode().toString());
-
-
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            textCurrency.setText(prefs.getString("currencySymbol", "N/A"));
+            textCurrency.setText(SharedPreferencesManager.getCurrencySymbol());
         }
     }
 }

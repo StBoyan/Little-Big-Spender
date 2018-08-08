@@ -7,7 +7,6 @@ import com.boyanstoynov.littlebigspender.db.model.Account;
 import java.math.BigDecimal;
 
 import io.realm.Realm;
-import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
@@ -18,7 +17,7 @@ import io.realm.RealmResults;
  */
 public class AccountDao extends BaseDao<Account> {
     //TODO If performance continues to be an issue. Revert back to asynchronous calls to DB and have a helper class to execute queries to isLoaded on a background thread with an executor
-    public AccountDao(@NonNull Realm realm) {
+    AccountDao(@NonNull Realm realm) {
         super(realm);
     }
 
