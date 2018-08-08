@@ -49,12 +49,13 @@ public class IncomeExpenseStatisticFragment extends BaseFragment {
         chart.setRotationAngle(0);
         chart.setRotationEnabled(true);
         chart.setHighlightPerTapEnabled(true);
+        chart.setDrawHoleEnabled(false);
 
         Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
+        l.setDrawInside(true);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
@@ -93,6 +94,7 @@ public class IncomeExpenseStatisticFragment extends BaseFragment {
 
         chart.setData(data);
         chart.invalidate();
+        chart.animateY(1500);
 
         return view;
     }
@@ -108,7 +110,7 @@ public class IncomeExpenseStatisticFragment extends BaseFragment {
 
     // TODO could implement choosing colors here
     private List<Integer> getColors() {
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
@@ -128,5 +130,12 @@ public class IncomeExpenseStatisticFragment extends BaseFragment {
         Collections.shuffle(colors);
 
         return colors;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && chart != null)
+            chart.animateY(1500);
     }
 }

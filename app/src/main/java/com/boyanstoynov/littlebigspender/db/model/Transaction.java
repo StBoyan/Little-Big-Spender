@@ -58,4 +58,8 @@ public class Transaction extends RealmObject {
     public void setAmount(BigDecimal amount) {
         this.amount = amount.multiply(new BigDecimal(100)).longValue();
     }
+
+    public Category.Type getType() {
+        return category.getType();
+    }
 }

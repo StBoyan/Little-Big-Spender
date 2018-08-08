@@ -1,0 +1,143 @@
+package com.boyanstoynov.littlebigspender.statistics;
+
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.boyanstoynov.littlebigspender.BaseFragment;
+import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.db.model.Account;
+import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import io.realm.RealmResults;
+
+/**
+ * Account Statistic Fragment.
+ *
+ * @author Boyan Stoynov
+ */
+public class AccountStatisticFragment extends BaseFragment {
+
+    @BindView(R.id.barChart_accountStatistic) BarChart chart;
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+
+        final RealmResults<Account> accounts = getRealmManager().createAccountDao().getAll();
+        List<BarEntry> dataEntries = new ArrayList<>();
+        final List<String> labels = new ArrayList<>();
+        int i = 0;
+        for (Account account : accounts) {
+            labels.add(account.getName());
+            RealmResults<Transaction> accountTransactions = getRealmManager().createTransactionDao().getByAccount(account);
+            float accountIncome = 0.0f;
+            float accountExpense = 0.0f;
+
+            for (Transaction transaction : accountTransactions) {
+                if (transaction.getCategory().getType() == Category.Type.INCOME)
+                    accountIncome += transaction.getAmount().floatValue();
+                else
+                    accountExpense += transaction.getAmount().floatValue();
+            }
+
+            dataEntries.add(new BarEntry(i, new float[] {accountIncome, accountExpense}));
+            i++;
+
+            BarDataSet dataSet = new BarDataSet(dataEntries, "");
+            //TODO need to remove hardcoded values
+            dataSet.setColors(getResources().getColor(R.color.green), getResources().getColor(R.color.red));
+            dataSet.setStackLabels(new String[] {"Income", "Expense"});
+
+            BarData data = new BarData(dataSet);
+
+            chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return labels.get((int) value);
+                }
+            });
+            chart.getXAxis().setLabelCount(labels.size());
+            chart.setDrawGridBackground(false);
+
+            YAxis leftAxis = chart.getAxisLeft();
+            leftAxis.setAxisMinimum(0f);
+
+            YAxis rightAxis = chart.getAxisRight();
+            rightAxis.setAxisMinimum(0f);
+
+            data.setValueFormatter(new IValueFormatter() {
+                DecimalFormat format = new DecimalFormat("###,###,###,##0.00");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                @Override
+                public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+
+                    return preferences.getString("currencySymbol", "N/A") + " " + format.format(value);
+                }
+            });
+
+            chart.setFitBars(true);
+            chart.setData(data);
+
+            //TODO extract formatter in separate class here and upward
+            chart.getAxisLeft().setValueFormatter(new IAxisValueFormatter() {
+                DecimalFormat format = new DecimalFormat("###,###,###,##0.00");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return preferences.getString("currencySymbol", "N/A") + " " + format.format(value);
+                }
+            });
+
+            chart.getAxisRight().setEnabled(false);
+
+            chart.invalidate();
+        }
+
+        chart.animateY(1500);
+        return view;
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.fragment_account_statistic;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && chart != null)
+            chart.animateY(1500);
+    }
+}

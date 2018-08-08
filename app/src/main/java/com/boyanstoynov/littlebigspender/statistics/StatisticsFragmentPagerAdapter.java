@@ -10,13 +10,13 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 
 /**
- * Description
+ * Statistic Fragment Pager Adapter.
  *
  * @author Boyan Stoynov
  */
 public class StatisticsFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private final int NUMBER_OF_TABS = 4;
+    private final int NUMBER_OF_TABS = 3;
     private final Context context;
 
     StatisticsFragmentPagerAdapter(Context context, FragmentManager fm) {
@@ -37,15 +37,7 @@ public class StatisticsFragmentPagerAdapter extends FragmentPagerAdapter {
                 expenseStatistic.setStatisticType(Category.Type.EXPENSE);
                 return expenseStatistic;
             case 2:
-                //TODO placeholder
-                IncomeExpenseStatisticFragment incomeStatistic2 = new IncomeExpenseStatisticFragment();
-                incomeStatistic2.setStatisticType(Category.Type.INCOME);
-                return incomeStatistic2;
-            case 3:
-                //TODO placeholder
-                IncomeExpenseStatisticFragment expenseStatistic2 = new IncomeExpenseStatisticFragment();
-                expenseStatistic2.setStatisticType(Category.Type.EXPENSE);
-                return expenseStatistic2;
+                return new AccountStatisticFragment();
             default:
                 return null;
         }
@@ -62,13 +54,11 @@ public class StatisticsFragmentPagerAdapter extends FragmentPagerAdapter {
         //TODO may want to extract numbers to finals (remove magic numbers)
         switch (position) {
             case 0:
-                return context.getString(R.string.all_income);
+                return context.getString(R.string.statistics_income_breakdown);
             case 1:
-                return context.getString(R.string.all_expense);
+                return context.getString(R.string.statistics_expense_breakdown);
             case 2:
-                return context.getString(R.string.all_category);
-            case 3:
-                return context.getString(R.string.all_account);
+                return context.getString(R.string.statistics_accounts_cashFlow);
             default:
                 return null;
         }

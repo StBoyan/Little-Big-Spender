@@ -40,6 +40,7 @@ public class StatisticsActivity extends BaseActivity {
         StatisticsFragmentPagerAdapter adapter = new StatisticsFragmentPagerAdapter(this, getSupportFragmentManager());
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(0);
         tabLayout.setupWithViewPager(viewPager);
 
     }

@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,8 +124,8 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
      */
     public static abstract class ViewHolder<E extends RealmObject> extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.button_delete) Button deleteButton;
-        @BindView(R.id.button_edit) Button editButton;
+        @BindView(R.id.button_delete) ImageButton deleteButton;
+        @BindView(R.id.button_edit) ImageButton editButton;
         @BindView(R.id.divider_expandableButtons) View divider;
 
         protected E item;

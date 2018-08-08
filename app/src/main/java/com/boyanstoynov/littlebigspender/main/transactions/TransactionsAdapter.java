@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction>{
         @BindView(R.id.text_itemTransaction_amount) TextView textAmount;
         @BindView(R.id.text_itemTransaction_date) TextView textDate;
         @BindView(R.id.text_itemTransaction_currency) TextView textCurrency;
+        @BindView(R.id.text_itemTransaction_type) TextView textType;
         //TODO remove context. See RecurringAdapter
         Context context;
 
@@ -56,6 +58,11 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction>{
             textCategory.setText(transaction.getCategory().getName());
             textAmount.setText(transaction.getAmount().toString());
             textDate.setText(df.format(transaction.getDate()));
+            if (transaction.getCategory().getType() == Category.Type.INCOME)
+                textType.setText(R.string.all_plus_symbol);
+            else
+                textType.setText(R.string.all_minus_symbol);
+
 
             // TODO change this usage and other adapters to use some helper class
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

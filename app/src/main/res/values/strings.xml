@@ -25,6 +25,8 @@
     <string name="all_warning_delete_message">Are you sure you want to delete</string>
     <string name="all_save">Save</string>
     <string name="all_cancel">Cancel</string>
+    <string name="all_plus_symbol">+</string>
+    <string name="all_minus_symbol">-</string>
 
     <!--Introduction-->
     <string name="intro_welcome_title">Welcome to Little Big Spender</string>
@@ -75,6 +77,11 @@
 
     <!--Settings-->
     <string name="settings_currency">Currency</string>
+
+    <!--Statistics-->
+    <string name="statistics_income_breakdown">Income Breakdown</string>
+    <string name="statistics_expense_breakdown">Expense Breakdown</string>
+    <string name="statistics_accounts_cashFlow">Accounts Cash FLow</string>
 
     <!--About-->
     <string name="about_description">
