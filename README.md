@@ -2,7 +2,7 @@
 Personal money management Android application developed in part fulfillment of the requirements of the Degree of Master of Science at the University of Glasgow.
 
 ## Features
-This section will contain a list of the app's features.
+* Supports Android 5.0 (API 21) and above
 
 ## Screenshots
 This section will contain screenshots from the app.
@@ -27,9 +27,9 @@ The table below summarises the lines of code that make up the project, including
 
 | Language      | Number of files | Blank lines | Comment lines | Lines of code |
 | ------------- | --------------- | ----------- | ------------- | ------------- |
-| **Java**      |               40|          646|            453|           2596|
-| **XML**       |               40|          177|              0|           1379|
-| **Total**     |               80|          823|            453|           3975|
+| **Java**      |               45|          759|            506|           3025|
+| **XML**       |               43|          187|             15|           1448|
+| **Total**     |               88|          946|            521|           4473|
 
 ## License
     MIT License

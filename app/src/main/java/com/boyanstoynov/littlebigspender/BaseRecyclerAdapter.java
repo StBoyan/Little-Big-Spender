@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +133,7 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
         private RecyclerViewListener<E> listener;
         private BaseRecyclerAdapter adapter;
         private boolean isExpanded;
+        private DecimalFormat moneyFormatter = new DecimalFormat("###,###,###,##0.00");
 
         /**
          * ViewHolder constructor.
@@ -199,6 +201,14 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
             }
         }
 
+        /**
+         * Returns a money formatter appropriate for formatting monetary
+         * values with comma separators and 2 decimal digits.
+         * @return DecimalFormat formatter
+         */
+        protected DecimalFormat getMoneyFormatter() {
+            return moneyFormatter;
+        }
 
         private void setListener(RecyclerViewListener<E> listener) {
             this.listener = listener;

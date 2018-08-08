@@ -50,7 +50,7 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction>{
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             textAccount.setText(transaction.getAccount().getName());
             textCategory.setText(transaction.getCategory().getName());
-            textAmount.setText(transaction.getAmount().toString());
+            textAmount.setText(getMoneyFormatter().format(transaction.getAmount()));
             textDate.setText(df.format(transaction.getDate()));
 
             if (transaction.getCategory().getType() == Category.Type.INCOME)

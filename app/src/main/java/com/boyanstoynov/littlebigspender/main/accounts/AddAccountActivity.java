@@ -1,12 +1,14 @@
 package com.boyanstoynov.littlebigspender.main.accounts;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseActivity;
 import com.boyanstoynov.littlebigspender.db.model.Account;
+import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
 
@@ -23,9 +25,14 @@ public class AddAccountActivity extends BaseActivity {
     @BindView(R.id.textInput_account_name) EditText accountNameInput;
     @BindView(R.id.numberInput_account_balance) EditText balanceInput;
 
+    private final int BALANCE_DIGITS_BEFORE_ZERO_FILTER = 7;
+    private final int BALANCE_DIGITS_AFTER_ZERO_FILTER = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        balanceInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(BALANCE_DIGITS_BEFORE_ZERO_FILTER, BALANCE_DIGITS_AFTER_ZERO_FILTER)});
     }
 
     @Override

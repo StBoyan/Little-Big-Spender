@@ -26,14 +26,14 @@ import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
-import com.boyanstoynov.littlebigspender.main.accounts.AccountDialog;
+import com.boyanstoynov.littlebigspender.main.accounts.EditAccountDialog;
 import com.boyanstoynov.littlebigspender.main.accounts.AccountsFragment;
 import com.boyanstoynov.littlebigspender.BaseActivity;
 import com.boyanstoynov.littlebigspender.main.accounts.AddAccountActivity;
 import com.boyanstoynov.littlebigspender.main.accounts.TransferDialog;
 import com.boyanstoynov.littlebigspender.main.overview.OverviewFragment;
+import com.boyanstoynov.littlebigspender.main.transactions.EditTransactionDialog;
 import com.boyanstoynov.littlebigspender.main.transactions.FilterDialog;
-import com.boyanstoynov.littlebigspender.main.transactions.TransactionDialog;
 import com.boyanstoynov.littlebigspender.main.transactions.TransactionsFragment;
 
 import com.boyanstoynov.littlebigspender.about.AboutActivity;
@@ -282,7 +282,7 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
 
     public void showEditAccountDialog(Account account) {
         AccountDao accountDao = getRealmManager().createAccountDao();
-        AccountDialog dialog = new AccountDialog();
+        EditAccountDialog dialog = new EditAccountDialog();
         dialog.setData(accountDao.getUnmanaged(account));
         dialog.show(getSupportFragmentManager(), "ACCOUNT_DIALOG");
     }
@@ -292,7 +292,7 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
         CategoryDao categoryDao = getRealmManager().createCategoryDao();
         AccountDao accountDao = getRealmManager().createAccountDao();
 
-        TransactionDialog dialog = new TransactionDialog();
+        EditTransactionDialog dialog = new EditTransactionDialog();
         dialog.setData(transactionDao.getUnmanaged(transaction));
         dialog.setAccountsList(accountDao.getAll());
 

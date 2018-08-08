@@ -108,7 +108,7 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
         CategoryDao categoryDao = getRealmManager().createCategoryDao();
         AccountDao accountDao = getRealmManager().createAccountDao();
 
-        RecurringDialog dialog = new RecurringDialog();
+        EditRecurringDialog dialog = new EditRecurringDialog();
         dialog.setData(recurringDao.getUnmanaged(recurring));
         dialog.setAccountsList(accountDao.getAll());
 

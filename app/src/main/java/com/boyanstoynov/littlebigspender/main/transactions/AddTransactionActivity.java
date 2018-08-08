@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -19,6 +20,7 @@ import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -54,12 +56,17 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
     private final int MODE_MONTHLY_POSITION = 0;
     private final int MODE_BIWEEKLY_POSITION = 1;
     private final int MODE_WEEKLY_POSITION = 2;
+    private final int AMOUNT_DIGITS_BEFORE_ZERO_FILTER = 7;
+    private final int AMOUNT_DIGITS_AFTER_ZERO_FILTER = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        inputAmount.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER, AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
+
         categoryDao = getRealmManager().createCategoryDao();
         final RealmResults<Category> expenseCategories = categoryDao.getAllExpenseCategories();
         final RealmResults<Category> incomeCategories = categoryDao.getAllIncomeCategories();

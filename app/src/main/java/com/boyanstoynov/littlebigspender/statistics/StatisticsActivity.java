@@ -26,10 +26,6 @@ public class StatisticsActivity extends BaseActivity {
     @BindView(R.id.tabLayout_statistics) TabLayout tabLayout;
     @BindView(R.id.viewPager_statistics) ViewPager viewPager;
 
-    private final int INCOME_BREAKDOWN_POSITION = 0;
-    private final int EXPENSE_BREAKDOWN_POSITION = 1;
-    private final int ACCOUNT_CASHFLOW_POSITION = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +53,10 @@ public class StatisticsActivity extends BaseActivity {
     public class StatisticsFragmentPagerAdapter extends FragmentPagerAdapter {
 
         private final int NUMBER_OF_TABS = 3;
+
+        private final int INCOME_BREAKDOWN_POSITION = 0;
+        private final int EXPENSE_BREAKDOWN_POSITION = 1;
+        private final int ACCOUNT_CASHFLOW_POSITION = 2;
 
         StatisticsFragmentPagerAdapter(FragmentManager fm) {
             super(fm);

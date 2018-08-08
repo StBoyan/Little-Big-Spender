@@ -1,6 +1,7 @@
 package com.boyanstoynov.littlebigspender.main.transactions;
 
 import android.app.DatePickerDialog;
+import android.text.InputFilter;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -29,7 +31,7 @@ import butterknife.OnClick;
  *
  * @author Boyan Stoynov
  */
-public class TransactionDialog extends BaseEditorDialog<Transaction> implements DatePickerDialog.OnDateSetListener {
+public class EditTransactionDialog extends BaseEditorDialog<Transaction> implements DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.spinner_transaction_category) Spinner categorySpinner;
     @BindView(R.id.spinner_transaction_account) Spinner accountSpinner;
@@ -39,6 +41,10 @@ public class TransactionDialog extends BaseEditorDialog<Transaction> implements 
     Date date;
     List<Account> accountsList;
     List<Category> categoriesList;
+
+    private final int AMOUNT_DIGITS_BEFORE_ZERO_FILTER = 7;
+    private final int AMOUNT_DIGITS_AFTER_ZERO_FILTER = 2;
+
 
     @Override
     protected int getTitleResource() {
@@ -86,6 +92,8 @@ public class TransactionDialog extends BaseEditorDialog<Transaction> implements 
         }
 
         amountInput.setText(item.getAmount().toString());
+
+        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER, AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = item.getDate();

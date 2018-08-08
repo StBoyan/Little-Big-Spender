@@ -50,7 +50,7 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             textAccount.setText(recurring.getAccount().toString());
             textCategory.setText(recurring.getCategory().toString());
-            textAmount.setText(recurring.getAmount().toString());
+            textAmount.setText(getMoneyFormatter().format(recurring.getAmount()));
             textDate.setText(df.format(recurring.getStartDate()));
             textMode.setText(recurring.getMode().toString());
             textCurrency.setText(SharedPreferencesManager.getCurrencySymbol());

@@ -41,7 +41,7 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
         @Override
         protected void setItemPresentation(Account account) {
             textAccount.setText(account.getName());
-            textBalance.setText(account.getBalance().toString());
+            textBalance.setText(getMoneyFormatter().format(account.getBalance()));
             textCurrency.setText(SharedPreferencesManager.getCurrencySymbol());
         }
     }
