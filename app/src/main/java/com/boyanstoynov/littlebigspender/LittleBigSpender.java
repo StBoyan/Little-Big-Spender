@@ -2,7 +2,7 @@ package com.boyanstoynov.littlebigspender;
 
 import android.app.Application;
 
-import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
+import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import io.realm.Realm;
 
@@ -20,6 +20,6 @@ public class LittleBigSpender extends Application {
         //Initialise Realm database on launch with default config
         Realm.init(this);
         //Initialise SharedPreferences manager
-        SharedPreferencesManager.init(this);
+        SharedPrefsManager.init(this);
     }
 }

@@ -17,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.util.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -184,13 +185,8 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
     @OnClick(R.id.dateInput_filter)
     public void showDatePicker() {
-        Calendar calendar = new GregorianCalendar(Locale.getDefault());
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
-        //TODO replace some date functionality with date util class
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this,
+                DateUtils.yearToday(), DateUtils.monthToday(), DateUtils.dayToday());
         datePickerDialog.show();
     }
 

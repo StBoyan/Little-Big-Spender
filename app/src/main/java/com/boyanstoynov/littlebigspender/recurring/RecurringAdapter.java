@@ -7,10 +7,8 @@ import android.widget.TextView;
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
-import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import butterknife.BindView;
 
@@ -21,7 +19,7 @@ import butterknife.BindView;
  */
 public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
 
-    RecurringAdapter(RecyclerViewListener listener) {
+    RecurringAdapter(RecyclerViewListener<Recurring> listener) {
         super(listener);
     }
 
@@ -46,14 +44,12 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
 
         @Override
         protected void setItemPresentation(Recurring recurring) {
-            //TODO refactor SimpleDateFormat here and in transactions. Maybe use a helper util class
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             textAccount.setText(recurring.getAccount().toString());
             textCategory.setText(recurring.getCategory().toString());
             textAmount.setText(getMoneyFormatter().format(recurring.getAmount()));
-            textDate.setText(df.format(recurring.getStartDate()));
+            textDate.setText(DateUtils.formatDate(recurring.getStartDate()));
             textMode.setText(recurring.getMode().toString());
-            textCurrency.setText(SharedPreferencesManager.getCurrencySymbol());
+            textCurrency.setText(SharedPrefsManager.getCurrencySymbol());
         }
     }
 }

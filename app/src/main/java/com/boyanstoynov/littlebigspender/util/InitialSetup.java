@@ -136,8 +136,8 @@ public class InitialSetup implements Runnable {
         Locale defaultLocale = Locale.getDefault();
         Currency currency = Currency.getInstance(defaultLocale);
         ExtendedCurrency localCurrency = ExtendedCurrency.getCurrencyByISO(currency.getCurrencyCode());
-        SharedPreferencesManager.write(context.getResources().getString(R.string.currencyCode), localCurrency.getCode());
-        SharedPreferencesManager.write(context.getResources().getString(R.string.currencySymbol), localCurrency.getSymbol());
-        SharedPreferencesManager.write(context.getResources().getString(R.string.currencyDrawableId), localCurrency.getFlag());
+        SharedPrefsManager.write(context.getResources().getString(R.string.currencyCode), localCurrency.getCode());
+        SharedPrefsManager.write(context.getResources().getString(R.string.currencySymbol), localCurrency.getSymbol());
+        SharedPrefsManager.write(context.getResources().getString(R.string.currencyDrawableId), localCurrency.getFlag());
     }
 }

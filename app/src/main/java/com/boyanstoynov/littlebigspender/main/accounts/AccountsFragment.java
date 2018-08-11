@@ -31,7 +31,7 @@ import io.realm.RealmResults;
  */
 public class AccountsFragment extends BaseFragment {
 
-    @BindView(R.id.recyclerview_accounts) RecyclerView recyclerView;
+    @BindView(R.id.recyclerView_accounts) RecyclerView recyclerView;
 
     private AccountsAdapter adapter;
 

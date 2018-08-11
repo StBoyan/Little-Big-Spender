@@ -20,6 +20,7 @@ Javadoc documentation of the whole project, including private methods can be fou
 - [**Currency Picker**](https://github.com/midorikocak/currency-picker-android)
 - [**Material Dialogs**](https://github.com/afollestad/material-dialogs)
 - [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart)
+- [**OkHttp**](https://github.com/square/okhttp)
 - [**Realm**](https://github.com/realm/realm-java)
 
 ## Statistic

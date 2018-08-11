@@ -3,6 +3,7 @@ package com.boyanstoynov.littlebigspender.statistics;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
-import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
+import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -73,9 +74,9 @@ public class BarChartStatisticFragment extends BaseFragment {
             i++;
 
             BarDataSet dataSet = new BarDataSet(dataEntries, "");
-            //TODO need to remove hardcoded values
-            dataSet.setColors(getResources().getColor(R.color.green), getResources().getColor(R.color.red));
-            dataSet.setStackLabels(new String[] {"Income", "Expense"});
+            dataSet.setColors(ContextCompat.getColor(getContext(), R.color.green),
+                    ContextCompat.getColor(getContext(), R.color.red));
+            dataSet.setStackLabels(new String[] {getResources().getString(R.string.all_income), getResources().getString(R.string.all_expense)});
 
             BarData data = new BarData(dataSet);
 
@@ -99,7 +100,7 @@ public class BarChartStatisticFragment extends BaseFragment {
 
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                    return SharedPreferencesManager.getCurrencySymbol() + " " + format.format(value);
+                    return SharedPrefsManager.getCurrencySymbol() + " " + format.format(value);
                 }
             });
 
@@ -112,7 +113,7 @@ public class BarChartStatisticFragment extends BaseFragment {
 
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
-                    return SharedPreferencesManager.getCurrencySymbol() + " " + format.format(value);
+                    return SharedPrefsManager.getCurrencySymbol() + " " + format.format(value);
                 }
             });
 

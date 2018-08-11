@@ -5,11 +5,10 @@ import android.support.annotation.NonNull;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.util.DateUtils;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -43,16 +42,8 @@ public class TransactionDao extends BaseDao<Transaction> {
     }
 
     public RealmResults<Transaction> getByDate(Date date) {
-        //TODO move this functionality to date util
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date date1 = calendar.getTime();
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        Date date2 = calendar.getTime();
-        return realm.where(Transaction.class).between("date", date1, date2).findAll();
+        return realm.where(Transaction.class).between("date",
+                DateUtils.startOfDay(date), DateUtils.endOfDay(date)).findAll();
     }
 
     public Transaction getById(String id) {

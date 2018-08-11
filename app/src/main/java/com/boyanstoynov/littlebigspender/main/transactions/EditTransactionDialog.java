@@ -12,12 +12,12 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.util.DateUtils;
 import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -93,7 +93,8 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
 
         amountInput.setText(item.getAmount().toString());
 
-        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER, AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
+        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER,
+                AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = item.getDate();
@@ -109,13 +110,8 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
 
     @OnClick(R.id.dateInput_transaction)
     public void showDatePicker() {
-        Calendar calendar = new GregorianCalendar(Locale.getDefault());
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), this, year, month, day);
-        //TODO replace some date functionality with date util class
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), this,
+                DateUtils.yearToday(), DateUtils.monthToday(), DateUtils.monthToday());
         datePickerDialog.show();
     }
 

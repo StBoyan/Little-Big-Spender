@@ -20,6 +20,7 @@ import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.util.DateUtils;
 import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
@@ -207,14 +208,7 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
             newRecurring.setNextTransactionDate(new Date());
             getRealmManager().createRecurringDao().save(newRecurring);
 
-            // TODO create date utils class to take care of everything related to date
-            Calendar cal1 = Calendar.getInstance();
-            Calendar cal2 = Calendar.getInstance();
-            cal1.setTime(date);
-            cal2.setTime(new Date());
-            boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                    cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-            if (sameDay) {
+            if (DateUtils.isToday(date)) {
                 Transaction newTransaction = new Transaction();
                 newTransaction.setAccount((Account) accountSpinner.getSelectedItem());
                 newTransaction.setCategory((Category) categorySpinner.getSelectedItem());

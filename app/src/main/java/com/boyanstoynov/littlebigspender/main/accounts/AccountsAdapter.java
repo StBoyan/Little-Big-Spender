@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
-import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
+import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import butterknife.BindView;
 
@@ -42,7 +42,7 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
         protected void setItemPresentation(Account account) {
             textAccount.setText(account.getName());
             textBalance.setText(getMoneyFormatter().format(account.getBalance()));
-            textCurrency.setText(SharedPreferencesManager.getCurrencySymbol());
+            textCurrency.setText(SharedPrefsManager.getCurrencySymbol());
         }
     }
 }

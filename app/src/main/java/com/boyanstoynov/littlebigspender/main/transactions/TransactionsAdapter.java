@@ -8,10 +8,8 @@ import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
-import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import butterknife.BindView;
 
@@ -47,18 +45,17 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction>{
 
         @Override
         protected void setItemPresentation(Transaction transaction) {
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             textAccount.setText(transaction.getAccount().getName());
             textCategory.setText(transaction.getCategory().getName());
             textAmount.setText(getMoneyFormatter().format(transaction.getAmount()));
-            textDate.setText(df.format(transaction.getDate()));
+            textDate.setText(DateUtils.formatDate(transaction.getDate()));
 
             if (transaction.getCategory().getType() == Category.Type.INCOME)
                 textType.setText(R.string.all_plus_symbol);
             else
                 textType.setText(R.string.all_minus_symbol);
 
-            textCurrency.setText(SharedPreferencesManager.getCurrencySymbol());
+            textCurrency.setText(SharedPrefsManager.getCurrencySymbol());
         }
     }
 }

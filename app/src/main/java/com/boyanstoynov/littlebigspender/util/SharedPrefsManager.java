@@ -16,7 +16,7 @@ import com.boyanstoynov.littlebigspender.R;
  *
  * @author Boyan Stoynov
  */
-public class SharedPreferencesManager {
+public class SharedPrefsManager {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;

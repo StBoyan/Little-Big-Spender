@@ -17,7 +17,7 @@ import butterknife.BindView;
  */
 public class CategoriesAdapter extends BaseRecyclerAdapter<Category>{
 
-    CategoriesAdapter(RecyclerViewListener listener) {
+    CategoriesAdapter(RecyclerViewListener<Category> listener) {
         super(listener);
     }
 

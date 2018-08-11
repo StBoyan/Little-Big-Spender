@@ -46,7 +46,7 @@ import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
 import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 import com.boyanstoynov.littlebigspender.util.InitialSetup;
-import com.boyanstoynov.littlebigspender.util.SharedPreferencesManager;
+import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -68,10 +68,10 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
         super.onCreate(savedInstanceState);
 
         // If application is launched for the first time start Intro activity and do initial setup
-        if (SharedPreferencesManager.read(getResources().getString(R.string.firstStart),true)) {
+        if (SharedPrefsManager.read(getResources().getString(R.string.firstStart),true)) {
             startActivity(new Intent(this, IntroActivity.class));
             AsyncTask.execute(new InitialSetup(this));
-            SharedPreferencesManager.write(getResources().getString(R.string.firstStart), false);
+            SharedPrefsManager.write(getResources().getString(R.string.firstStart), false);
         }
 
         //TODO consider making toolbar part of a superclass to use in other activities
