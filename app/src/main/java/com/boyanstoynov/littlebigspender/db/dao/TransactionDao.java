@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
-import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -43,7 +43,7 @@ public class TransactionDao extends BaseDao<Transaction> {
 
     public RealmResults<Transaction> getByDate(Date date) {
         return realm.where(Transaction.class).between("date",
-                DateUtils.startOfDay(date), DateUtils.endOfDay(date)).findAll();
+                DateTimeUtils.startOfDay(date), DateTimeUtils.endOfDay(date)).findAll();
     }
 
     public Transaction getById(String id) {

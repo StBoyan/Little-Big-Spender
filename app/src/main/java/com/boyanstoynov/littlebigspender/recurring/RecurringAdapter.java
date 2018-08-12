@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
-import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import butterknife.BindView;
@@ -46,8 +46,8 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
         protected void setItemPresentation(Recurring recurring) {
             textAccount.setText(recurring.getAccount().toString());
             textCategory.setText(recurring.getCategory().toString());
-            textAmount.setText(getMoneyFormatter().format(recurring.getAmount()));
-            textDate.setText(DateUtils.formatDate(recurring.getStartDate()));
+            textAmount.setText(getFiatFormatter().format(recurring.getAmount()));
+            textDate.setText(DateTimeUtils.formatDate(recurring.getStartDate()));
             textMode.setText(recurring.getMode().toString());
             textCurrency.setText(SharedPrefsManager.getCurrencySymbol());
         }

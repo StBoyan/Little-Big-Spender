@@ -12,7 +12,7 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
-import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
@@ -134,7 +134,7 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
 
     @OnClick(R.id.dateInput_transaction)
     public void showDatePicker() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), this, DateUtils.yearToday(), DateUtils.monthToday(), DateUtils.dayToday());
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), this, DateTimeUtils.yearToday(), DateTimeUtils.monthToday(), DateTimeUtils.dayToday());
         datePickerDialog.show();
     }
 

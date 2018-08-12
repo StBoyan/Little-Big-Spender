@@ -27,7 +27,7 @@
         <activity
             android:name=".statistics.StatisticsActivity"
             android:parentActivityName=".main.MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".recurring.RecurringActivity"
             android:parentActivityName=".main.MainActivity" />
@@ -42,6 +42,7 @@
             android:parentActivityName=".main.MainActivity" />
         <activity android:name=".main.accounts.AddAccountActivity" />
         <activity android:name=".categories.AddCategoryActivity" />
+        <activity android:name=".main.accounts.AddCryptoActivity" />
     </application>
 
 </manifest>

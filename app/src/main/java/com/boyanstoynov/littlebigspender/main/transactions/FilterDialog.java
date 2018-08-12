@@ -17,7 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
-import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -185,7 +185,7 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
     @OnClick(R.id.dateInput_filter)
     public void showDatePicker() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this,
-                DateUtils.yearToday(), DateUtils.monthToday(), DateUtils.dayToday());
+                DateTimeUtils.yearToday(), DateTimeUtils.monthToday(), DateTimeUtils.dayToday());
         datePickerDialog.show();
     }
 

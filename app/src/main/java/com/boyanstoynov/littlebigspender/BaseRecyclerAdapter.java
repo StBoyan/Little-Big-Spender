@@ -41,7 +41,7 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
         void onEditButtonClicked(E item);
     }
 
-    private final List<E> dataSet = new ArrayList<>();
+    protected final List<E> dataSet = new ArrayList<>();
     private final List<ViewHolder> viewHolders = new ArrayList<>();
     private final RecyclerViewListener<E> listener;
 
@@ -133,7 +133,8 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
         private RecyclerViewListener<E> listener;
         private BaseRecyclerAdapter adapter;
         private boolean isExpanded;
-        private DecimalFormat moneyFormatter = new DecimalFormat("###,###,###,##0.00");
+        private final DecimalFormat fiatFormatter = new DecimalFormat("###,###,###,##0.00");
+        private final DecimalFormat cryptoFormatter = new DecimalFormat("###,###,###,##0.00000000");
 
         /**
          * ViewHolder constructor.
@@ -202,12 +203,21 @@ public abstract class BaseRecyclerAdapter<E extends RealmObject> extends Recycle
         }
 
         /**
-         * Returns a money formatter appropriate for formatting monetary
-         * values with comma separators and 2 decimal digits.
+         * Returns a fiat currency formatter appropriate for formatting
+         * monetary values with comma separators and 2 decimal digits.
          * @return DecimalFormat formatter
          */
-        protected DecimalFormat getMoneyFormatter() {
-            return moneyFormatter;
+        protected DecimalFormat getFiatFormatter() {
+            return fiatFormatter;
+        }
+
+        /**
+         * Returns a cryptocurrency formatter appropriate for formatting
+         * monetary values with comma separators and 8 decimal digits.
+         * @return DecimalFormat formatter
+         */
+        protected DecimalFormat getCryptoFormatter() {
+            return cryptoFormatter;
         }
 
         private void setListener(RecyclerViewListener<E> listener) {

@@ -1,5 +1,6 @@
 package com.boyanstoynov.littlebigspender.api;
 
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import org.json.JSONException;
@@ -71,6 +72,7 @@ public class CryptoClient {
 
         //Send request to API
         httpClient.newCall(request).enqueue(new Callback() {
+
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 call.cancel();
@@ -83,6 +85,7 @@ public class CryptoClient {
 
                 try {
                     JSONObject json = new JSONObject(stringResponse);
+                    Looper.prepare();
                     callbackListener.onFetchSuccessful(new BigDecimal(json.getString(fiatCurrencyCode)));
                 } catch (JSONException e) {
                     callbackListener.onFetchUnsuccessful();

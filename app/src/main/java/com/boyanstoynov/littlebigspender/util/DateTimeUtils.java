@@ -7,11 +7,12 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
- * Description
+ * Utility class with static methods that provide various
+ * functions to the application relating to date and time.
  *
  * @author Boyan Stoynov
  */
-public class DateUtils {
+public class DateTimeUtils {
 
     private static Locale defaultLocale = Locale.getDefault();
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", defaultLocale);
@@ -94,5 +95,26 @@ public class DateUtils {
 
         return todayCalendar.get(Calendar.YEAR) == compareCalendar.get(Calendar.YEAR) &&
         todayCalendar.get(Calendar.DAY_OF_YEAR) == compareCalendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    /**
+     * Gets the current time denoted in epoch time in milliseconds.
+     * @return long current epoch time
+     */
+    public static long getCurrentTimeInMillis() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
+
+    /**
+     * Returns the elapsed time in milliseconds between the specified
+     * time and the present moment.
+     * @param epochTime epoch time in milliseconds
+     * @return long elapsed time in milliseconds
+     */
+    public static long getElapsedTime(long epochTime) {
+        Date pastTime = new Date(epochTime);
+        Date now = new Date();
+
+        return now.getTime() - pastTime.getTime();
     }
 }

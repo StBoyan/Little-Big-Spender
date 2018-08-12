@@ -5,6 +5,7 @@
     <string name="all_overview">Overview</string>
     <string name="all_transactions">Transactions</string>
     <string name="all_accounts">Accounts</string>
+    <string name="all_cryptocurrency">Cryptocurrency</string>
     <string name="all_settings">Settings</string>
     <string name="all_statistics">Statistics</string>
     <string name="all_categories">Categories</string>
@@ -27,6 +28,7 @@
     <string name="all_cancel">Cancel</string>
     <string name="all_plus_symbol">+</string>
     <string name="all_minus_symbol">-</string>
+    <string name="all_not_available">N/A</string>
 
     <!--Introduction-->
     <string name="intro_welcome_title">Welcome to Little Big Spender</string>
@@ -46,6 +48,10 @@
     <string name="addAccount_add_toast">New account added</string>
     <string name="addAccount_discard_toast">New account discarded</string>
 
+    <!--Add Cryptocurrency Account-->
+    <string name="addCrypto_add_toast">New cryptocurrency added</string>
+    <string name="addCrypto_discard_toast">New cryptocurrency discarded</string>
+
     <!--Accounts-->
     <string name="accounts_delete_toast">Account deleted</string>
     <string name="accounts_editDialog_title">Edit Account</string>
@@ -53,6 +59,21 @@
     <string name="accounts_transferDialog_transfer">Transfer</string>
     <string name="accounts_transferDialog_from">From</string>
     <string name="accounts_transferDialog_to">To</string>
+    <string name="accounts_lastUpdated">Last updated:</string>
+    <string name="accounts_never">Never</string>
+    <string name="accounts_moreThanAWeek">more than a week ago</string>
+    <string name="accounts_daysAgo">days ago</string>
+    <string name="accounts_aDayAgo">a day ago</string>
+    <string name="accounts_hoursAgo">hours ago</string>
+    <string name="accounts_anHourAgo">an hour ago</string>
+    <string name="accounts_minutesAgo">minutes ago</string>
+    <string name="accounts_aMinuteAgo">a minute ago</string>
+    <string name="accounts_lessThanAMinute">less than a minute ago</string>
+    <string name="accounts_addAccount">Add Account</string>
+    <string name="accounts_addCrypto">Add Cryptocurrency</string>
+    <string name="accounts_refreshAttempt">Attempting to refresh</string>
+    <string name="accounts_refreshCompleted">Refresh completed</string>
+    <string name="accounts_refreshFailed">Refresh failed</string>
 
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>

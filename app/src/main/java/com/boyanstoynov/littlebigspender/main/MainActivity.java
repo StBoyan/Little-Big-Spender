@@ -20,12 +20,16 @@ import android.widget.Toast;
 import com.boyanstoynov.littlebigspender.BaseEditorDialog;
 import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
+import com.boyanstoynov.littlebigspender.api.CryptoClient;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
+import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
+import com.boyanstoynov.littlebigspender.main.accounts.AccountsAdapter;
+import com.boyanstoynov.littlebigspender.main.accounts.AddCryptoActivity;
 import com.boyanstoynov.littlebigspender.main.accounts.EditAccountDialog;
 import com.boyanstoynov.littlebigspender.main.accounts.AccountsFragment;
 import com.boyanstoynov.littlebigspender.BaseActivity;
@@ -45,6 +49,7 @@ import com.boyanstoynov.littlebigspender.intro.IntroActivity;
 import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
 import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 import com.boyanstoynov.littlebigspender.util.InitialSetup;
 import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
@@ -56,12 +61,18 @@ import java.util.Date;
  *
  * @author Boyan Stoynov
  */
-public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.RecyclerViewListener<RealmObject>, BaseEditorDialog.DialogListener<RealmObject> {
+public class MainActivity extends BaseActivity
+        implements BaseRecyclerAdapter.RecyclerViewListener<RealmObject>,
+        BaseEditorDialog.DialogListener<RealmObject>, AccountsAdapter.CryptoRefreshButtonListener,
+        CryptoClient.ClientCallback{
 
     @BindView(R.id.drawer) DrawerLayout drawer;
     @BindView(R.id.toolbar_main) Toolbar toolbar;
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
     @BindView(R.id.drawer_navigation) NavigationView navigationView;
+
+    //TODO rafactor this's usage in onrefresh if and onfetch if possible
+    private Account cryptoAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +101,7 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
                         item.setChecked(true);
                         Fragment selectedFragment = null;
                         switch (item.getItemId()) {
-                            case R.id.item_add:
+                            case R.id.item_overview:
                                 selectedFragment = new OverviewFragment();
                                 break;
                             case R.id.item_transactions:
@@ -147,8 +158,12 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
                 drawer.openDrawer(Gravity.START);
                 return true;
             case R.id.item_add_account:
-                final Intent intent = new Intent(this, AddAccountActivity.class);
-                startActivity(intent);
+                final Intent addAccountIntent = new Intent(this, AddAccountActivity.class);
+                startActivity(addAccountIntent);
+                return true;
+            case R.id.item_add_crypto:
+                final Intent addCryptoIntent = new Intent(this, AddCryptoActivity.class);
+                startActivity(addCryptoIntent);
                 return true;
             case R.id.item_filter:
                 FilterDialog filterDialog = new FilterDialog();
@@ -319,4 +334,32 @@ public class MainActivity extends BaseActivity implements BaseRecyclerAdapter.Re
         transactionDao.editAmount(transaction, editedTransaction.getAmount());
         transactionDao.editDate(transaction, editedTransaction.getDate());
     }
+
+    @Override
+    public void onRefreshButtonClicked(Account cryptoAccount) {
+        Toast.makeText(this, R.string.accounts_refreshAttempt, Toast.LENGTH_SHORT).show();
+        //TODO reuse CryptoClient
+        CryptoClient client = new CryptoClient(this);
+        this.cryptoAccount = cryptoAccount;
+        client.fetchPrice(cryptoAccount.getName(), SharedPrefsManager.getCurrencyCode());
+    }
+
+    @Override
+    public void onFetchUnsuccessful() {
+        Toast.makeText(this, R.string.accounts_refreshFailed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFetchSuccessful(final BigDecimal convertedPrice) {
+        //TODO this might need refactoring see variable at top
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, R.string.accounts_refreshCompleted, Toast.LENGTH_SHORT).show();
+                AccountDao accDao = getRealmManager().createAccountDao();
+                accDao.editFiatValue(cryptoAccount, convertedPrice);
+                accDao.editLastUpdated(cryptoAccount, DateTimeUtils.getCurrentTimeInMillis());
+            }
+        });
+      }
 }

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/item_add"
+            android:id="@+id/item_overview"
             android:icon="@drawable/ic_overview"
             android:title="@string/all_overview" />
         <item

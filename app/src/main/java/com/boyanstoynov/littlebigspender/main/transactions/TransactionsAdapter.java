@@ -8,7 +8,7 @@ import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
-import com.boyanstoynov.littlebigspender.util.DateUtils;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import butterknife.BindView;
@@ -47,8 +47,8 @@ public class TransactionsAdapter extends BaseRecyclerAdapter<Transaction>{
         protected void setItemPresentation(Transaction transaction) {
             textAccount.setText(transaction.getAccount().getName());
             textCategory.setText(transaction.getCategory().getName());
-            textAmount.setText(getMoneyFormatter().format(transaction.getAmount()));
-            textDate.setText(DateUtils.formatDate(transaction.getDate()));
+            textAmount.setText(getFiatFormatter().format(transaction.getAmount()));
+            textDate.setText(DateTimeUtils.formatDate(transaction.getDate()));
 
             if (transaction.getCategory().getType() == Category.Type.INCOME)
                 textType.setText(R.string.all_plus_symbol);
