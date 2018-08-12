@@ -10,4 +10,18 @@
         <item>Biweekly</item>
         <item>Weekly</item>
     </string-array>
+
+    <string-array name="crypto_codes">
+        <item>BTC</item>
+        <item>ETH</item>
+        <item>XRP</item>
+        <item>BCH</item>
+        <item>EOS</item>
+        <item>XML</item>
+        <item>LTC</item>
+        <item>ADA</item>
+        <item>TRX</item>
+        <item>XMR</item>
+        <item>IOTA</item>
+    </string-array>
 </resources>

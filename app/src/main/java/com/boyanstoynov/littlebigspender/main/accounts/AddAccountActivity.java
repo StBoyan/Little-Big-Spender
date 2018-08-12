@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
+
 /**
  * Controller for Add account activity.
  *
@@ -25,14 +28,11 @@ public class AddAccountActivity extends BaseActivity {
     @BindView(R.id.textInput_account_name) EditText accountNameInput;
     @BindView(R.id.numberInput_account_balance) EditText balanceInput;
 
-    private final int BALANCE_DIGITS_BEFORE_ZERO_FILTER = 7;
-    private final int BALANCE_DIGITS_AFTER_ZERO_FILTER = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        balanceInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(BALANCE_DIGITS_BEFORE_ZERO_FILTER, BALANCE_DIGITS_AFTER_ZERO_FILTER)});
+        balanceInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER, FIAT_DIGITS_AFTER_ZERO_FILTER)});
     }
 
     @Override

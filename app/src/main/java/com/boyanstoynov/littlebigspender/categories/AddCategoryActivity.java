@@ -1,6 +1,5 @@
 package com.boyanstoynov.littlebigspender.categories;
 
-
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -13,6 +12,9 @@ import com.boyanstoynov.littlebigspender.db.model.Category;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_INCOME_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_EXPENSE_POSITION;
+
 /**
  * Controller for Add Category activity.
  *
@@ -22,9 +24,6 @@ public class AddCategoryActivity extends BaseActivity {
 
     @BindView(R.id.textInput_category_name) EditText categoryNameInput;
     @BindView(R.id.spinner_category_type) Spinner categoryTypeSpinner;
-
-    private final int SPINNER_INCOME_POSITION = 0;
-    private final int SPINNER_EXPENSE_POSITION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

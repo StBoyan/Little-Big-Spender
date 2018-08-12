@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 
 import butterknife.BindView;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
+
 /**
  * Edit account dialog implementation.
  *
@@ -21,10 +24,6 @@ public class EditAccountDialog extends BaseEditorDialog<Account> {
 
     @BindView(R.id.textInput_account_name) EditText nameInput;
     @BindView(R.id.numberInput_account_balance) EditText balanceInput;
-
-    private final int BALANCE_DIGITS_BEFORE_ZERO_FILTER = 7;
-    private final int BALANCE_DIGITS_AFTER_ZERO_FILTER = 2;
-
 
     @Override
     protected int getTitleResource() {
@@ -49,6 +48,6 @@ public class EditAccountDialog extends BaseEditorDialog<Account> {
         nameInput.setText(item.getName());
         balanceInput.setText(item.getBalance().toString());
 
-        balanceInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(BALANCE_DIGITS_BEFORE_ZERO_FILTER, BALANCE_DIGITS_AFTER_ZERO_FILTER)});
+        balanceInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER, FIAT_DIGITS_AFTER_ZERO_FILTER)});
     }
 }

@@ -19,6 +19,7 @@ public class Account extends RealmObject {
     @Required
     private String name;
     private long balance;
+    private CryptoData cryptoData;
 
     public String getId() {
         return this.id;
@@ -38,6 +39,26 @@ public class Account extends RealmObject {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance.multiply(new BigDecimal(100)).longValue();
+    }
+
+    public boolean isCrypto() {
+        return cryptoData != null;
+    }
+
+    public long getLastUpdated() {
+        return cryptoData.getLastUpdated();
+    }
+
+    public void setLastUpdated(long lastUpdated) {
+        cryptoData.setLastUpdated(lastUpdated);
+    }
+
+    public BigDecimal getFiatValue() {
+        return cryptoData.getFiatValue();
+    }
+
+    public void setFiatValue(BigDecimal fiatValue) {
+        cryptoData.setFiatValue(fiatValue);
     }
 
     @Override

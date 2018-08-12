@@ -20,7 +20,6 @@ import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.util.DateUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -30,6 +29,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_INCOME_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_EXPENSE_POSITION;
 
 /**
  * Filter dialog to select a filter for transactions.
@@ -61,9 +63,6 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
     private FilterSelectedCallback callback;
     private Date date;
     private View positiveButton;
-
-    private final int SPINNER_INCOME_POSITION = 0;
-    private final int SPINNER_EXPENSE_POSITION = 1;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

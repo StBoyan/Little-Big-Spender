@@ -26,6 +26,12 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.MODE_BIWEEKLY_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.MODE_MONTHLY_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.MODE_WEEKLY_POSITION;
+
 /**
  * Edit recurring transaction dialog implementation.
  *
@@ -42,13 +48,6 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
     Date date;
     List<Account> accountsList;
     List<Category> categoriesList;
-
-    private final int MODE_MONTHLY_POSITION = 0;
-    private final int MODE_BIWEEKLY_POSITION = 1;
-    private final int MODE_WEEKLY_POSITION = 2;
-
-    private final int AMOUNT_DIGITS_BEFORE_ZERO_FILTER = 7;
-    private final int AMOUNT_DIGITS_AFTER_ZERO_FILTER = 2;
 
     @Override
     protected int getTitleResource() {
@@ -108,7 +107,7 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
         }
 
         amountInput.setText(item.getAmount().toString());
-        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER, AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
+        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER, FIAT_DIGITS_AFTER_ZERO_FILTER)});
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = item.getStartDate();

@@ -9,6 +9,9 @@ import com.boyanstoynov.littlebigspender.db.model.Category;
 
 import butterknife.BindView;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_INCOME_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_EXPENSE_POSITION;
+
 /**
  * Edit category dialog implementation.
  *
@@ -18,9 +21,6 @@ public class CategoryDialog extends BaseEditorDialog<Category> {
 
     @BindView(R.id.textInput_category_name) EditText nameInput;
     @BindView(R.id.spinner_category_type) Spinner typeSpinner;
-
-    private final int SPINNER_INCOME_POSITION = 0;
-    private final int SPINNER_EXPENSE_POSITION = 1;
 
     @Override
     protected int getTitleResource() {

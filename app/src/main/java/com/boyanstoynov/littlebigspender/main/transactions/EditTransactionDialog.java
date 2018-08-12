@@ -26,6 +26,9 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
+
 /**
  * Edit transaction dialog implementation.
  *
@@ -41,10 +44,6 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
     Date date;
     List<Account> accountsList;
     List<Category> categoriesList;
-
-    private final int AMOUNT_DIGITS_BEFORE_ZERO_FILTER = 7;
-    private final int AMOUNT_DIGITS_AFTER_ZERO_FILTER = 2;
-
 
     @Override
     protected int getTitleResource() {
@@ -93,8 +92,8 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
 
         amountInput.setText(item.getAmount().toString());
 
-        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER,
-                AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
+        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER,
+                FIAT_DIGITS_AFTER_ZERO_FILTER)});
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = item.getDate();

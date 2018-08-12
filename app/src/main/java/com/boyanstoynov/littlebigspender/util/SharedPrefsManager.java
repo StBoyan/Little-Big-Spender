@@ -23,11 +23,14 @@ public class SharedPrefsManager {
 
     //Cached Keys and Values
     private static String currencySymbolKey;
+    private static String currencyCodeKey;
     private static String currencySymbol;
+    private static String currencyCode;
 
     /**
-     * Initialises the SharedPreferenceManager. This should preferably be
-     * done in an Application class or its subclass.
+     * Initialises the SharedPreferenceManager and load cached keys/values into
+     * memory. This should preferably be done in an Application class or its
+     * subclass.
      * @param context Application context
      */
     @SuppressLint("CommitPrefEdits")
@@ -41,6 +44,9 @@ public class SharedPrefsManager {
 
             currencySymbolKey = context.getResources().getString(R.string.currencySymbol);
             currencySymbol = read(currencySymbolKey, "N/A");
+
+            currencyCodeKey = context.getResources().getString(R.string.currencyCode);
+            currencyCode = read(currencyCodeKey, "N/A");
         }
     }
 
@@ -53,6 +59,8 @@ public class SharedPrefsManager {
         checkIfInitialised();
         if (key.equals(currencySymbolKey))
             currencySymbol = value;
+        else if (key.equals(currencyCodeKey))
+            currencyCode = value;
 
         editor.putString(key, value);
         editor.apply();
@@ -83,6 +91,11 @@ public class SharedPrefsManager {
     public static String getCurrencySymbol() {
         checkIfInitialised();
         return currencySymbol;
+    }
+
+    public static String getCurrencyCode() {
+        checkIfInitialised();
+        return currencyCode;
     }
 
     private static void checkIfInitialised() {

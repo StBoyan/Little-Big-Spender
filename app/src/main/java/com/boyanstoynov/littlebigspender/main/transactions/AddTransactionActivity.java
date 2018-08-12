@@ -34,6 +34,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.realm.RealmResults;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.MODE_BIWEEKLY_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.MODE_MONTHLY_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.MODE_WEEKLY_POSITION;
+
 /**
  * Controller for Add transaction activity.
  *
@@ -54,19 +60,13 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
     Date date;
     boolean isRecurring;
 
-    private final int MODE_MONTHLY_POSITION = 0;
-    private final int MODE_BIWEEKLY_POSITION = 1;
-    private final int MODE_WEEKLY_POSITION = 2;
-    private final int AMOUNT_DIGITS_BEFORE_ZERO_FILTER = 7;
-    private final int AMOUNT_DIGITS_AFTER_ZERO_FILTER = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        inputAmount.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(AMOUNT_DIGITS_BEFORE_ZERO_FILTER, AMOUNT_DIGITS_AFTER_ZERO_FILTER)});
+        inputAmount.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER, FIAT_DIGITS_AFTER_ZERO_FILTER)});
 
         categoryDao = getRealmManager().createCategoryDao();
         final RealmResults<Category> expenseCategories = categoryDao.getAllExpenseCategories();

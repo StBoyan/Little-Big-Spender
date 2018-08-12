@@ -52,4 +52,16 @@ public class AccountDao extends BaseDao<Account> {
         account.setName(newName);
         realm.commitTransaction();
     }
+
+    public void editLastUpdated(Account account, long lastUpdated) {
+        realm.beginTransaction();
+        account.setLastUpdated(lastUpdated);
+        realm.commitTransaction();
+    }
+
+    public void editFiatValue(Account account, BigDecimal fiatValue) {
+        realm.beginTransaction();
+        account.setFiatValue(fiatValue);
+        realm.commitTransaction();
+    }
 }
