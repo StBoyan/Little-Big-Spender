@@ -80,6 +80,7 @@ public class AccountsFragment extends BaseFragment {
     private void loadAccountList() {
         AccountDao accountDao = getRealmManager().createAccountDao();
         RealmResults<Account> accountsRealmResults = accountDao.getAll();
+        //TODO IMPORTANT !!!! UNREGISTER CHANGE LISTENERS ONDESTROY SEE REALM DOC FOR MORE INFO
         accountsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Account>>() {
             @Override
             public void onChange(@NonNull RealmResults<Account> accounts) {

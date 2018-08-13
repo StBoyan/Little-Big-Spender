@@ -77,7 +77,7 @@ public class RecurringFragment extends BaseFragment {
         if (recurringRealmResults == null) {
             throw new IllegalStateException("Categories type unspecified. Call setCategoryType() first.");
         }
-
+        //TODO IMPORTANT !!!! UNREGISTER CHANGE LISTENERS ONDESTROY SEE REALM DOC FOR MORE INFO
         recurringRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Recurring>>() {
             @Override
             public void onChange(@NonNull RealmResults<Recurring> recurringList) {

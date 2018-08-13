@@ -2,6 +2,7 @@ package com.boyanstoynov.littlebigspender.categories;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,8 +22,13 @@ import butterknife.BindView;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
+import static com.boyanstoynov.littlebigspender.categories.CategoriesActivity.CATEGORY_TYPE_KEY;
+import static com.boyanstoynov.littlebigspender.categories.CategoriesActivity.INCOME_TYPE_VALUE;
+
 /**
- * Controller for Categories fragment.
+ * Categories fragment which contains the selected category
+ * within the CategoriesActivity. Handles creating and managing the
+ * RecyclerView and updating its information.
  *
  * @author Boyan Stoynov
  */
@@ -32,12 +38,22 @@ public class CategoriesFragment extends BaseFragment {
 
     private CategoriesAdapter adapter;
     private RealmResults<Category> categoriesRealmResults;
+    private Bundle categoryType;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /* Get bundle and store it so that it can be used
+        upon configuration change as well */
+        categoryType = getArguments();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        setCategoryType();
         initViews();
         loadCategoryList();
 
@@ -45,22 +61,34 @@ public class CategoriesFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        categoriesRealmResults.removeAllChangeListeners();
+    }
+
+    @Override
     protected int getLayoutResource() {
         return R.layout.fragment_categories;
     }
 
-    protected void setCategoryType(Category.Type type) {
-        //TODO figure out how to initialise categoryDao - possible solution is to move initialisation in onCreate in BaseFragment
-        RealmManager rm = new RealmManager();
-        rm.open();
-        CategoryDao categoryDao = rm.createCategoryDao();
+    /**
+     * Set the type of categories that this fragment will display.
+     */
+    private void setCategoryType() {
+        RealmManager realmManager = new RealmManager();
+        realmManager.open();
+        CategoryDao categoryDao = realmManager.createCategoryDao();
 
-        if (type == Category.Type.INCOME)
+        if (categoryType.getString(CATEGORY_TYPE_KEY).equals(INCOME_TYPE_VALUE))
             categoriesRealmResults = categoryDao.getAllIncomeCategories();
         else
             categoriesRealmResults = categoryDao.getAllExpenseCategories();
+        realmManager.close();
     }
 
+    /**
+     * Initialise the adapter and recycler view.
+     */
     private void initViews() {
         adapter = new CategoriesAdapter((CategoriesActivity)getActivity());
 
@@ -71,10 +99,11 @@ public class CategoriesFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Loads the category list for the first time and set a database
+     * change listener.
+     */
     private void loadCategoryList() {
-        if (categoriesRealmResults == null)
-            throw new IllegalStateException("Categories type unspecified. Call setCategoryType() first.");
-        //TODO IMPORTANT !!!! UNREGISTER CHANGE LISTENERS ONDESTROY SEE REALM DOC FOR MORE INFO
         categoriesRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
             @Override
             public void onChange(@NonNull RealmResults<Category> categories) {
@@ -85,6 +114,10 @@ public class CategoriesFragment extends BaseFragment {
         populateRecyclerView(categoriesRealmResults);
     }
 
+    /**
+     * Populates the RecyclerView with list of categories.
+     * @param categoriesList list of categories
+     */
     private void populateRecyclerView(List<Category> categoriesList) {
         adapter.setData(categoriesList);
     }

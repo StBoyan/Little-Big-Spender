@@ -171,7 +171,7 @@ public class MainActivity extends BaseActivity
 
                 filterDialog.show(getFragmentManager(), "FILTER_DIALOG");
                 filterDialog.setCategoryList(getRealmManager().createCategoryDao().getAll());
-                filterDialog.setAccountList(getRealmManager().createAccountDao().getAll());
+                filterDialog.setAccountList(getRealmManager().createAccountDao().getAllFiat());
                 filterDialog.setCallback(new FilterDialog.FilterSelectedCallback() {
                     TransactionsFragment fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentById(R.id.frame_main);
                     TransactionDao transactionDao = getRealmManager().createTransactionDao();

@@ -17,20 +17,33 @@ import com.boyanstoynov.littlebigspender.BaseRecyclerAdapter;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 import com.boyanstoynov.littlebigspender.db.model.Category;
+import com.boyanstoynov.littlebigspender.db.model.Transaction;
+
+import java.util.List;
 
 import butterknife.BindView;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.EXPENSE_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.INCOME_POSITION;
+
 /**
- * Controller for Categories activity.
+ * Controller for Categories activity. Handles creating CategoriesFragment
+ * and placing it into the view, button clicks and editing/deleting categories.
  *
  * @author Boyan Stoynov
  */
-public class CategoriesActivity extends BaseActivity implements BaseRecyclerAdapter.RecyclerViewListener<Category>,BaseEditorDialog.DialogListener<Category>{
+public class CategoriesActivity extends BaseActivity implements
+        BaseRecyclerAdapter.RecyclerViewListener<Category>,BaseEditorDialog.DialogListener<Category> {
 
     @BindView(R.id.toolbar_categories) Toolbar toolbar;
     @BindView(R.id.tablayout_categories) TabLayout tabLayout;
 
     private CategoryDao categoryDao;
+    // Keys and values used in bundles in this package
+    protected static final String CATEGORY_TYPE_KEY = "categoryType";
+    protected static final String SELECTED_TAB_KEY = "selectedTab";
+    protected static final String INCOME_TYPE_VALUE = "income";
+    protected static final String EXPENSE_TYPE_VALUE = "expense";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,37 +52,15 @@ public class CategoriesActivity extends BaseActivity implements BaseRecyclerAdap
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.all_categories);
-        // TODO extract in method to reduce size of onCreate
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                CategoriesFragment categoriesFragment = new CategoriesFragment();
-                switch (tab.getPosition()) {
-                    case 0:
-                        categoriesFragment.setCategoryType(Category.Type.INCOME);
-                        break;
-                    case 1:
-                        categoriesFragment.setCategoryType(Category.Type.EXPENSE);
-                        break;
-                }
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_categories, categoriesFragment);
-                transaction.commit();
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+        setupTabSelectedListener();
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                //TODO may want to save state of tabs here and in upper method
-            }
-        });
-        // TODO make this get the previously selected tab from bundle and select it instead
-        tabLayout.getTabAt(1).select();
-        tabLayout.getTabAt(0).select();
+        if (savedInstanceState != null)
+            tabLayout.getTabAt(savedInstanceState.getInt(SELECTED_TAB_KEY)).select();
+        else {
+            tabLayout.getTabAt(1).select();
+            tabLayout.getTabAt(0).select();
+        }
 
         categoryDao = getRealmManager().createCategoryDao();
     }
@@ -86,23 +77,87 @@ public class CategoriesActivity extends BaseActivity implements BaseRecyclerAdap
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_add:
-                final Intent i = new Intent(this, AddCategoryActivity.class);
-                startActivity(i);
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-        }
-
-        return true;
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTED_TAB_KEY, tabLayout.getSelectedTabPosition());
     }
 
     @Override
-    public void onDeleteButtonClicked(final Category category) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_add:
+                final Intent intent = new Intent(this, AddCategoryActivity.class);
+                intent.putExtra(CATEGORY_TYPE_KEY, tabLayout.getSelectedTabPosition());
+                startActivity(intent);
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * Handles delete button click. Checks if category has any transactions
+     * associated with it. if it does shows an error message, else
+     * proceeds to display a confirmation dialog.
+     * @param category Category which button has been clicked
+     */
+    @Override
+    public void onDeleteButtonClicked(Category category) {
+        List<Transaction> attachedTransactions = getRealmManager().createTransactionDao().getByCategory(category);
+
+        if (attachedTransactions.size() > 0)
+            deleteErrorDialog();
+        else
+            deleteConfirmationDialog(category);
+    }
+
+    /**
+     * Shows the edit dialog when the edit button is clicked.
+     * @param category Category which button has been clicked
+     */
+    @Override
+    public void onEditButtonClicked(Category category) {
+        EditCategoryDialog dialog = new EditCategoryDialog();
+        dialog.setData(categoryDao.getUnmanaged(category));
+        dialog.show(getSupportFragmentManager(), "CATEGORY_DIALOG");
+    }
+
+    /**
+     * Handles saving the edited name of a category to the database.
+     * Callback from edit dialog.
+     * @param editedCategory object representing the new state of the
+     *                       category
+     */
+    @Override
+    public void onDialogPositiveClick(Category editedCategory) {
+        Category category = categoryDao.getById(editedCategory.getId());
+        categoryDao.editName(category, editedCategory.getName());
+    }
+
+    /**
+     * Informs the user a category cannot be deleted.
+     */
+    private void deleteErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.all_error);
+        builder.setMessage(R.string.categories_cannot_delete_error);
+        builder.setPositiveButton(R.string.all_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    /**
+     * Shows the user a dialog asking to confirm a category deletion.
+     * @param category Category to be deleted
+     */
+    private void deleteConfirmationDialog(final Category category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.app_name);
         builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), category.getName()));
@@ -123,19 +178,34 @@ public class CategoriesActivity extends BaseActivity implements BaseRecyclerAdap
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
-    @Override
-    public void onEditButtonClicked(Category category) {
-        CategoryDialog dialog = new CategoryDialog();
-        dialog.setData(categoryDao.getUnmanaged(category));
-        dialog.show(getSupportFragmentManager(), "CATEGORY_DIALOG");
-    }
-
-    @Override
-    public void onDialogPositiveClick(Category editedCategory) {
-        Category category = categoryDao.getById(editedCategory.getId());
-        categoryDao.editName(category, editedCategory.getName());
+    /**
+     * Sets up the onTabSelectedListener for the tab layout.
+     */
+    private void setupTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                CategoriesFragment categoriesFragment = new CategoriesFragment();
+                Bundle fragmentBundle = new Bundle();
+                categoriesFragment.setArguments(fragmentBundle);
+                switch (tab.getPosition()) {
+                    case INCOME_POSITION:
+                        fragmentBundle.putString(CATEGORY_TYPE_KEY, INCOME_TYPE_VALUE);
+                        break;
+                    case EXPENSE_POSITION:
+                        fragmentBundle.putString(CATEGORY_TYPE_KEY, EXPENSE_TYPE_VALUE);
+                        break;
+                }
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_categories, categoriesFragment);
+                transaction.commit();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
     }
 }

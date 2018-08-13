@@ -21,6 +21,7 @@
     <string name="all_delete">Delete</string>
     <string name="all_yes">Yes</string>
     <string name="all_no">No</string>
+    <string name="all_ok">OK</string>
     <string name="all_name">Name</string>
     <string name="all_type">Type</string>
     <string name="all_warning_delete_message">Are you sure you want to delete</string>
@@ -29,6 +30,8 @@
     <string name="all_plus_symbol">+</string>
     <string name="all_minus_symbol">-</string>
     <string name="all_not_available">N/A</string>
+    <string name="all_blank_field_error">This field cannot be blank</string>
+    <string name="all_error">Error</string>
 
     <!--Introduction-->
     <string name="intro_welcome_title">Welcome to Little Big Spender</string>
@@ -78,6 +81,9 @@
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>
     <string name="categories_editDialog_title">Edit Category</string>
+    <string name="categories_name_long_error">Name too long</string>
+    <string name="categories_name_exist_error">Category already exists</string>
+    <string name="categories_cannot_delete_error">Category cannot be deleted because there are transactions associated with it.</string>
 
     <!--Add Category-->
     <string name="addCategory_add_toast">New category added</string>
@@ -138,6 +144,14 @@
         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
         THE SOFTWARE.
+        ]]>
+    </string>
+    <string name="about_api">Crypto API</string>
+    <string name="about_api_description">
+        <![CDATA[
+        Cryptocurrency prices in the application use the CryptoCompare API licensed under a Creative Commons - Attribution Non-Commercial license.
+         <br /><br />
+         You can find more about the API <a href="https://min-api.cryptocompare.com/">here</a>.
         ]]>
     </string>
 

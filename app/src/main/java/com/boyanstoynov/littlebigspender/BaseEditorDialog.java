@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -18,7 +19,7 @@ import io.realm.RealmObject;
  * of an item in the database and allows it to be updated by the user.
  * Before calling show(), the data must be set with setData() method,
  * otherwise an IllegalStateException is thrown.
- * <p>
+ *
  * Subclasses need only implement the abstract methods of this class.
  *
  * @author Boyan Stoynov
@@ -39,6 +40,7 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
     private DialogListener<E> listener;
     protected E item;
     private Unbinder unbinder;
+    private RealmManager realmManager;
 
     @NonNull
     @Override
@@ -51,13 +53,23 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
                 .customView(getLayoutResource(), true)
                 .positiveText(R.string.all_save)
                 .negativeText(R.string.all_cancel)
+                .autoDismiss(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (onPositiveClick())
+                        if (onPositiveClick()) {
                             listener.onDialogPositiveClick(item);
+                            dialog.dismiss();
+                        }
                     }
-                }).build();
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .build();
 
         // Bind ButterKnife
         unbinder = ButterKnife.bind(this, dialog.getCustomView());
@@ -76,6 +88,7 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "must implement DialogListener");
         }
+        realmManager = ((BaseActivity) context).getRealmManager();
     }
 
     @Override
@@ -87,7 +100,7 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
 
     /**
      * Set data to be displayed by this Dialog.
-     * <p>
+     *
      * Note: for this class to work correctly, the RealmObject must
      * be unmanaged by Realm (i.e. it needs to be a POJO). Hence, if a
      * managed object is passed as parameter, this method will throw an
@@ -135,4 +148,13 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
      * dialog.
      */
     protected abstract void populateDialog();
+
+    /**
+     * Gets the RealmManager of the activity to which the dialog
+     * is attached.
+     * @return RealmManager instance
+     */
+    protected RealmManager getRealmManager() {
+        return realmManager;
+    }
 }

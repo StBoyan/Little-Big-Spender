@@ -7,9 +7,9 @@ package com.boyanstoynov.littlebigspender.util;
  */
 public class Constants {
 
-    //Income & Expense spinner positions
-    public static final int SPINNER_INCOME_POSITION = 0;
-    public static final int SPINNER_EXPENSE_POSITION = 1;
+    //Income & Expense spinner and tab positions
+    public static final int INCOME_POSITION = 0;
+    public static final int EXPENSE_POSITION = 1;
 
     //Recurring modes spinner positions
     public static final int MODE_MONTHLY_POSITION = 0;
@@ -28,4 +28,7 @@ public class Constants {
     public static final String CRYPTO_API_URL = "https://min-api.cryptocompare.com/data/price";
     public static final String API_CRYPTO_CURRENCY_CODE_QUERY_STRING = "fsym";
     public static final String API_FIAT_CURRENCY_CODE_QUERY_STRING = "tsyms";
+
+    //Models field constraints
+    public static final int CATEGORY_NAME_MAX_LENGTH = 25;
 }

@@ -31,6 +31,10 @@ public class CategoryDao extends BaseDao<Category> {
         return realm.where(Category.class).equalTo("type", Category.Type.EXPENSE.toString()).findAll();
     }
 
+    public Category getByName(String name) {
+        return realm.where(Category.class).equalTo("name", name).findFirst();
+    }
+
     public Category getById(String id) {
         return realm.where(Category.class).equalTo("id", id).findFirst();
     }

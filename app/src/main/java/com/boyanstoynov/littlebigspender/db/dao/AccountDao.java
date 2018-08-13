@@ -25,6 +25,10 @@ public class AccountDao extends BaseDao<Account> {
         return realm.where(Account.class).findAll();
     }
 
+    public RealmResults<Account> getAllFiat() {
+        return realm.where(Account.class).isNull("cryptoData").findAll();
+    }
+
     public RealmResults<Account> getAllCrypto() {
         return realm.where(Account.class).isNotNull("cryptoData").findAll();
     }

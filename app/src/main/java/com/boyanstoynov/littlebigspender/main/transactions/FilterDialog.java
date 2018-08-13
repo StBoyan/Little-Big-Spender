@@ -30,8 +30,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_INCOME_POSITION;
-import static com.boyanstoynov.littlebigspender.util.Constants.SPINNER_EXPENSE_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.INCOME_POSITION;
+import static com.boyanstoynov.littlebigspender.util.Constants.EXPENSE_POSITION;
 
 /**
  * Filter dialog to select a filter for transactions.
@@ -83,9 +83,9 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         if (typeRadioButton.isChecked()) {
-                            if (typeSpinner.getSelectedItemPosition() == SPINNER_INCOME_POSITION)
+                            if (typeSpinner.getSelectedItemPosition() == INCOME_POSITION)
                                 callback.onTypeFilterSelected(Category.Type.INCOME);
-                            else if (typeSpinner.getSelectedItemPosition() == SPINNER_EXPENSE_POSITION)
+                            else if (typeSpinner.getSelectedItemPosition() == EXPENSE_POSITION)
                                 callback.onTypeFilterSelected(Category.Type.EXPENSE);
                         }
                         else if (categoryRadioButton.isChecked())

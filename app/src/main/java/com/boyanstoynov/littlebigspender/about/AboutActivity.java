@@ -25,7 +25,9 @@ public class AboutActivity extends LibsActivity {
                 .withAboutVersionShown(true)
                 .withAboutDescription(getResources().getString(R.string.about_description))
                 .withAboutSpecial1(getResources().getString(R.string.about_license))
-                .withAboutSpecial1Description(getResources().getString(R.string.about_license_description));
+                .withAboutSpecial1Description(getResources().getString(R.string.about_license_description))
+                .withAboutSpecial2(getResources().getString(R.string.about_api))
+                .withAboutSpecial2Description(getResources().getString(R.string.about_api_description));
 
         setIntent(builder.intent(this));
         super.onCreate(savedInstanceState);
