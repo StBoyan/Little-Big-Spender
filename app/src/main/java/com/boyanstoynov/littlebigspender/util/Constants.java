@@ -35,4 +35,5 @@ public class Constants {
 
     //Models field constraints
     public static final int CATEGORY_NAME_MAX_LENGTH = 25;
+    public static final int ACCOUNT_NAME_MAX_LENGTH = 20;
 }

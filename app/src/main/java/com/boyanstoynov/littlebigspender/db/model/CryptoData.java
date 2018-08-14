@@ -14,6 +14,11 @@ public class CryptoData extends RealmObject {
     private long lastUpdated;
     private long fiatValue;
 
+    public CryptoData() {
+        lastUpdated = 0;
+        fiatValue = 0;
+    }
+
     public long getLastUpdated() {
         return lastUpdated;
     }

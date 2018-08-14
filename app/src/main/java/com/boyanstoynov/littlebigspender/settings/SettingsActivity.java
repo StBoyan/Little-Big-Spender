@@ -34,9 +34,12 @@ import okhttp3.Response;
  */
 public class SettingsActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar_settings) Toolbar toolbar;
-    @BindView(R.id.image_settings_currency) ImageView currencyImage;
-    @BindView(R.id.text_settings_currencycode) TextView textCurrencyCode;
+    @BindView(R.id.toolbar_settings)
+    Toolbar toolbar;
+    @BindView(R.id.image_settings_currency)
+    ImageView currencyImage;
+    @BindView(R.id.text_settings_currencycode)
+    TextView textCurrencyCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,51 +84,5 @@ public class SettingsActivity extends BaseActivity {
 
         currencyImage.setImageDrawable(ContextCompat.getDrawable(getBaseContext(),
                 SharedPrefsManager.read(getResources().getString(R.string.currencyDrawableId), R.drawable.flag_gbp)));
-    }
-
-    //TODO experimental method for crypto. Needs removes
-    @OnClick(R.id.crypto_button)
-    public void displayCrypto() {
-        final TextView crypto = findViewById(R.id.crypto_text);
-        crypto.setText("Loading");
-
-        OkHttpClient client = new OkHttpClient();
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://min-api.cryptocompare.com/data/price").newBuilder();
-        urlBuilder.addQueryParameter("fsym", "BTC");
-        urlBuilder.addQueryParameter("tsyms", "GBP");
-        String url = urlBuilder.build().toString();
-
-        Log.d("url is", url);
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-
-                final String mResponse = response.body().string();
-
-                SettingsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject json = new JSONObject(mResponse);
-                            crypto.setText("1 BTC = " + json.getString("GBP") + "GBP");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-
     }
 }

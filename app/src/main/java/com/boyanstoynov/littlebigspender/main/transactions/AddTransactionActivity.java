@@ -46,7 +46,7 @@ import static com.boyanstoynov.littlebigspender.util.Constants.MODE_WEEKLY_POSIT
  * @author Boyan Stoynov
  */
 public class AddTransactionActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
-
+//TODO change XML to reuse add cancel buttons
     @BindView(R.id.toolbar_addTransaction) Toolbar toolbar;
     @BindView(R.id.tabLayout_addTransaction) TabLayout tabLayout;
     @BindView(R.id.spinner_transaction_category) Spinner categorySpinner;

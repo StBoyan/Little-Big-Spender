@@ -94,7 +94,7 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
 
             BigDecimal fiatValue = cryptoAccount.getFiatValue();
 
-            // If value is fetched from internet
+            // Display fiat value if converted rate has been fetched
             if (fiatValue.doubleValue() != 0.0)
                 textFiatValue.setText(getFiatFormatter().format(
                         cryptoAccount.getBalance().multiply(fiatValue)));
@@ -117,8 +117,6 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
          * @return formatted string
          */
         private String formatLastUpdated(long elapsedTime) {
-            Log.d("ACC: ", item.getName());
-            Log.d("elapsed time is ", String.valueOf(elapsedTime));
             //If elapsed time is at least a day
             long elapsedDays = TimeUnit.MILLISECONDS.toDays(elapsedTime);
             if (elapsedDays > 7)

@@ -2,8 +2,6 @@ package com.boyanstoynov.littlebigspender.main.accounts;
 
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -29,7 +27,8 @@ import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_AFT
 import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_BEFORE_ZERO_FILTER;
 
 /**
- * Add crypto activity.
+ * Controller for Add Crypto Account activity. Takes in user input
+ * and validates it and creates new accounts (crypto).
  *
  * @author Boyan Stoynov
  */
@@ -37,7 +36,7 @@ public class AddCryptoActivity extends BaseActivity {
 
     @BindView(R.id.spinner_crypto_name) Spinner cryptoNameSpinner;
     @BindView(R.id.numberInput_crypto_balance) EditText balanceInput;
-    //TODO refactor to use same toolbar in add category and add transaction
+
     private AccountDao accountDao;
 
     @Override
@@ -46,13 +45,11 @@ public class AddCryptoActivity extends BaseActivity {
 
         accountDao = getRealmManager().createAccountDao();
         final RealmResults<Account> accounts = accountDao.getAllCrypto();
-
-        final List<String> cryptoList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.crypto_names)));
-
-
+        final List<String> cryptoList = new ArrayList<>(
+                Arrays.asList(getResources().getStringArray(R.array.crypto_names)));
         final ArrayAdapter<String> cryptoAdapter = new ArrayAdapter<>(this,
                         R.layout.item_spinner, cryptoList);
-
+        // Remove crypto accounts from spinner that already exist
         for (Account account : accounts) {
             cryptoList.remove(account.getName());
         }
@@ -67,27 +64,55 @@ public class AddCryptoActivity extends BaseActivity {
         return R.layout.activity_add_crypto;
     }
 
+    /**
+     * Validate input and inform user of outcome, going back
+     * to previous activity if successful.
+     */
     @OnClick(R.id.button_addItem_add)
     public void addCryptoAccount() {
-        createCryptoAccount();
-        Toast.makeText(getApplicationContext(), R.string.addCrypto_add_toast, Toast.LENGTH_SHORT).show();
-        onBackPressed();
+        if (balanceIsValid()) {
+            createCryptoAccount();
+            Toast.makeText(getApplicationContext(), R.string.accounts_cryptoAdd_addToast, Toast.LENGTH_SHORT).show();
+            onBackPressed();
+        }
     }
 
+    /**
+     * Discard new crypto account and go back.
+     */
     @OnClick(R.id.button_addItem_cancel)
     public void cancelAddCryptoAccount() {
-        Toast.makeText(getApplicationContext(), R.string.addCrypto_discard_toast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.accounts_cryptoAdd_discardToast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
+    /**
+     * Create new crypto account and save it to database.
+     */
     private void createCryptoAccount() {
         Account newCryptoAccount = new Account();
         newCryptoAccount.setName((String)cryptoNameSpinner.getSelectedItem());
         newCryptoAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
         newCryptoAccount.setCryptoData(new CryptoData());
-        newCryptoAccount.setFiatValue(new BigDecimal(0));
-        newCryptoAccount.setLastUpdated(0);
         accountDao.save(newCryptoAccount);
     }
 
+    /**
+     * Checks balance user input and return boolean whether it is
+     * valid or not. If invalid display error message to user.
+     * @return boolean whether valid or not
+     */
+    private boolean balanceIsValid() {
+        if (balanceInput.getText().toString().equals("")) {
+            balanceInput.setError(getResources().getString(R.string.all_blank_field_error));
+            return false;
+        }
+
+        if (new BigDecimal(balanceInput.getText().toString()).compareTo(BigDecimal.ZERO) < 1) {
+            balanceInput.setError(getResources().getString(R.string.all_cannot_be_zero_error));
+            return false;
+        }
+
+        return true;
+    }
 }

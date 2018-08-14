@@ -39,6 +39,8 @@ public class EditCategoryDialog extends BaseEditorDialog<Category> {
 
     @Override
     protected boolean onPositiveClick() {
+        nameInput.setText(nameInput.getText().toString().trim());
+
         if (isNameValid()) {
             item.setName(nameInput.getText().toString());
             return true;
@@ -73,7 +75,7 @@ public class EditCategoryDialog extends BaseEditorDialog<Category> {
             return false;
         }
         if (name.length() > CATEGORY_NAME_MAX_LENGTH) {
-            nameInput.setError(getResources().getString(R.string.categories_name_long_error));
+            nameInput.setError(getResources().getString(R.string.all_name_long_error));
             return false;
         }
         Category duplicateCategory = categoryDao.getByName(name);

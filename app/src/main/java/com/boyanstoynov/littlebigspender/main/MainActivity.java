@@ -23,7 +23,6 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.api.CryptoClient;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
-import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
@@ -204,7 +203,7 @@ public class MainActivity extends BaseActivity
             case R.id.item_transfer_account:
                 TransferDialog transferDialog = new TransferDialog();
                 transferDialog.show(getFragmentManager(), "TRANSFER_DIALOG");
-                transferDialog.setAccountList(getRealmManager().createAccountDao().getAll());
+                transferDialog.setAccountList(getRealmManager().createAccountDao().getAllFiat());
                 transferDialog.setCallback(new TransferDialog.TransferDialogCallback() {
                     @Override
                     public void onTransferAccount(Account from, Account to, BigDecimal amount) {

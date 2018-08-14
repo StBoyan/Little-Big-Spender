@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.BaseFragment;
-import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.main.MainActivity;
 
@@ -25,7 +24,9 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 /**
- * Controller for Accounts fragment of main screen.
+ * Accounts fragment which contains the accounts within the
+ * MainActivity. Handles creating and managing the RecyclerView
+ * and updating its information.
  *
  * @author Boyan Stoynov
  */
@@ -34,6 +35,7 @@ public class AccountsFragment extends BaseFragment {
     @BindView(R.id.recyclerView_accounts) RecyclerView recyclerView;
 
     private AccountsAdapter adapter;
+    private RealmResults<Account> accountsRealmResults;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -51,6 +53,12 @@ public class AccountsFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        accountsRealmResults.removeAllChangeListeners();
+    }
+
+    @Override
     protected int getLayoutResource() {
         return R.layout.fragment_accounts;
     }
@@ -62,7 +70,7 @@ public class AccountsFragment extends BaseFragment {
     }
 
     /**
-     * Initialise RecyclerView and its adapter.
+     * Initialise the adapter and recycler view.
      */
     private void initViews() {
         adapter = new AccountsAdapter((MainActivity)getActivity());
@@ -75,12 +83,11 @@ public class AccountsFragment extends BaseFragment {
     }
 
     /**
-     * Load Account objects into view.
+     * Load the account list for the first time and set a database
+     * change listener.
      */
     private void loadAccountList() {
-        AccountDao accountDao = getRealmManager().createAccountDao();
-        RealmResults<Account> accountsRealmResults = accountDao.getAll();
-        //TODO IMPORTANT !!!! UNREGISTER CHANGE LISTENERS ONDESTROY SEE REALM DOC FOR MORE INFO
+        accountsRealmResults = getRealmManager().createAccountDao().getAll();
         accountsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Account>>() {
             @Override
             public void onChange(@NonNull RealmResults<Account> accounts) {
@@ -91,10 +98,9 @@ public class AccountsFragment extends BaseFragment {
         populateRecyclerView(accountsRealmResults);
     }
 
-    /** TODO change this comment here and in other fragments
-     * Populate view with accounts and notify adapter of
-     * data change.
-     * @param accountsList List of Account objects
+    /**
+     * Populate the RecyclerView with list of accounts.
+     * @param accountsList list of accounts
      */
     private void populateRecyclerView(List<Account> accountsList) {
         adapter.setData(accountsList);

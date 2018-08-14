@@ -55,7 +55,7 @@ public class AddCategoryActivity extends BaseActivity {
 
         if (isNameValid()) {
             createCategory();
-            Toast.makeText(this, R.string.addCategory_add_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.categories_add_addToast, Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
     }
@@ -65,7 +65,7 @@ public class AddCategoryActivity extends BaseActivity {
      */
     @OnClick(R.id.button_addItem_cancel)
     public void cancelAddCategory() {
-        Toast.makeText(this, R.string.addCategory_discard_toast, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.categories_add_discardToast, Toast.LENGTH_SHORT).show();
         onBackPressed();
     }
 
@@ -96,7 +96,7 @@ public class AddCategoryActivity extends BaseActivity {
             return false;
         }
         if (name.length() > CATEGORY_NAME_MAX_LENGTH) {
-            categoryNameInput.setError(getResources().getString(R.string.categories_name_long_error));
+            categoryNameInput.setError(getResources().getString(R.string.all_name_long_error));
             return false;
         }
         Category duplicateCategory = categoryDao.getByName(name);

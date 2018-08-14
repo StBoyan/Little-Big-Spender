@@ -92,7 +92,7 @@ public class RecurringAdapter extends BaseRecyclerAdapter<Recurring> {
 
             BigDecimal fiatValue = recurring.getAccount().getFiatValue();
 
-            // If values is fetched from API
+            // Display fiat value if converted rate has been fetched
             if (fiatValue.doubleValue() != 0.0)
                 textFiatAmount.setText(getFiatFormatter().format(
                         recurring.getAmount().multiply(fiatValue)));

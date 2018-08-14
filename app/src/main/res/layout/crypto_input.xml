@@ -41,7 +41,7 @@
         android:layout_marginTop="8dp"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:text="@string/addAccount_balance"
+        android:text="@string/accounts_add_balance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_crypto_name" />

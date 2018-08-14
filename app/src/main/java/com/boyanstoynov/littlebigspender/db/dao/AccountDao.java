@@ -37,6 +37,10 @@ public class AccountDao extends BaseDao<Account> {
         return realm.where(Account.class).equalTo("id", id).findFirst();
     }
 
+    public Account getByName(String name) {
+        return realm.where(Account.class).equalTo("name", name).findFirst();
+    }
+
     public void addAmount(Account toAccount, BigDecimal amount) {
         realm.beginTransaction();
         toAccount.setBalance(toAccount.getBalance().add(amount));

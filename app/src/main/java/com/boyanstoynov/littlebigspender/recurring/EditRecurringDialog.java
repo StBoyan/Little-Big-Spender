@@ -173,13 +173,16 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
      * @return boolean whether amount is valid
      */
     private boolean isAmountValid() {
-        BigDecimal amount = new BigDecimal(amountInput.getText().toString());
-
-        if (amount.compareTo(BigDecimal.ZERO) < 1) {
-            amountInput.setError(getResources().getString(R.string.all_cannot_be_negative_error));
+        if (amountInput.getText().toString().equals("")) {
+            amountInput.setError(getResources().getString(R.string.all_blank_field_error));
             return false;
         }
-        else
-            return true;
+
+        if (new BigDecimal(amountInput.getText().toString()).compareTo(BigDecimal.ZERO) < 1) {
+            amountInput.setError(getResources().getString(R.string.all_cannot_be_zero_error));
+            return false;
+        }
+
+        return true;
     }
 }

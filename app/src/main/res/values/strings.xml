@@ -31,10 +31,11 @@
     <string name="all_minus_symbol">-</string>
     <string name="all_not_available">N/A</string>
     <string name="all_blank_field_error">This field cannot be blank</string>
-    <string name="all_cannot_be_negative_error">Amount cannot be negative</string>
+    <string name="all_cannot_be_zero_error">Amount cannot be 0</string>
     <string name="all_error">Error</string>
     <string name="all_open_parentheses">(</string>
     <string name="all_close_parentheses">)</string>
+    <string name="all_name_long_error">Name too long</string>
 
     <!--Introduction-->
     <string name="intro_welcome_title">Welcome to Little Big Spender</string>
@@ -45,18 +46,6 @@
     <string name="intro_feature2_text">View easy to understand graphs and charts to get a better idea of your cash flow.</string>
     <string name="intro_feature3_title">Cryptocurrency Accounts</string>
     <string name="intro_feature3_text">Store cryptocurrency accounts and view their balance in your home currency.</string>
-
-    <!--Add Transaction-->
-    <string name="addTransaction_recurring">Recurring?</string>
-
-    <!--Add Account-->
-    <string name="addAccount_balance">Balance</string>
-    <string name="addAccount_add_toast">New account added</string>
-    <string name="addAccount_discard_toast">New account discarded</string>
-
-    <!--Add Cryptocurrency Account-->
-    <string name="addCrypto_add_toast">New cryptocurrency added</string>
-    <string name="addCrypto_discard_toast">New cryptocurrency discarded</string>
 
     <!--Accounts-->
     <string name="accounts_delete_toast">Account deleted</string>
@@ -80,17 +69,22 @@
     <string name="accounts_refreshAttempt">Attempting to refresh</string>
     <string name="accounts_refreshCompleted">Refresh completed</string>
     <string name="accounts_refreshFailed">Refresh failed</string>
+    <string name="accounts_name_exists_error">Account already exists</string>
+    <string name="accounts_crypto_name_error">Cannot use cryptocurrency name</string>
+    <string name="accounts_transfer_exceed_error">Transfer amount cannot exceed source account balance</string>
+    <string name="accounts_add_balance">Balance</string>
+    <string name="accounts_add_addToast">New account added</string>
+    <string name="accounts_add_discardToast">New account discarded</string>
+    <string name="accounts_cryptoAdd_addToast">New cryptocurrency added</string>
+    <string name="accounts_cryptoAdd_discardToast">New cryptocurrency discarded</string>
 
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>
     <string name="categories_editDialog_title">Edit Category</string>
-    <string name="categories_name_long_error">Name too long</string>
     <string name="categories_name_exist_error">Category already exists</string>
     <string name="categories_cannot_delete_error">Category cannot be deleted because there are transactions associated with it.</string>
-
-    <!--Add Category-->
-    <string name="addCategory_add_toast">New category added</string>
-    <string name="addCategory_discard_toast">New category discarded</string>
+    <string name="categories_add_addToast">New category added</string>
+    <string name="categories_add_discardToast">New category discarded</string>
 
     <!--Transactions-->
     <string name="transaction_warning_delete_message">Are you sure you want to delete transaction?</string>
@@ -99,6 +93,7 @@
     <string name="transaction_filterDialog_title">Filter by</string>
     <string name="transaction_filterDialog_positive">Apply</string>
     <string name="transaction_filterDialog_reset">Reset</string>
+    <string name="transaction_add_recurring">Recurring?</string>
 
     <!--Recurring Transactions-->
     <string name="recurring_warning_delete_message">Are you sure you want to delete recurring transaction?</string>
