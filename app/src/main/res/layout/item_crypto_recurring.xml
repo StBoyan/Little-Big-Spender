@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp">
+        android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -20,35 +19,67 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:textSize="20sp"
                 android:textColor="@color/black"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Salary" />
 
             <TextView
-                android:id="@+id/text_itemRecurring_currency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginTop="4dp"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/text_itemRecurring_amount"
-                tools:text="£" />
-
-            <TextView
-                android:id="@+id/text_itemRecurring_amount"
+                android:id="@+id/text_itemRecurring_cryptoAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="4dp"
-                android:textSize="18sp"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="1800" />
+                tools:text="3.47890000" />
+
+            <TextView
+                android:id="@+id/close_parentheses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/all_close_parentheses"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_itemRecurring_cryptoAmount" />
+
+            <TextView
+                android:id="@+id/text_itemRecurring_fiatAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/all_open_parentheses"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/close_parentheses"
+                app:layout_constraintTop_toBottomOf="@id/text_itemRecurring_cryptoAmount"
+                tools:text="3415.34" />
+
+            <TextView
+                android:id="@+id/text_itemRecurring_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/all_open_parentheses"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/text_itemRecurring_fiatAmount"
+                app:layout_constraintTop_toBottomOf="@id/text_itemRecurring_cryptoAmount"
+                tools:text="£" />
+
+            <TextView
+                android:id="@+id/open_parentheses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/all_open_parentheses"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@id/text_itemRecurring_currency"
+                app:layout_constraintTop_toBottomOf="@id/text_itemRecurring_cryptoAmount" />
 
             <View
                 android:id="@+id/divider_itemRecurring_upper_hidden"
@@ -56,7 +87,7 @@
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@+id/text_itemRecurring_category" />
+                app:layout_constraintTop_toBottomOf="@+id/open_parentheses" />
 
             <TextView
                 android:id="@+id/text_itemRecurring_date"
@@ -84,13 +115,13 @@
                 android:id="@+id/text_itemRecurring_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider_itemRecurring_upper_hidden"
-                tools:text="Bank Account" />
+                tools:text="Bitcoin" />
 
             <include layout="@layout/expandable_buttons"
                 android:layout_width="match_parent"

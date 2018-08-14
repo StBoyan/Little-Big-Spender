@@ -16,16 +16,16 @@ import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_BEFORE_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.MODE_BIWEEKLY_POSITION;
@@ -33,7 +33,8 @@ import static com.boyanstoynov.littlebigspender.util.Constants.MODE_MONTHLY_POSI
 import static com.boyanstoynov.littlebigspender.util.Constants.MODE_WEEKLY_POSITION;
 
 /**
- * Edit recurring transaction dialog implementation.
+ * Edit recurring transaction dialog implementation. Handles changing
+ * recurring transaction fields and validating user input.
  *
  * @author Boyan Stoynov
  */
@@ -45,9 +46,9 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
     @BindView(R.id.dateInput_transaction) EditText dateInput;
     @BindView(R.id.spinner_dialogRecurring_mode) Spinner modeSpinner;
 
-    Date date;
-    List<Account> accountsList;
-    List<Category> categoriesList;
+    private Date date;
+    private List<Account> accountsList;
+    private List<Category> categoriesList;
 
     @Override
     protected int getTitleResource() {
@@ -61,25 +62,27 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
 
     @Override
     protected boolean onPositiveClick() {
-        item.setCategory((Category) categorySpinner.getSelectedItem());
-        item.setAccount((Account) accountSpinner.getSelectedItem());
-        item.setAmount(new BigDecimal(amountInput.getText().toString()));
-        item.setStartDate(date);
+        if (isAmountValid()) {
+            item.setCategory((Category) categorySpinner.getSelectedItem());
+            item.setAccount((Account) accountSpinner.getSelectedItem());
+            item.setAmount(new BigDecimal(amountInput.getText().toString()));
+            item.setStartDate(date);
 
-        switch (modeSpinner.getSelectedItemPosition()) {
-            case MODE_MONTHLY_POSITION:
-                item.setMode(Recurring.Mode.MONTHLY);
-                break;
-            case MODE_BIWEEKLY_POSITION:
-                item.setMode(Recurring.Mode.BIWEEKLY);
-                break;
-            case MODE_WEEKLY_POSITION:
-                item.setMode(Recurring.Mode.WEEKLY);
-                break;
+            switch (modeSpinner.getSelectedItemPosition()) {
+                case MODE_MONTHLY_POSITION:
+                    item.setMode(Recurring.Mode.MONTHLY);
+                    break;
+                case MODE_BIWEEKLY_POSITION:
+                    item.setMode(Recurring.Mode.BIWEEKLY);
+                    break;
+                case MODE_WEEKLY_POSITION:
+                    item.setMode(Recurring.Mode.WEEKLY);
+                    break;
+            }
+            return true;
         }
-
-        //TODO implement validation
-        return true;
+        else
+            return false;
     }
 
     @Override
@@ -93,25 +96,41 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
         ArrayAdapter<Category> categoriesAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, categoriesList);
 
         categorySpinner.setAdapter(categoriesAdapter);
-
-        for (int i =0; i<categoriesAdapter.getCount(); i++) {
+        // Set current category selection to the recurring transaction's category
+        for (int i = 0; i<categoriesAdapter.getCount(); i++) {
             if (categoriesAdapter.getItem(i).getName().equals(item.getCategory().getName()))
                 categorySpinner.setSelection(i);
         }
 
         accountSpinner.setAdapter(accountsAdapter);
-
-        for (int i =0; i<accountsAdapter.getCount(); i++) {
+        // Set current account selection to the recurring transaction's account
+        for (int i = 0; i<accountsAdapter.getCount(); i++) {
             if (accountsAdapter.getItem(i).getName().equals(item.getAccount().getName()))
                 accountSpinner.setSelection(i);
         }
 
-        amountInput.setText(item.getAmount().toString());
-        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER, FIAT_DIGITS_AFTER_ZERO_FILTER)});
+        boolean isCrypto = item.getAccount().isCrypto();
+        // Disable account spinner for cryptocurrency accounts
+        if (isCrypto)
+            accountSpinner.setEnabled(false);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        /*Apply appropriate formatting and input filter based on whether the
+        Recurring transaction is crypto or not */
+        if (isCrypto) {
+            amountInput.setText(getCryptoFormatter().format(item.getAmount()));
+            amountInput.setFilters(new InputFilter[] {
+                    new DecimalDigitsInputFilter(
+                            CRYPTO_DIGITS_BEFORE_ZERO_FILTER, CRYPTO_DIGITS_AFTER_ZERO_FILTER)});
+        }
+        else {
+            amountInput.setText(getFiatFormatter().format(item.getAmount()));
+            amountInput.setFilters(new InputFilter[] {
+                    new DecimalDigitsInputFilter(
+                            FIAT_DIGITS_BEFORE_ZERO_FILTER, FIAT_DIGITS_AFTER_ZERO_FILTER)});
+        }
+
         date = item.getStartDate();
-        dateInput.setText(df.format(item.getStartDate()));
+        dateInput.setText(DateTimeUtils.formatDate(date));
         switch (item.getMode()) {
             case MONTHLY:
                 modeSpinner.setSelection(MODE_MONTHLY_POSITION);
@@ -127,14 +146,16 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = new GregorianCalendar(year, month, dayOfMonth).getTime();
-        dateInput.setText(df.format(date));
+        dateInput.setText(DateTimeUtils.formatDate(date));
     }
 
     @OnClick(R.id.dateInput_transaction)
     public void showDatePicker() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), this, DateTimeUtils.yearToday(), DateTimeUtils.monthToday(), DateTimeUtils.dayToday());
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(), this, DateTimeUtils.yearToday(),
+                DateTimeUtils.monthToday(), DateTimeUtils.dayToday());
+        datePickerDialog.getDatePicker().setMinDate(date.getTime());
         datePickerDialog.show();
     }
 
@@ -144,5 +165,21 @@ public class EditRecurringDialog extends BaseEditorDialog<Recurring> implements 
 
     public void setCategoriesList(List<Category> categoriesList) {
         this.categoriesList = new ArrayList<>(categoriesList);
+    }
+
+    /**
+     * Checks amount user input and returns boolean whether it is
+     * valid or not. If invalid displays error message to user.
+     * @return boolean whether amount is valid
+     */
+    private boolean isAmountValid() {
+        BigDecimal amount = new BigDecimal(amountInput.getText().toString());
+
+        if (amount.compareTo(BigDecimal.ZERO) < 1) {
+            amountInput.setError(getResources().getString(R.string.all_cannot_be_negative_error));
+            return false;
+        }
+        else
+            return true;
     }
 }

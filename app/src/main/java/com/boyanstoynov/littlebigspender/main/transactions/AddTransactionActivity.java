@@ -131,6 +131,7 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
 
     @OnClick(R.id.dateInput_transaction)
     public void showDatePicker() {
+        //TODO change see EditRecurring
         Calendar calendar = new GregorianCalendar(Locale.getDefault());
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

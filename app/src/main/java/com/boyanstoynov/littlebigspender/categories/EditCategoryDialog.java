@@ -25,7 +25,7 @@ public class EditCategoryDialog extends BaseEditorDialog<Category> {
     @BindView(R.id.textInput_category_name) EditText nameInput;
     @BindView(R.id.spinner_category_type) Spinner typeSpinner;
 
-    CategoryDao categoryDao;
+    private CategoryDao categoryDao;
 
     @Override
     protected int getTitleResource() {
@@ -63,7 +63,6 @@ public class EditCategoryDialog extends BaseEditorDialog<Category> {
     /**
      * Checks name user input and return boolean whether it is
      * valid or not. If invalid display error message to user.
-     *
      * @return boolean whether name is valid
      */
     private boolean isNameValid() {

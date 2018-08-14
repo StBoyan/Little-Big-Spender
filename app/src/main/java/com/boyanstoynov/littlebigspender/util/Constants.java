@@ -24,6 +24,10 @@ public class Constants {
     public static final int CRYPTO_DIGITS_BEFORE_ZERO_FILTER = 7;
     public static final int CRYPTO_DIGITS_AFTER_ZERO_FILTER = 8;
 
+    //View types for RecyclerView ViewHolders
+    public static final int FIAT_ACCOUNT_VIEW_TYPE = 1;
+    public static final int CRYPTO_ACCOUNT_VIEW_TYPE = 2;
+
     //Cryptocurrency API constants
     public static final String CRYPTO_API_URL = "https://min-api.cryptocompare.com/data/price";
     public static final String API_CRYPTO_CURRENCY_CODE_QUERY_STRING = "fsym";

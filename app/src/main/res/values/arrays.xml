@@ -24,4 +24,18 @@
         <item>XMR</item>
         <item>IOTA</item>
     </string-array>
+
+    <string-array name="crypto_names">
+        <item>Bitcoin</item>
+        <item>Ethereum</item>
+        <item>Ripple</item>
+        <item>Bitcoin Cash</item>
+        <item>EOS</item>
+        <item>Stellar</item>
+        <item>Litecoin</item>
+        <item>Cardano</item>
+        <item>TRON</item>
+        <item>Monero</item>
+        <item>IOTA</item>
+    </string-array>
 </resources>

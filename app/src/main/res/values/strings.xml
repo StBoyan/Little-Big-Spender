@@ -31,7 +31,10 @@
     <string name="all_minus_symbol">-</string>
     <string name="all_not_available">N/A</string>
     <string name="all_blank_field_error">This field cannot be blank</string>
+    <string name="all_cannot_be_negative_error">Amount cannot be negative</string>
     <string name="all_error">Error</string>
+    <string name="all_open_parentheses">(</string>
+    <string name="all_close_parentheses">)</string>
 
     <!--Introduction-->
     <string name="intro_welcome_title">Welcome to Little Big Spender</string>

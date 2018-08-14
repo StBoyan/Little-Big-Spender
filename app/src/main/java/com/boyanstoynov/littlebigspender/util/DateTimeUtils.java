@@ -83,7 +83,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * Returns True if and only if Date is equal to today's date.
+     * Returns True if and only if the date is equal to today's date.
      * @param date Date to be checked
      * @return boolean whether date is today
      */
@@ -95,6 +95,67 @@ public class DateTimeUtils {
 
         return todayCalendar.get(Calendar.YEAR) == compareCalendar.get(Calendar.YEAR) &&
         todayCalendar.get(Calendar.DAY_OF_YEAR) == compareCalendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    /**
+     * Returns true if and only if the date has past.
+     * @param date Date to be checked
+     * @return boolean whether date has passed
+     */
+    public static boolean dateHasPassed(Date date) {
+        Calendar todayCalendar = Calendar.getInstance();
+        Calendar compareCalendar = Calendar.getInstance();
+        todayCalendar.setTime(new Date());
+        compareCalendar.setTime(date);
+
+        if (todayCalendar.get(Calendar.YEAR) > compareCalendar.get(Calendar.YEAR))
+            return false;
+        else if (todayCalendar.get(Calendar.YEAR) < compareCalendar.get(Calendar.YEAR))
+            return true;
+
+        if (todayCalendar.get(Calendar.DAY_OF_YEAR) >= compareCalendar.get(Calendar.DAY_OF_YEAR))
+            return false;
+        else
+            return true;
+    }
+
+    /**
+     * Returns a date that is a month in the future from the
+     * given date.
+     * @param date date
+     * @return Date a month in the future
+     */
+    public static Date addMonth(Date date) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, 1);
+        return calendar.getTime();
+    }
+
+    /**
+     * Returns a date that is 2 weeks in the future from the
+     * given date.
+     * @param date date
+     * @return Date 2 weeks in the future
+     */
+    public static Date addTwoWeeks(Date date) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 14);
+        return calendar.getTime();
+    }
+
+    /**
+     * Returns a date that is a week in the future from the
+     * given date.
+     * @param date date
+     * @return Date a week in the future
+     */
+    public static Date addWeek(Date date) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        return calendar.getTime();
     }
 
     /**

@@ -335,13 +335,23 @@ public class MainActivity extends BaseActivity
         transactionDao.editDate(transaction, editedTransaction.getDate());
     }
 
+    //TODO Below methods may fail if refresh is clicked before the previous one has finished
+    //TODO could disable other refresh buttons until it has finished
     @Override
     public void onRefreshButtonClicked(Account cryptoAccount) {
         Toast.makeText(this, R.string.accounts_refreshAttempt, Toast.LENGTH_SHORT).show();
         //TODO reuse CryptoClient
         CryptoClient client = new CryptoClient(this);
         this.cryptoAccount = cryptoAccount;
-        client.fetchPrice(cryptoAccount.getName(), SharedPrefsManager.getCurrencyCode());
+        String[] cryptoNames = getResources().getStringArray(R.array.crypto_names);
+        String[] cryptoCodes = getResources().getStringArray(R.array.crypto_codes);
+
+        for (int i = 0; i < cryptoNames.length; i++) {
+            if (cryptoAccount.getName().equals(cryptoNames[i])) {
+                client.fetchPrice(cryptoCodes[i], SharedPrefsManager.getCurrencyCode());
+                break;
+            }
+        }
     }
 
     @Override

@@ -57,7 +57,7 @@ public class CategoriesActivity extends BaseActivity implements
 
         if (savedInstanceState != null)
             tabLayout.getTabAt(savedInstanceState.getInt(SELECTED_TAB_KEY)).select();
-        else {
+        else {// Display first tab on create
             tabLayout.getTabAt(1).select();
             tabLayout.getTabAt(0).select();
         }
@@ -115,7 +115,7 @@ public class CategoriesActivity extends BaseActivity implements
 
     /**
      * Shows the edit dialog when the edit button is clicked.
-     * @param category Category which button has been clicked
+     * @param category Category whose button has been clicked
      */
     @Override
     public void onEditButtonClicked(Category category) {

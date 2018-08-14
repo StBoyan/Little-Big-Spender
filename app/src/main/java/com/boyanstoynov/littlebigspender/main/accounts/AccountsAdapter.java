@@ -18,6 +18,9 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_ACCOUNT_VIEW_TYPE;
+import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_ACCOUNT_VIEW_TYPE;
+
 /**
  * RecyclerView adapter for Account entities.
  *
@@ -30,9 +33,6 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
     }
 
     private static CryptoRefreshButtonListener refreshButtonListener;
-
-    private final int FIAT_ACCOUNT_VIEW_TYPE = 1;
-    private final int CRYPTO_ACCOUNT_VIEW_TYPE = 2;
 
     AccountsAdapter(RecyclerViewListener listener) {
         super(listener);
@@ -82,7 +82,7 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
         private Resources resources;
 
         CryptoViewHolder(ViewGroup parent, AccountsAdapter adapter) {
-            super(parent, R.layout.item_crypto, adapter);
+            super(parent, R.layout.item_crypto_account, adapter);
             resources = parent.getResources();
         }
 
@@ -94,6 +94,7 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
 
             BigDecimal fiatValue = cryptoAccount.getFiatValue();
 
+            // If value is fetched from internet
             if (fiatValue.doubleValue() != 0.0)
                 textFiatValue.setText(getFiatFormatter().format(
                         cryptoAccount.getBalance().multiply(fiatValue)));
@@ -106,7 +107,6 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
                 textLastUpdated.setText(formatLastUpdated(DateTimeUtils.getElapsedTime(lastUpdate)));
             else
                 textLastUpdated.setText(R.string.accounts_never);
-
         }
 
         /**

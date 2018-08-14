@@ -2,48 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/softGray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".categories.AddCategoryActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_addCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/android:colorPrimary"
-        android:minHeight="?attr/android:actionBarSize"
-        android:theme="?attr/android:actionBarTheme">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="16dp"
-            tools:ignore="RtlSymmetry">
-
-            <ImageButton
-                android:id="@+id/button_addCategory_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/android:actionBarItemBackground"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_cancel"
-                tools:ignore="ContentDescription" />
-
-            <ImageButton
-                android:id="@+id/button_addCategory_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/android:actionBarItemBackground"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_confirm"
-                tools:ignore="ContentDescription" />
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/add_item_toolbar" />
 
     <include layout="@layout/category_input"
         android:layout_width="match_parent"

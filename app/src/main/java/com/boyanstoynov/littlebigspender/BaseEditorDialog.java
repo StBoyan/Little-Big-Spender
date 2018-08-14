@@ -10,6 +10,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 
+import java.text.DecimalFormat;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.realm.RealmObject;
@@ -41,6 +43,8 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
     protected E item;
     private Unbinder unbinder;
     private RealmManager realmManager;
+    private final DecimalFormat fiatFormatter = new DecimalFormat("###,###,###,##0.00");
+    private final DecimalFormat cryptoFormatter = new DecimalFormat("###,###,###,##0.00000000");
 
     @NonNull
     @Override
@@ -156,5 +160,23 @@ public abstract class BaseEditorDialog<E extends RealmObject> extends DialogFrag
      */
     protected RealmManager getRealmManager() {
         return realmManager;
+    }
+
+    /**
+     * Returns a fiat currency formatter appropriate for formatting
+     * monetary values with comma separators and 2 decimal digits.
+     * @return DecimalFormat formatter
+     */
+    protected DecimalFormat getFiatFormatter() {
+        return fiatFormatter;
+    }
+
+    /**
+     * Returns a cryptocurrency formatter appropriate for formatting
+     * monetary values with comma separators and 8 decimal digits.
+     * @return DecimalFormat formatter
+     */
+    protected DecimalFormat getCryptoFormatter() {
+        return cryptoFormatter;
     }
 }

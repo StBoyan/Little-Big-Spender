@@ -47,7 +47,7 @@ public class AddCryptoActivity extends BaseActivity {
         accountDao = getRealmManager().createAccountDao();
         final RealmResults<Account> accounts = accountDao.getAllCrypto();
 
-        final List<String> cryptoList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.crypto_codes)));
+        final List<String> cryptoList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.crypto_names)));
 
 
         final ArrayAdapter<String> cryptoAdapter = new ArrayAdapter<>(this,

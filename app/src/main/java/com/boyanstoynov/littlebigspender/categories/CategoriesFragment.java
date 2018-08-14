@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
-import com.boyanstoynov.littlebigspender.db.dao.RealmManager;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 
@@ -75,15 +74,12 @@ public class CategoriesFragment extends BaseFragment {
      * Set the type of categories that this fragment will display.
      */
     private void setCategoryType() {
-        RealmManager realmManager = new RealmManager();
-        realmManager.open();
-        CategoryDao categoryDao = realmManager.createCategoryDao();
+        CategoryDao categoryDao = getRealmManager().createCategoryDao();
 
         if (categoryType.getString(CATEGORY_TYPE_KEY).equals(INCOME_TYPE_VALUE))
             categoriesRealmResults = categoryDao.getAllIncomeCategories();
         else
             categoriesRealmResults = categoryDao.getAllExpenseCategories();
-        realmManager.close();
     }
 
     /**

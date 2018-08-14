@@ -49,7 +49,7 @@ public class AddCategoryActivity extends BaseActivity {
      * Validate input and inform user of outcome, going back
      * to previous activity if successful.
      */
-    @OnClick(R.id.button_addCategory_add)
+    @OnClick(R.id.button_addItem_add)
     public void addCategory() {
         categoryNameInput.setText(categoryNameInput.getText().toString().trim());
 
@@ -63,7 +63,7 @@ public class AddCategoryActivity extends BaseActivity {
     /**
      * Discard new category and go back.
      */
-    @OnClick(R.id.button_addCategory_cancel)
+    @OnClick(R.id.button_addItem_cancel)
     public void cancelAddCategory() {
         Toast.makeText(this, R.string.addCategory_discard_toast, Toast.LENGTH_SHORT).show();
         onBackPressed();

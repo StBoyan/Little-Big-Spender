@@ -15,8 +15,13 @@ import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.dao.CategoryDao;
 import com.boyanstoynov.littlebigspender.db.dao.RecurringDao;
+import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Recurring;
+import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -32,6 +37,11 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
 
     private RecurringDao recurringDao;
 
+    // Key and values used in bundles in this package
+    protected static final String CATEGORY_TYPE_KEY = "categoryType";
+    protected static final String INCOME_TYPE_VALUE = "income";
+    protected static final String EXPENSE_TYPE_VALUE = "expense";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,33 +50,8 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.all_recurring);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                RecurringFragment recurringFragment = new RecurringFragment();
-                switch (tab.getPosition()) {
-                    case 0:
-                        recurringFragment.setCategoryType(Category.Type.INCOME);
-                        break;
-                    case 1:
-                        recurringFragment.setCategoryType(Category.Type.EXPENSE);
-                        break;
-                }
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_recurring, recurringFragment);
-                transaction.commit();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        setupTabSelectedListener();
+        // Display first tab on create
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
 
@@ -78,6 +63,11 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
         return R.layout.activity_recurring;
     }
 
+    /**
+     * Handles delete button click. Displays a dialog to the user prompting
+     * for confirmation. Deletes the recurring transaction upon confirmation.
+     * @param recurring recurring transaction to be deleted
+     */
     @Override
     public void onDeleteButtonClicked(final Recurring recurring) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -102,15 +92,28 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
         alert.show();
     }
 
+    /**
+     * Shows the edit dialog when the edit button is clicked.
+     * @param recurring Category whose button has been clicked
+     */
     @Override
     public void onEditButtonClicked(Recurring recurring) {
-        //TODO need to implement recurring transaction next date calculation
         CategoryDao categoryDao = getRealmManager().createCategoryDao();
         AccountDao accountDao = getRealmManager().createAccountDao();
 
         EditRecurringDialog dialog = new EditRecurringDialog();
         dialog.setData(recurringDao.getUnmanaged(recurring));
-        dialog.setAccountsList(accountDao.getAll());
+        /* If recurring transaction is associated with cryptocurrency account
+        pass a list only with that account since its not changing account for
+         cryptocurrency is not allowed */
+        if (recurring.getAccount().isCrypto()) {
+            ArrayList<Account> cryptoAccount = new ArrayList<>();
+            cryptoAccount.add(recurring.getAccount());
+            dialog.setAccountsList(cryptoAccount);
+        }
+        // Else pass only fiat accounts list
+        else
+            dialog.setAccountsList(accountDao.getAllFiat());
 
         if (recurring.getCategory().getType() == Category.Type.INCOME)
             dialog.setCategoriesList(categoryDao.getAllIncomeCategories());
@@ -120,14 +123,67 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
         dialog.show(getSupportFragmentManager(), "RECURRING_DIALOG");
     }
 
+    /**
+     * Saves the edited fields of the Recurring transaction to the
+     * database. Also calculates the new next transaction date.
+     * @param editedRecurring object representing the new state of the
+     *                        recurring transaction
+     */
     @Override
     public void onDialogPositiveClick(Recurring editedRecurring) {
         Recurring recurring = recurringDao.getById(editedRecurring.getId());
         recurringDao.editAccount(recurring, editedRecurring.getAccount());
         recurringDao.editCategory(recurring, editedRecurring.getCategory());
         recurringDao.editAmount(recurring, editedRecurring.getAmount());
-        recurringDao.editStartDate(recurring, editedRecurring.getStartDate());
-        recurringDao.editMode(recurring, editedRecurring.getMode());
-        //TODO if date changed is today , also add a new transaction also
+        Date startDate = editedRecurring.getStartDate();
+        recurringDao.editStartDate(recurring, startDate);
+        Recurring.Mode mode = editedRecurring.getMode();
+        recurringDao.editMode(recurring, mode);
+        //Edit next transaction date based on the new mode
+        Date nextTransactionDate = startDate;
+        switch (mode) {
+            case MONTHLY:
+                while (!DateTimeUtils.dateHasPassed(nextTransactionDate)) {
+                    nextTransactionDate = DateTimeUtils.addMonth(nextTransactionDate);
+                }
+                break;
+            case BIWEEKLY:
+                while (!DateTimeUtils.dateHasPassed(nextTransactionDate)) {
+                    nextTransactionDate = DateTimeUtils.addTwoWeeks(nextTransactionDate);
+                }
+                break;
+            case WEEKLY:
+                while (!DateTimeUtils.dateHasPassed(nextTransactionDate)) {
+                    nextTransactionDate = DateTimeUtils.addWeek(nextTransactionDate);
+                }
+                break;
+        }
+        recurringDao.editNextTransactionDate(recurring, nextTransactionDate);
+    }
+
+    private void setupTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                RecurringFragment recurringFragment = new RecurringFragment();
+                Bundle fragmentBundle = new Bundle();
+                recurringFragment.setArguments(fragmentBundle);
+                switch (tab.getPosition()) {
+                    case 0:
+                        fragmentBundle.putString(CATEGORY_TYPE_KEY, INCOME_TYPE_VALUE);
+                        break;
+                    case 1:
+                        fragmentBundle.putString(CATEGORY_TYPE_KEY, EXPENSE_TYPE_VALUE);
+                        break;
+                }
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_recurring, recurringFragment);
+                transaction.commit();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
     }
 }

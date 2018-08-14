@@ -24,7 +24,7 @@ import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFOR
  * @author Boyan Stoynov
  */
 public class AddAccountActivity extends BaseActivity {
-
+//TODO  CHANGE ADD CANCEL BUTTON HERE AND IN ADD TRANSACTION
     @BindView(R.id.textInput_account_name) EditText accountNameInput;
     @BindView(R.id.numberInput_account_balance) EditText balanceInput;
 
