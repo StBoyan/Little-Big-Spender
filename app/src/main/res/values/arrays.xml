@@ -38,4 +38,10 @@
         <item>Monero</item>
         <item>IOTA</item>
     </string-array>
+
+    <string-array name="recurring_notification_modes">
+        <item>1 day before</item>
+        <item>2 days before</item>
+        <item>5 days before</item>
+    </string-array>
 </resources>

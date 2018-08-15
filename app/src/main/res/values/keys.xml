@@ -8,5 +8,6 @@
     <string name="currencyDrawableId">currencyDrawableId</string>
     <string name="currencyCode">currencyCode</string>
     <string name="allowTransactionOverdraft">allowTransactionOverdraft</string>
+    <string name="recurringNotificationMode">recurringNotificationMode</string>
 
 </resources>

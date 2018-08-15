@@ -36,4 +36,9 @@ public class Constants {
     //Models field constraints
     public static final int CATEGORY_NAME_MAX_LENGTH = 25;
     public static final int ACCOUNT_NAME_MAX_LENGTH = 20;
+
+    //Days before recurring notification spinner position modes
+    public static final int RECURRING_NOTIFICATION_MODE_ZERO_DAYS = 1;
+    public static final int RECURRING_NOTIFICATION_MODE_ONE_DAYS = 2;
+    public static final int RECURRING_NOTIFICATION_MODE_TWO_DAYS = 5;
 }

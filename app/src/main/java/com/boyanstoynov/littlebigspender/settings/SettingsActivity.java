@@ -6,17 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.boyanstoynov.littlebigspender.BaseActivity;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
 import com.boyanstoynov.littlebigspender.db.model.Account;
-import com.boyanstoynov.littlebigspender.db.model.CryptoData;
 import com.boyanstoynov.littlebigspender.main.MainActivity;
 import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 import com.mynameismidori.currencypicker.CurrencyPicker;
@@ -40,6 +41,7 @@ public class SettingsActivity extends BaseActivity {
     @BindView(R.id.image_settings_currency) ImageView currencyImage;
     @BindView(R.id.text_settings_currencycode) TextView textCurrencyCode;
     @BindView(R.id.switch_settings_transactionOverdraft) Switch transactionOverdraftSwitch;
+    @BindView(R.id.spinner_settings_recurringNotification) Spinner recurringNotificationSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,23 @@ public class SettingsActivity extends BaseActivity {
                 SharedPrefsManager.write(
                         getResources().getString(R.string.allowTransactionOverdraft), isChecked);
             }
+        });
+
+        //Get recurring notification spinner position from shared preferences
+        recurringNotificationSpinner.setSelection(
+                SharedPrefsManager.read(
+                        getResources().getString(R.string.recurringNotificationMode), 0)
+        );
+
+        // Save recurring notification spinner position on spinner selections
+        recurringNotificationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPrefsManager.write(
+                        getResources().getString(R.string.recurringNotificationMode), position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
@@ -117,7 +136,7 @@ public class SettingsActivity extends BaseActivity {
         List<Account> accounts = accountDao.getAllCrypto();
 
         for (Account account : accounts) {
-            accountDao.editCryptoData(account, new CryptoData());
+            accountDao.deleteCryptoData(account);
         }
     }
 
@@ -153,5 +172,14 @@ public class SettingsActivity extends BaseActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    /**
+     * Open the recurring notification spinner when its container
+     * is clicked.
+     */
+    @OnClick(R.id.container_settings_recurringNotification)
+    public void onRecurringNotificationClick() {
+        recurringNotificationSpinner.performClick();
     }
 }

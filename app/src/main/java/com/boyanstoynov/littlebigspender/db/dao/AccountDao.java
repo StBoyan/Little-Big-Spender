@@ -78,8 +78,9 @@ public class AccountDao extends BaseDao<Account> {
         realm.commitTransaction();
     }
 
-    public void editCryptoData(Account account, CryptoData cryptoData) {
+    public void deleteCryptoData(Account account) {
         realm.beginTransaction();
+        CryptoData cryptoData = realm.copyToRealm(new CryptoData());
         account.setCryptoData(cryptoData);
         realm.commitTransaction();
     }

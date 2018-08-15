@@ -99,13 +99,63 @@
         app:layout_constraintTop_toBottomOf="@id/switch_settings_transactionOverdraft" />
 
     <View
-        android:id="@+id/divider_settings_eraseData_top"
+        android:id="@+id/divider_settings_recurringNotification_top"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="25dp"
         android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider_settings_transactionOverdraft_bottom" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/container_settings_recurringNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider_settings_recurringNotification_top">
+
+        <TextView
+            android:id="@+id/text_settings_recurringNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_margin="8dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/settings_recurring_notification_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/spinner_settings_recurringNotification"/>
+
+        <Spinner
+            android:id="@+id/spinner_settings_recurringNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:entries="@array/recurring_notification_modes"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_settings_recurringNotification"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider_settings_recurringNotification_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/container_settings_recurringNotification"/>
+
+    <View
+        android:id="@+id/divider_settings_eraseData_top"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_settings_recurringNotification_bottom" />
 
     <TextView
         android:id="@+id/textButton_settings_eraseData"
@@ -126,6 +176,6 @@
         android:layout_marginTop="8dp"
         android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textButton_settings_eraseData"/>
+        app:layout_constraintTop_toBottomOf="@id/textButton_settings_eraseData" />
 
 </android.support.constraint.ConstraintLayout>
