@@ -3,6 +3,7 @@ package com.boyanstoynov.littlebigspender.db.dao;
 import android.support.annotation.NonNull;
 
 import com.boyanstoynov.littlebigspender.db.model.Account;
+import com.boyanstoynov.littlebigspender.db.model.CryptoData;
 
 import java.math.BigDecimal;
 
@@ -74,6 +75,12 @@ public class AccountDao extends BaseDao<Account> {
     public void editFiatValue(Account account, BigDecimal fiatValue) {
         realm.beginTransaction();
         account.setFiatValue(fiatValue);
+        realm.commitTransaction();
+    }
+
+    public void editCryptoData(Account account, CryptoData cryptoData) {
+        realm.beginTransaction();
+        account.setCryptoData(cryptoData);
         realm.commitTransaction();
     }
 }

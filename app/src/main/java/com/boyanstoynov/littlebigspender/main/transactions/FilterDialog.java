@@ -19,11 +19,9 @@ import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,12 +32,20 @@ import static com.boyanstoynov.littlebigspender.util.Constants.INCOME_POSITION;
 import static com.boyanstoynov.littlebigspender.util.Constants.EXPENSE_POSITION;
 
 /**
- * Filter dialog to select a filter for transactions.
+ * Filter dialog to select a filter for a list of transactions. Displays
+ * radio buttons which enable their input and disable the others, allowing
+ * only one type of filter to be applied. Also has a button to reset the
+ * filter applied. Provides callback to the listener upon selection of a
+ * filter.
  *
  * @author Boyan Stoynov
  */
 public class FilterDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
+    /**
+     * Interface that must be implemented by the controller object that
+     * wants to be notified of the filter selected in the dialog.
+     */
     public interface FilterSelectedCallback {
         void onTypeFilterSelected(Category.Type type);
         void onCategoryFilterSelected(Category category);
@@ -108,19 +114,15 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
         ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, categoryList);
         ArrayAdapter<Account> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, accountList);
-
         categorySpinner.setAdapter(categoryAdapter);
         accountSpinner.setAdapter(accountAdapter);
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        date = new Date();
-        dateInput.setText(df.format(date));
-
+        dateInput.setText(DateTimeUtils.formatDate(date));
+        //Disable spinners and date input initially
         typeSpinner.setEnabled(false);
         categorySpinner.setEnabled(false);
         accountSpinner.setEnabled(false);
         dateInput.setEnabled(false);
-
+        //Disable positive button initially
         positiveButton = dialog.getActionButton(DialogAction.POSITIVE);
         positiveButton.setEnabled(false);
 
@@ -134,6 +136,10 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
         unbinder.unbind();
     }
 
+    /**
+     * Disable inputs other than type and enable
+     * its spinner.
+     */
     @OnClick(R.id.radio_filter_type)
     public void onTypeRadioButtonClicked() {
         positiveButton.setEnabled(true);
@@ -146,6 +152,10 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
         dateInput.setEnabled(false);
     }
 
+    /**
+     * Disable inputs other than category
+     * and enable its spinner.
+     */
     @OnClick(R.id.radio_filter_category)
     public void onCategoryRadioButtonClicked() {
         positiveButton.setEnabled(true);
@@ -158,6 +168,10 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
         dateInput.setEnabled(false);
     }
 
+    /**
+     * Disable inputs other than account and
+     * enable its spinner.
+     */
     @OnClick(R.id.radio_filter_account)
     public void onAccountRadioButtonClicked() {
         positiveButton.setEnabled(true);
@@ -170,6 +184,10 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
         dateInput.setEnabled(false);
     }
 
+    /**
+     * Disable inputs other than date and
+     * enable its input field.
+     */
     @OnClick(R.id.radio_filter_date)
     public void onDateRadioButtonClicked() {
         positiveButton.setEnabled(true);
@@ -191,11 +209,9 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = new GregorianCalendar(year, month, dayOfMonth).getTime();
-        dateInput.setText(df.format(date));
+        dateInput.setText(DateTimeUtils.formatDate(date));
     }
-
 
     public void setCategoryList(List<Category> categoryList) {
         this.categoryList = categoryList;

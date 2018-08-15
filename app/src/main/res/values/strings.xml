@@ -94,6 +94,8 @@
     <string name="transaction_filterDialog_positive">Apply</string>
     <string name="transaction_filterDialog_reset">Reset</string>
     <string name="transaction_add_recurring">Recurring?</string>
+    <string name="transaction_crypto_negative_balance_error">Not enough cryptocurrency to carry out transaction</string>
+    <string name="transaction_fiat_negative_balance_error">Not enough funds in account</string>
 
     <!--Recurring Transactions-->
     <string name="recurring_warning_delete_message">Are you sure you want to delete recurring transaction?</string>
@@ -102,6 +104,9 @@
 
     <!--Settings-->
     <string name="settings_currency">Currency</string>
+    <string name="settings_transaction_overdraft">Allow transactions to make account balances negative</string>
+    <string name="settings_erase_all_data">Erase all application data</string>
+    <string name="settings_erase_all_data_warning">Are you sure you want to erase all application data? This cannot be undone.</string>
 
     <!--Statistics-->
     <string name="statistics_income_breakdown">Income Breakdown</string>

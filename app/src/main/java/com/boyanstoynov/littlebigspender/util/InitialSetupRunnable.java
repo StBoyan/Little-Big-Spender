@@ -1,6 +1,7 @@
 package com.boyanstoynov.littlebigspender.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.AccountDao;
@@ -14,7 +15,6 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Locale;
 
-
 /**
  * Initial setup Runnable class to be executed upon the first
  * launch of the application. Provides initial database population and
@@ -22,19 +22,19 @@ import java.util.Locale;
  *
  * @author Boyan Stoynov
  */
-public class InitialSetup implements Runnable {
+public class InitialSetupRunnable implements Runnable {
 
     private RealmManager realmManager = new RealmManager();
     private CategoryDao categoryDao;
     private AccountDao accountDao;
-    private Context context;
+    private Resources resources;
 
     /**
      * Takes context to access application resources.
      * @param context context
      */
-    public InitialSetup(Context context) {
-        this.context = context;
+    public InitialSetupRunnable(Context context) {
+        resources = context.getResources();
     }
 
     /**
@@ -52,9 +52,9 @@ public class InitialSetup implements Runnable {
 
         setInitialCurrency();
 
+        setInitialSettings();
+
         realmManager.close();
-        //Relinquish context reference to prevent memory leak
-        context = null;
     }
 
     /**
@@ -136,8 +136,15 @@ public class InitialSetup implements Runnable {
         Locale defaultLocale = Locale.getDefault();
         Currency currency = Currency.getInstance(defaultLocale);
         ExtendedCurrency localCurrency = ExtendedCurrency.getCurrencyByISO(currency.getCurrencyCode());
-        SharedPrefsManager.write(context.getResources().getString(R.string.currencyCode), localCurrency.getCode());
-        SharedPrefsManager.write(context.getResources().getString(R.string.currencySymbol), localCurrency.getSymbol());
-        SharedPrefsManager.write(context.getResources().getString(R.string.currencyDrawableId), localCurrency.getFlag());
+        SharedPrefsManager.write(resources.getString(R.string.currencyCode), localCurrency.getCode());
+        SharedPrefsManager.write(resources.getString(R.string.currencySymbol), localCurrency.getSymbol());
+        SharedPrefsManager.write(resources.getString(R.string.currencyDrawableId), localCurrency.getFlag());
+    }
+
+    /**
+     * Sets initial (default) settings in the SharedPreferences file.
+     */
+    private void setInitialSettings() {
+        SharedPrefsManager.write(resources.getString(R.string.allowTransactionOverdraft), false);
     }
 }

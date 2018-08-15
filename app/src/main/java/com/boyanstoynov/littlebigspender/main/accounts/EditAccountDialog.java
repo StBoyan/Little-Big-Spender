@@ -21,7 +21,7 @@ import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFOR
 
 /**
  * Edit category dialog implementation. Handles changing name/balance
- * and validating user input.
+ * and validating user input. Provides callback upon user confirmation.
  *
  * @author Boyan Stoynov
  */

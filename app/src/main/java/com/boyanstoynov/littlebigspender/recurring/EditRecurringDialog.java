@@ -34,7 +34,8 @@ import static com.boyanstoynov.littlebigspender.util.Constants.MODE_WEEKLY_POSIT
 
 /**
  * Edit recurring transaction dialog implementation. Handles changing
- * recurring transaction fields and validating user input.
+ * recurring transaction fields and validating user input. Provides
+ * callback upon user confirmation.
  *
  * @author Boyan Stoynov
  */

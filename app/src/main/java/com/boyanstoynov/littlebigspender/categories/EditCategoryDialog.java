@@ -16,7 +16,8 @@ import static com.boyanstoynov.littlebigspender.util.Constants.INCOME_POSITION;
 
 /**
  * Edit category dialog implementation. Handles changing name
- * and validating name user input.
+ * and validating name user input. Provides callback upon
+ * user confirmation.
  *
  * @author Boyan Stoynov
  */

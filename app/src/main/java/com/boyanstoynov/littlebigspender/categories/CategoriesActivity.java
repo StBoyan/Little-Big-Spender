@@ -55,6 +55,7 @@ public class CategoriesActivity extends BaseActivity implements
 
         setupTabSelectedListener();
 
+        // On configuration change, get previously selected tab
         if (savedInstanceState != null)
             tabLayout.getTabAt(savedInstanceState.getInt(SELECTED_TAB_KEY)).select();
         else {// Display first tab on create

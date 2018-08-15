@@ -7,50 +7,15 @@
     android:background="@color/softGray"
     tools:context="com.boyanstoynov.littlebigspender.main.transactions.AddTransactionActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_addTransaction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/android:colorPrimary"
-        android:minHeight="?attr/android:actionBarSize"
-        android:theme="?attr/android:actionBarTheme">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="16dp"
-            tools:ignore="RtlSymmetry">
-
-            <ImageButton
-                android:id="@+id/button_addTransaction_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/android:actionBarItemBackground"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_cancel"
-                tools:ignore="ContentDescription" />
-
-            <ImageButton
-                android:id="@+id/button_addTransaction_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/android:actionBarItemBackground"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_confirm"
-                tools:ignore="ContentDescription" />
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/toolbar_add_item"
+        android:id="@+id/toolbar_addItem"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout_addTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_addTransaction">
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_addItem">
 
         <android.support.design.widget.TabItem
             android:id="@+id/tabItem_addTransaction_income"

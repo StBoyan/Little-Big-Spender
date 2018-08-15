@@ -5,7 +5,8 @@ import io.realm.Realm;
 /**
  * Provides abstraction over Realm instance management and creation of
  * Data Access Objects. DAOs can only be instantiated via the RealmManager
- * since they all have package private constructors.
+ * since they all have package private constructors. Also provides method
+ * to erase the data from the database.
  *
  * @author Boyan Stoynov
  */
@@ -40,6 +41,16 @@ public class RealmManager {
     public RecurringDao createRecurringDao() {
         checkForOpenRealm();
         return new RecurringDao(realm);
+    }
+
+    public void eraseRealm() {
+        checkForOpenRealm();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.deleteAll();
+            }
+        });
     }
 
     private void checkForOpenRealm() {

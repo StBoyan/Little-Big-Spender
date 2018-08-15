@@ -16,21 +16,23 @@ import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
 import com.boyanstoynov.littlebigspender.util.DecimalDigitsInputFilter;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_AFTER_ZERO_FILTER;
+import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_BEFORE_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_AFTER_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_DIGITS_BEFORE_ZERO_FILTER;
 
 /**
- * Edit transaction dialog implementation.
+ * Edit transaction dialog implementation. Handles changing
+ * transaction fields and validating user input. Provides callback
+ * upon user confirmation.
  *
  * @author Boyan Stoynov
  */
@@ -41,9 +43,9 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
     @BindView(R.id.numberInput_transaction_amount) EditText amountInput;
     @BindView(R.id.dateInput_transaction) EditText dateInput;
 
-    Date date;
-    List<Account> accountsList;
-    List<Category> categoriesList;
+    private Date date;
+    private List<Account> accountsList;
+    private List<Category> categoriesList;
 
     @Override
     protected int getTitleResource() {
@@ -57,13 +59,15 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
 
     @Override
     protected boolean onPositiveClick() {
-        item.setCategory((Category) categorySpinner.getSelectedItem());
-        item.setAccount((Account) accountSpinner.getSelectedItem());
-        item.setAmount(new BigDecimal(amountInput.getText().toString()));
-        item.setDate(date);
-
-        //TODO implement validation
-        return true;
+        if (isAmountValid()) {
+            item.setCategory((Category) categorySpinner.getSelectedItem());
+            item.setAccount((Account) accountSpinner.getSelectedItem());
+            item.setAmount(new BigDecimal(amountInput.getText().toString()));
+            item.setDate(date);
+            return true;
+        }
+        else
+            return false;
     }
 
     @Override
@@ -77,34 +81,41 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
         ArrayAdapter<Category> categoriesAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, categoriesList);
 
         categorySpinner.setAdapter(categoriesAdapter);
-
+        // Set spinner to item's category position
         for (int i =0; i<categoriesAdapter.getCount(); i++) {
             if (categoriesAdapter.getItem(i).getName().equals(item.getCategory().getName()))
                 categorySpinner.setSelection(i);
         }
 
         accountSpinner.setAdapter(accountsAdapter);
-
+        // Set spinner to item's account position
         for (int i =0; i<accountsAdapter.getCount(); i++) {
             if (accountsAdapter.getItem(i).getName().equals(item.getAccount().getName()))
                 accountSpinner.setSelection(i);
         }
 
-        amountInput.setText(item.getAmount().toString());
+        if (item.getAccount().isCrypto()) {
+            /* Disable account spinner if crypto since crypto transactions
+               cannot change account */
+            accountSpinner.setEnabled(false);
+            amountInput.setText(getCryptoFormatter().format(item.getAmount()));
+            amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(
+                    CRYPTO_DIGITS_BEFORE_ZERO_FILTER, CRYPTO_DIGITS_AFTER_ZERO_FILTER)});
+        }
+        else {
+            amountInput.setText(getFiatFormatter().format(item.getAmount()));
+            amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER,
+                    FIAT_DIGITS_AFTER_ZERO_FILTER)});
+        }
 
-        amountInput.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(FIAT_DIGITS_BEFORE_ZERO_FILTER,
-                FIAT_DIGITS_AFTER_ZERO_FILTER)});
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = item.getDate();
-        dateInput.setText(df.format(item.getDate()));
+        dateInput.setText(DateTimeUtils.formatDate(item.getDate()));
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         date = new GregorianCalendar(year, month, dayOfMonth).getTime();
-        dateInput.setText(df.format(date));
+        dateInput.setText(DateTimeUtils.formatDate(date));
 }
 
     @OnClick(R.id.dateInput_transaction)
@@ -120,5 +131,24 @@ public class EditTransactionDialog extends BaseEditorDialog<Transaction> impleme
 
     public void setCategoriesList(List<Category> categoriesList) {
         this.categoriesList = new ArrayList<>(categoriesList);
+    }
+
+    /**
+     * Checks amount user input and returns boolean whether it is
+     * valid or not. If invalid displays error message to user.
+     * @return boolean whether amount is valid
+     */
+    private boolean isAmountValid() {
+        if (amountInput.getText().toString().equals("")) {
+            amountInput.setError(getResources().getString(R.string.all_blank_field_error));
+            return false;
+        }
+
+        if (new BigDecimal(amountInput.getText().toString()).compareTo(BigDecimal.ZERO) < 1) {
+            amountInput.setError(getResources().getString(R.string.all_cannot_be_zero_error));
+            return false;
+        }
+
+        return true;
     }
 }

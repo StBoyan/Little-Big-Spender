@@ -113,7 +113,7 @@ public class DateTimeUtils {
         else if (todayCalendar.get(Calendar.YEAR) < compareCalendar.get(Calendar.YEAR))
             return true;
 
-        if (todayCalendar.get(Calendar.DAY_OF_YEAR) >= compareCalendar.get(Calendar.DAY_OF_YEAR))
+        if (todayCalendar.get(Calendar.DAY_OF_YEAR) <= compareCalendar.get(Calendar.DAY_OF_YEAR))
             return false;
         else
             return true;

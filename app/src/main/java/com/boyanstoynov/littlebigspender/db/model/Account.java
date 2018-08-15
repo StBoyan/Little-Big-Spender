@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
@@ -20,6 +21,8 @@ public class Account extends RealmObject {
     private String name;
     private long balance;
     private CryptoData cryptoData;
+    private static final int CRYPTO_PRECISION_MULTIPLIER = 100000000;
+    private static final int FIAT_PRECISION_MULTIPLIER = 100;
 
     public String getId() {
         return this.id;
@@ -34,11 +37,17 @@ public class Account extends RealmObject {
     }
 
     public BigDecimal getBalance() {
-        return new BigDecimal(balance).divide(new BigDecimal(100));
+        if (isCrypto())
+            return new BigDecimal(balance).divide(new BigDecimal(CRYPTO_PRECISION_MULTIPLIER));
+        else
+            return new BigDecimal(balance).divide(new BigDecimal(FIAT_PRECISION_MULTIPLIER));
     }
 
     public void setBalance(BigDecimal balance) {
-        this.balance = balance.multiply(new BigDecimal(100)).longValue();
+        if (isCrypto())
+            this.balance = balance.multiply(new BigDecimal(CRYPTO_PRECISION_MULTIPLIER)).longValue();
+        else
+            this.balance = balance.multiply(new BigDecimal(FIAT_PRECISION_MULTIPLIER)).longValue();
     }
 
     public void setCryptoData(CryptoData cryptoData) {

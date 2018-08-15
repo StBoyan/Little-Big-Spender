@@ -92,8 +92,8 @@ public class AddCryptoActivity extends BaseActivity {
     private void createCryptoAccount() {
         Account newCryptoAccount = new Account();
         newCryptoAccount.setName((String)cryptoNameSpinner.getSelectedItem());
-        newCryptoAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
         newCryptoAccount.setCryptoData(new CryptoData());
+        newCryptoAccount.setBalance(new BigDecimal(balanceInput.getText().toString()));
         accountDao.save(newCryptoAccount);
     }
 

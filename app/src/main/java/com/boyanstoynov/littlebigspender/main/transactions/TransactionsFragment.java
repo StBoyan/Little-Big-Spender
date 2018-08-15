@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
-import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 import com.boyanstoynov.littlebigspender.main.MainActivity;
 
@@ -28,33 +26,39 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 /**
- * Controller for Transactions fragment of main screen.
+ * Transactions fragment which contains the transactions within the
+ * MainActivity. Handles creating and managing the RecyclerView and
+ * updating its information.
  *
  * @author Boyan Stoynov
  */
 public class TransactionsFragment extends BaseFragment {
-//TODO if this fragment /accounts /categories aren't updated when a new entry is added
+    //TODO if this fragment /accounts /categories aren't updated when a new entry is added
     //TODO could try to manually notify adapter of changes onResume
     @BindView(R.id.recyclerview_transactions) RecyclerView recyclerView;
 
     private TransactionsAdapter adapter;
-    private TransactionDao transactionDao;
+    private RealmResults<Transaction> transactionsRealmResults;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        //TODO consider storing activity reference as class variable
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setTitle(R.string.all_transactions);
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        //TODO consider generalising these 2 methods and populateRecyclerView
         initViews();
         loadTransactionList();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        transactionsRealmResults.removeAllChangeListeners();
     }
 
     @Override
@@ -68,6 +72,9 @@ public class TransactionsFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * Initialise the adapter and recycler view.
+     */
     public void initViews() {
         adapter = new TransactionsAdapter((MainActivity)getActivity());
 
@@ -78,10 +85,13 @@ public class TransactionsFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Load the account list for the first time and set a database
+     * change listener.
+     */
     public void loadTransactionList() {
-        transactionDao = getRealmManager().createTransactionDao();
         //TODO unregister listener
-        RealmResults<Transaction> transactionsRealmResults = transactionDao.getAll();
+        transactionsRealmResults = getRealmManager().createTransactionDao().getAll();
         transactionsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override
             public void onChange(@NonNull RealmResults<Transaction> transactions) {
@@ -92,9 +102,11 @@ public class TransactionsFragment extends BaseFragment {
         populateRecyclerView(transactionsRealmResults);
     }
 
-    //TODO made public in order to make filter work. Need to refactor class so that it is controllable by activity and doesn't know anything about DAOs. Can also do the same for other recyclerviewfragments
+    /**
+     * Populate the RecyclerView with list of accounts.
+     * @param transactionList list of accounts
+     */
     public void populateRecyclerView(List<Transaction> transactionList) {
-        Log.d("adapter list size is", String.valueOf(transactionList.size()));
         adapter.setData(transactionList);
     }
 
@@ -104,8 +116,8 @@ public class TransactionsFragment extends BaseFragment {
     @OnClick(R.id.fab_transactions)
     public void startAddTransactionActivity() {
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
-        final Intent i = new Intent(parentActivity, AddTransactionActivity.class);
-        startActivity(i);
+        final Intent intent = new Intent(parentActivity, AddTransactionActivity.class);
+        startActivity(intent);
     }
 }
 

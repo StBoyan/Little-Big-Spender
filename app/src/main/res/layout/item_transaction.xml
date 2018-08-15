@@ -21,6 +21,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Groceries" />
@@ -32,6 +33,7 @@
                 android:layout_marginEnd="4dp"
                 android:textSize="22sp"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_itemTransaction_currency"
                 tools:text="-" />
@@ -43,6 +45,7 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginTop="4dp"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_itemTransaction_amount"
                 tools:text="£" />
@@ -54,6 +57,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="4dp"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="70" />
@@ -72,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider_itemTransaction_upper_hidden"
                 tools:text="07/02/2018" />
@@ -83,6 +88,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider_itemTransaction_upper_hidden"
                 tools:text="Bank Account" />

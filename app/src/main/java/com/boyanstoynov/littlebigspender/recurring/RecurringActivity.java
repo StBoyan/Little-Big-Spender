@@ -38,6 +38,7 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
     private RecurringDao recurringDao;
 
     // Key and values used in bundles in this package
+    protected static final String SELECTED_TAB_KEY = "selectedTab";
     protected static final String CATEGORY_TYPE_KEY = "categoryType";
     protected static final String INCOME_TYPE_VALUE = "income";
     protected static final String EXPENSE_TYPE_VALUE = "expense";
@@ -51,11 +52,22 @@ public class RecurringActivity extends BaseActivity implements BaseRecyclerAdapt
         getSupportActionBar().setTitle(R.string.all_recurring);
 
         setupTabSelectedListener();
-        // Display first tab on create
-        tabLayout.getTabAt(1).select();
-        tabLayout.getTabAt(0).select();
+
+        // On configuration change, get previously selected tab
+        if (savedInstanceState != null)
+            tabLayout.getTabAt(savedInstanceState.getInt(SELECTED_TAB_KEY)).select();
+        else {// Display first tab on create
+            tabLayout.getTabAt(1).select();
+            tabLayout.getTabAt(0).select();
+        }
 
         recurringDao = getRealmManager().createRecurringDao();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTED_TAB_KEY, tabLayout.getSelectedTabPosition());
     }
 
     @Override

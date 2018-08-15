@@ -7,7 +7,7 @@
     android:background="@color/softGray"
     tools:context=".main.accounts.AddCryptoActivity">
 
-    <include layout="@layout/add_item_toolbar" />
+    <include layout="@layout/toolbar_add_item" />
 
     <include layout="@layout/crypto_input"
         android:layout_width="match_parent"

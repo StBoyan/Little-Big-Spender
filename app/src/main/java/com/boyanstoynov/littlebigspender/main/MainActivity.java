@@ -49,7 +49,7 @@ import com.boyanstoynov.littlebigspender.recurring.RecurringActivity;
 import com.boyanstoynov.littlebigspender.settings.SettingsActivity;
 import com.boyanstoynov.littlebigspender.statistics.StatisticsActivity;
 import com.boyanstoynov.littlebigspender.util.DateTimeUtils;
-import com.boyanstoynov.littlebigspender.util.InitialSetup;
+import com.boyanstoynov.littlebigspender.util.InitialSetupRunnable;
 import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import java.math.BigDecimal;
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity
         // If application is launched for the first time start Intro activity and do initial setup
         if (SharedPrefsManager.read(getResources().getString(R.string.firstStart),true)) {
             startActivity(new Intent(this, IntroActivity.class));
-            AsyncTask.execute(new InitialSetup(this));
+            AsyncTask.execute(new InitialSetupRunnable(this));
             SharedPrefsManager.write(getResources().getString(R.string.firstStart), false);
         }
 
@@ -223,6 +223,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onDeleteButtonClicked(RealmObject item) {
+        //TODO validate account deletion here
         if (item instanceof Account)
             showDeleteAccountDialog((Account) item);
         else if (item instanceof Transaction)
@@ -241,6 +242,7 @@ public class MainActivity extends BaseActivity
     public void onDialogPositiveClick(RealmObject item) {
         if (item instanceof Account)
             editAccount((Account) item);
+        //TODO for transaction will need to adjst amounts in editTransaction
         else if (item instanceof Transaction)
             editTransaction((Transaction) item);
 
