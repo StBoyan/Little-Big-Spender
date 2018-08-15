@@ -70,22 +70,21 @@ public class CryptoClient {
                 .url(url)
                 .build();
 
-        //Send request to API
+        //Send request to API and give a callback of success/failure
         httpClient.newCall(request).enqueue(new Callback() {
-
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 call.cancel();
                 callbackListener.onFetchUnsuccessful();
             }
-
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 final String stringResponse = response.body().string();
 
                 try {
                     JSONObject json = new JSONObject(stringResponse);
-                    Looper.prepare();
+                    if (Looper.myLooper() == null)
+                        Looper.prepare();
                     callbackListener.onFetchSuccessful(new BigDecimal(json.getString(fiatCurrencyCode)));
                 } catch (JSONException e) {
                     callbackListener.onFetchUnsuccessful();

@@ -92,24 +92,39 @@ public class InitialSetupRunnable implements Runnable {
         categoryDao.save(cat6);
 
         Category cat7 = new Category();
-        cat7.setName("Salary");
-        cat7.setType(Category.Type.INCOME);
+        cat7.setName("Education");
+        cat7.setType(Category.Type.EXPENSE);
         categoryDao.save(cat7);
 
         Category cat8 = new Category();
-        cat8.setName("Interest");
-        cat8.setType(Category.Type.INCOME);
+        cat8.setName("Transportation");
+        cat8.setType(Category.Type.EXPENSE);
         categoryDao.save(cat8);
 
         Category cat9 = new Category();
-        cat9.setName("Dividends");
-        cat9.setType(Category.Type.INCOME);
+        cat9.setName("Gifts");
+        cat9.setType(Category.Type.EXPENSE);
         categoryDao.save(cat9);
 
         Category cat10 = new Category();
-        cat10.setName("Other");
+        cat10.setName("Salary");
         cat10.setType(Category.Type.INCOME);
         categoryDao.save(cat10);
+
+        Category cat11 = new Category();
+        cat11.setName("Interest");
+        cat11.setType(Category.Type.INCOME);
+        categoryDao.save(cat11);
+
+        Category cat12 = new Category();
+        cat12.setName("Bonus");
+        cat12.setType(Category.Type.INCOME);
+        categoryDao.save(cat12);
+
+        Category cat13 = new Category();
+        cat13.setName("Other");
+        cat13.setType(Category.Type.INCOME);
+        categoryDao.save(cat13);
     }
 
     /**
@@ -146,5 +161,6 @@ public class InitialSetupRunnable implements Runnable {
      */
     private void setInitialSettings() {
         SharedPrefsManager.write(resources.getString(R.string.allowTransactionOverdraft), false);
+        SharedPrefsManager.write(resources.getString(R.string.recurringNotificationMode), 0);
     }
 }

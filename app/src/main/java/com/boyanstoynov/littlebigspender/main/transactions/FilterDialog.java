@@ -116,6 +116,7 @@ public class FilterDialog extends DialogFragment implements DatePickerDialog.OnD
         ArrayAdapter<Account> accountAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, accountList);
         categorySpinner.setAdapter(categoryAdapter);
         accountSpinner.setAdapter(accountAdapter);
+        date = new Date();
         dateInput.setText(DateTimeUtils.formatDate(date));
         //Disable spinners and date input initially
         typeSpinner.setEnabled(false);

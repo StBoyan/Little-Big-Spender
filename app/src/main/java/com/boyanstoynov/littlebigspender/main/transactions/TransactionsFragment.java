@@ -90,7 +90,6 @@ public class TransactionsFragment extends BaseFragment {
      * change listener.
      */
     public void loadTransactionList() {
-        //TODO unregister listener
         transactionsRealmResults = getRealmManager().createTransactionDao().getAll();
         transactionsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override

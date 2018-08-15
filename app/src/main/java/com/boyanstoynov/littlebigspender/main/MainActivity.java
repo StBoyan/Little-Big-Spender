@@ -9,10 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -54,9 +56,16 @@ import com.boyanstoynov.littlebigspender.util.SharedPrefsManager;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
- * Controller for main screen activity.
+ * Controller for the main activity which is displayed upon
+ * pressing the application icon. If this is the first launch, shows
+ * the introduction intro first and does initial setup. Responsible for
+ * listening and responding to events from all the fragments attached to
+ * the main activity (overview, accounts, transactions) and changing the
+ * current fragment as appropriate. Also, shows a side navigation drawer
+ * and starts the appropriate activity as requested by the user.
  *
  * @author Boyan Stoynov
  */
@@ -70,84 +79,42 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigationView;
     @BindView(R.id.drawer_navigation) NavigationView navigationView;
 
-    //TODO rafactor this's usage in onrefresh if and onfetch if possible
-    private Account cryptoAccount;
+    private TransactionDao transactionDao;
+    private AccountDao accountDao;
+    private CategoryDao categoryDao;
+    private Account currentlyUpdatingCryptoAccount;
+    private CryptoClient cryptoClient;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // If application is launched for the first time start Intro activity and do initial setup
+        /* If application is launched for the first time start Intro
+        activity and execute initial setup on background thread */
         if (SharedPrefsManager.read(getResources().getString(R.string.firstStart),true)) {
             startActivity(new Intent(this, IntroActivity.class));
             AsyncTask.execute(new InitialSetupRunnable(this));
             SharedPrefsManager.write(getResources().getString(R.string.firstStart), false);
         }
 
-        //TODO consider making toolbar part of a superclass to use in other activities
         setSupportActionBar(toolbar);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer_menu);
 
+        transactionDao = getRealmManager().createTransactionDao();
+        accountDao = getRealmManager().createAccountDao();
+        categoryDao = getRealmManager().createCategoryDao();
+        cryptoClient = new CryptoClient(this);
+        fragmentManager = getSupportFragmentManager();
 
-        //TODO consider putting listener methods separately to reduce size of onCreate
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        item.setChecked(true);
-                        Fragment selectedFragment = null;
-                        switch (item.getItemId()) {
-                            case R.id.item_overview:
-                                selectedFragment = new OverviewFragment();
-                                break;
-                            case R.id.item_transactions:
-                                selectedFragment = new TransactionsFragment();
-                                break;
-                            case R.id.item_accounts:
-                                selectedFragment = new AccountsFragment();
-                                break;
-                        }
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_main, selectedFragment);
-                        transaction.commit();
-                        return true;
-                    }
-                }
-        );
+        setUpBottomNavigationItemSelectedListener();
+        setUpNavigationDrawerListener();
 
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        drawer.closeDrawers();
-                        Intent i = null;
-
-                        switch (item.getItemId()) {
-                            case R.id.item_settings:
-                                i = new Intent(MainActivity.this, SettingsActivity.class);
-                                break;
-                            case R.id.item_categories:
-                                i = new Intent(MainActivity.this, CategoriesActivity.class);
-                                break;
-                            case R.id.item_recurring:
-                                i = new Intent(MainActivity.this, RecurringActivity.class);
-                                break;
-                            case R.id.item_statistics:
-                                i = new Intent(MainActivity.this, StatisticsActivity.class);
-                                break;
-                            case R.id.item_about:
-                                i = new Intent(MainActivity.this, AboutActivity.class);
-                                break;
-                        }
-
-                        startActivity(i);
-                        return true;
-                    }
-                }
-        );
+        //Navigates to overview screen upon first launch
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_main, new OverviewFragment());
+        transaction.commit();
     }
 
     @Override
@@ -165,40 +132,7 @@ public class MainActivity extends BaseActivity
                 startActivity(addCryptoIntent);
                 return true;
             case R.id.item_filter:
-                FilterDialog filterDialog = new FilterDialog();
-                //TODO extract in a method
-
-                filterDialog.show(getFragmentManager(), "FILTER_DIALOG");
-                filterDialog.setCategoryList(getRealmManager().createCategoryDao().getAll());
-                filterDialog.setAccountList(getRealmManager().createAccountDao().getAllFiat());
-                filterDialog.setCallback(new FilterDialog.FilterSelectedCallback() {
-                    TransactionsFragment fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentById(R.id.frame_main);
-                    TransactionDao transactionDao = getRealmManager().createTransactionDao();
-                    @Override
-                    public void onTypeFilterSelected(Category.Type type) {
-                        fragment.populateRecyclerView(transactionDao.getByType(type));
-                    }
-
-                    @Override
-                    public void onCategoryFilterSelected(Category category) {
-                        fragment.populateRecyclerView(transactionDao.getByCategory(category));
-                    }
-
-                    @Override
-                    public void onAccountFilterSelected(Account account) {
-                        fragment.populateRecyclerView(transactionDao.getByAccount(account));
-                    }
-
-                    @Override
-                    public void onDateFilterSelected(Date date) {
-                        fragment.populateRecyclerView(transactionDao.getByDate(date));
-                    }
-
-                    @Override
-                    public void onResetSelected() {
-                        fragment.populateRecyclerView(transactionDao.getAll());
-                    }
-                });
+                showFilterDialog();
                 return true;
             case R.id.item_transfer_account:
                 TransferDialog transferDialog = new TransferDialog();
@@ -207,7 +141,6 @@ public class MainActivity extends BaseActivity
                 transferDialog.setCallback(new TransferDialog.TransferDialogCallback() {
                     @Override
                     public void onTransferAccount(Account from, Account to, BigDecimal amount) {
-                        AccountDao accountDao = getRealmManager().createAccountDao();
                         accountDao.subtractAmount(from, amount);
                         accountDao.addAmount(to, amount);
                     }
@@ -216,20 +149,101 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Shows the filter dialog to the user.
+     */
+    private void showFilterDialog() {
+        FilterDialog filterDialog = new FilterDialog();
+
+        filterDialog.show(getFragmentManager(), "FILTER_DIALOG");
+        filterDialog.setCategoryList(categoryDao.getAll());
+        filterDialog.setAccountList(accountDao.getAllFiat());
+        filterDialog.setCallback(new FilterDialog.FilterSelectedCallback() {
+            TransactionsFragment fragment = (TransactionsFragment) getSupportFragmentManager().findFragmentById(R.id.frame_main);
+            @Override
+            public void onTypeFilterSelected(Category.Type type) {
+                fragment.populateRecyclerView(transactionDao.getByType(type));
+            }
+            @Override
+            public void onCategoryFilterSelected(Category category) {
+                fragment.populateRecyclerView(transactionDao.getByCategory(category));
+            }
+            @Override
+            public void onAccountFilterSelected(Account account) {
+                fragment.populateRecyclerView(transactionDao.getByAccount(account));
+            }
+            @Override
+            public void onDateFilterSelected(Date date) {
+                fragment.populateRecyclerView(transactionDao.getByDate(date));
+            }
+            @Override
+            public void onResetSelected() {
+                fragment.populateRecyclerView(transactionDao.getAll());
+            }
+        });
+    }
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;
     }
 
+    /**
+     * Handles a delete button click on either the account or
+     * transaction fragment and shows the appropriate dialog.
+     * For account deletions, check if the account is associated
+     * with any transactions first and displays an error message
+     * if it is.
+     * @param item item to be deleted
+     */
     @Override
     public void onDeleteButtonClicked(RealmObject item) {
-        //TODO validate account deletion here
-        if (item instanceof Account)
-            showDeleteAccountDialog((Account) item);
+        if (item instanceof Account) {
+            if (accountHasTransactions((Account) item))
+                showAccountDeletionError();
+            else
+                showDeleteAccountDialog((Account) item);
+        }
         else if (item instanceof Transaction)
             showDeleteTransactionDialog((Transaction) item);
     }
 
+    /**
+     * Returns boolean whether account has any transactions
+     * associated with it.
+     * @param account Account object
+     * @return boolean whether account has transactions
+     */
+    private boolean accountHasTransactions(Account account) {
+        List<Transaction> transactions = transactionDao.getByAccount(account);
+        Log.d("transactions size", String.valueOf(transactions.size()));
+        return transactions.size() != 0;
+    }
+
+    /**
+     * Shows an error message to user informing that account
+     * cannot be deleted.
+     */
+    private void showAccountDeletionError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.all_error);
+        builder.setMessage(R.string.accounts_cannot_delete_error);
+        builder.setPositiveButton(R.string.all_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    /**
+     * Handles an edit button click on either the account
+     * or transaction fragment and shows the appropriate
+     * edit dialog.
+     * @param item item to be edited
+     */
     @Override
     public void onEditButtonClicked(RealmObject item) {
         if (item instanceof Account)
@@ -238,18 +252,28 @@ public class MainActivity extends BaseActivity
             showEditTransactionDialog((Transaction) item);
     }
 
+    /**
+     * Handles a positive button click on the edit dialog
+     * for either a transaction or an account and calls the
+     * appropriate edit method.
+     * @param item edited item
+     */
     @Override
     public void onDialogPositiveClick(RealmObject item) {
         if (item instanceof Account)
             editAccount((Account) item);
-        //TODO for transaction will need to adjst amounts in editTransaction
-        else if (item instanceof Transaction)
+          else if (item instanceof Transaction)
             editTransaction((Transaction) item);
 
     }
-    // TODO initialise Account and Transaction Dao in onCreate and store them
+
+    /**
+     * Displays the confirmation dialog before deleting an account. If
+     * the user confirms, deletes the account and displays a toast to
+     * inform the user.
+     * @param account Account to be deleted
+     */
     public void showDeleteAccountDialog(final Account account) {
-        final AccountDao accountDao = getRealmManager().createAccountDao();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.app_name);
         builder.setMessage(String.format("%s %s?", getResources().getString(R.string.all_warning_delete_message), account.getName()));
@@ -272,8 +296,13 @@ public class MainActivity extends BaseActivity
         alert.show();
     }
 
+    /**
+     * Displays the confirmation dialog before deleting a transaction. If
+     * the user confirms, deletes the transaction and displays a toast to
+     * inform the user.
+     * @param transaction Transaction to be deleted
+     */
     public void showDeleteTransactionDialog(final Transaction transaction) {
-        final TransactionDao transactionDao = getRealmManager().createTransactionDao();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.app_name);
         builder.setMessage(R.string.transaction_warning_delete_message);
@@ -296,6 +325,11 @@ public class MainActivity extends BaseActivity
         alert.show();
     }
 
+    /**
+     * Shows the edit account dialog and pass it an unmanaged
+     * object of the account to be edited.
+     * @param account Account to be edited
+     */
     public void showEditAccountDialog(Account account) {
         AccountDao accountDao = getRealmManager().createAccountDao();
         EditAccountDialog dialog = new EditAccountDialog();
@@ -303,11 +337,12 @@ public class MainActivity extends BaseActivity
         dialog.show(getSupportFragmentManager(), "ACCOUNT_DIALOG");
     }
 
+    /**
+     * Shows the edit transaction dialog and pass it an unmanaged
+     * object of the transaction to be edited.
+     * @param transaction Transaction to be edited
+     */
     public void showEditTransactionDialog(Transaction transaction) {
-        TransactionDao transactionDao = getRealmManager().createTransactionDao();
-        CategoryDao categoryDao = getRealmManager().createCategoryDao();
-        AccountDao accountDao = getRealmManager().createAccountDao();
-
         EditTransactionDialog dialog = new EditTransactionDialog();
         dialog.setData(transactionDao.getUnmanaged(transaction));
         dialog.setAccountsList(accountDao.getAll());
@@ -320,15 +355,22 @@ public class MainActivity extends BaseActivity
         dialog.show(getSupportFragmentManager(), "TRANSACTION_DIALOG");
     }
 
+    /**
+     * Modifies the account and saves its values to the database.
+     * @param editedAccount unmanaged Account object
+     */
     public void editAccount(Account editedAccount) {
-        AccountDao accountDao = getRealmManager().createAccountDao();
         Account account = accountDao.getById(editedAccount.getId());
         accountDao.editName(account, editedAccount.getName());
         accountDao.editBalance(account, editedAccount.getBalance());
     }
 
+    /**
+     * Modifies the transaction and saves its values to the database.
+     * @param editedTransaction unmanaged Transaction object
+     */
     public void editTransaction(Transaction editedTransaction) {
-        TransactionDao transactionDao = getRealmManager().createTransactionDao();
+        //TODO also modify amounts in accounts here
         Transaction transaction = transactionDao.getById(editedTransaction.getId());
         transactionDao.editAccount(transaction, editedTransaction.getAccount());
         transactionDao.editCategory(transaction, editedTransaction.getCategory());
@@ -336,41 +378,134 @@ public class MainActivity extends BaseActivity
         transactionDao.editDate(transaction, editedTransaction.getDate());
     }
 
-    //TODO Below methods may fail if refresh is clicked before the previous one has finished
-    //TODO could disable other refresh buttons until it has finished
+    /**
+     * Handles a click to the refresh button of the accounts fragment. This method
+     * is synchronized so that several consecutive calls to it will not interfere
+     * with the currently updated amount. Displays a toast notifying the user that
+     * the refresh is underway and tries to fetch the most recent exchange rate
+     * for the current home currency.
+     * @param cryptoAccountId ID field of the cryptocurrency account to be fetched
+     */
     @Override
-    public void onRefreshButtonClicked(Account cryptoAccount) {
-        Toast.makeText(this, R.string.accounts_refreshAttempt, Toast.LENGTH_SHORT).show();
-        //TODO reuse CryptoClient
-        CryptoClient client = new CryptoClient(this);
-        this.cryptoAccount = cryptoAccount;
-        String[] cryptoNames = getResources().getStringArray(R.array.crypto_names);
-        String[] cryptoCodes = getResources().getStringArray(R.array.crypto_codes);
+    public synchronized void onRefreshButtonClicked(final String cryptoAccountId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                currentlyUpdatingCryptoAccount = accountDao.getById(cryptoAccountId);
+                String toastText = String.format("%s %s",
+                        getResources().getString(R.string.accounts_refreshAttempt), currentlyUpdatingCryptoAccount.toString());
 
-        for (int i = 0; i < cryptoNames.length; i++) {
-            if (cryptoAccount.getName().equals(cryptoNames[i])) {
-                client.fetchPrice(cryptoCodes[i], SharedPrefsManager.getCurrencyCode());
-                break;
+                Toast.makeText(MainActivity.this, toastText, Toast.LENGTH_SHORT).show();
+
+                String[] cryptoNames = getResources().getStringArray(R.array.crypto_names);
+                String[] cryptoCodes = getResources().getStringArray(R.array.crypto_codes);
+
+                //Gets the cryptocurrency's code used by the API
+                for (int i = 0; i < cryptoNames.length; i++) {
+                    if (currentlyUpdatingCryptoAccount.getName().equals(cryptoNames[i])) {
+                        cryptoClient.fetchPrice(cryptoCodes[i], SharedPrefsManager.getCurrencyCode());
+                        break;
+                    }
+                }
+
             }
-        }
+        });
+
     }
 
+    /**
+     * Informs user of unsuccessful refresh of cryptocurrency account's
+     * fiat value.
+     */
     @Override
     public void onFetchUnsuccessful() {
         Toast.makeText(this, R.string.accounts_refreshFailed, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Saves the fetched fiat value for the cryptocurrency and sets its
+     * last updated to the present time. Also, informs the user of success.
+     * @param fiatValue new fiat value of cryptocurrency
+     */
     @Override
-    public void onFetchSuccessful(final BigDecimal convertedPrice) {
+    public void onFetchSuccessful(final BigDecimal fiatValue) {
         //TODO this might need refactoring see variable at top
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(MainActivity.this, R.string.accounts_refreshCompleted, Toast.LENGTH_SHORT).show();
-                AccountDao accDao = getRealmManager().createAccountDao();
-                accDao.editFiatValue(cryptoAccount, convertedPrice);
-                accDao.editLastUpdated(cryptoAccount, DateTimeUtils.getCurrentTimeInMillis());
+                accountDao.editFiatValue(currentlyUpdatingCryptoAccount, fiatValue);
+                accountDao.editLastUpdated(currentlyUpdatingCryptoAccount, DateTimeUtils.getCurrentTimeInMillis());
             }
         });
       }
+
+    /**
+     * Set up the listener for selections of items on the side
+     * navigation drawer, responsible for starting their activities
+     * upon user selection.
+     */
+    private void setUpNavigationDrawerListener() {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        drawer.closeDrawers();
+                        Intent intent = null;
+
+                        switch (item.getItemId()) {
+                            case R.id.item_settings:
+                                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                break;
+                            case R.id.item_categories:
+                                intent = new Intent(MainActivity.this, CategoriesActivity.class);
+                                break;
+                            case R.id.item_recurring:
+                                intent = new Intent(MainActivity.this, RecurringActivity.class);
+                                break;
+                            case R.id.item_statistics:
+                                intent = new Intent(MainActivity.this, StatisticsActivity.class);
+                                break;
+                            case R.id.item_about:
+                                intent = new Intent(MainActivity.this, AboutActivity.class);
+                                break;
+                        }
+                        startActivity(intent);
+                        return true;
+                    }
+                }
+        );
+    }
+
+    /**
+     * Set up the listener for selections on the bottom navigation
+     * bar that is responsible for changing the currently displayed
+     * fragment.
+     */
+    private void setUpBottomNavigationItemSelectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        item.setChecked(true);
+                        Fragment selectedFragment = null;
+                        switch (item.getItemId()) {
+                            case R.id.item_overview:
+                                selectedFragment = new OverviewFragment();
+                                break;
+                            case R.id.item_transactions:
+                                selectedFragment = new TransactionsFragment();
+                                break;
+                            case R.id.item_accounts:
+                                selectedFragment = new AccountsFragment();
+                                break;
+                        }
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.frame_main, selectedFragment);
+                        transaction.commit();
+                        return true;
+                    }
+                }
+        );
+    }
 }

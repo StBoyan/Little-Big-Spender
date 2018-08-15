@@ -42,10 +42,10 @@
     <string name="intro_welcome_text">Track your expenses and income no matter how big or little!</string>
     <string name="intro_feature1_title">Record Income and Expense</string>
     <string name="intro_feature1_text">Easily add income and expense by associating them with a category and an account.</string>
-    <string name="intro_feature2_title">Graphs and Charts</string>
-    <string name="intro_feature2_text">View easy to understand graphs and charts to get a better idea of your cash flow.</string>
+    <string name="intro_feature2_title">Charts</string>
+    <string name="intro_feature2_text">View easy to understand charts to get a better idea of your finances.</string>
     <string name="intro_feature3_title">Cryptocurrency Accounts</string>
-    <string name="intro_feature3_text">Store cryptocurrency accounts and view their balance in your home currency.</string>
+    <string name="intro_feature3_text">Add cryptocurrency accounts and use them as regular accounts. You can also get real time update of their exchange rate to your home currency.</string>
 
     <!--Accounts-->
     <string name="accounts_delete_toast">Account deleted</string>
@@ -71,12 +71,14 @@
     <string name="accounts_refreshFailed">Refresh failed</string>
     <string name="accounts_name_exists_error">Account already exists</string>
     <string name="accounts_crypto_name_error">Cannot use cryptocurrency name</string>
+    <string name="accounts_cannot_delete_error">Account cannot be deleted because there are transactions associated with it.</string>
     <string name="accounts_transfer_exceed_error">Transfer amount cannot exceed source account balance</string>
     <string name="accounts_add_balance">Balance</string>
     <string name="accounts_add_addToast">New account added</string>
     <string name="accounts_add_discardToast">New account discarded</string>
     <string name="accounts_cryptoAdd_addToast">New cryptocurrency added</string>
     <string name="accounts_cryptoAdd_discardToast">New cryptocurrency discarded</string>
+
 
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>

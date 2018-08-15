@@ -1,6 +1,7 @@
 package com.boyanstoynov.littlebigspender.main.accounts;
 
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import static com.boyanstoynov.littlebigspender.util.Constants.FIAT_ACCOUNT_VIEW
 public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
 
     public interface CryptoRefreshButtonListener {
-        void onRefreshButtonClicked(Account cryptoAccount);
+        void onRefreshButtonClicked(String cryptoAccountId);
     }
 
     private static CryptoRefreshButtonListener refreshButtonListener;
@@ -143,9 +144,21 @@ public class AccountsAdapter extends BaseRecyclerAdapter<Account> {
                 return resources.getString(R.string.accounts_lessThanAMinute);
         }
 
+        /**
+         * Handles a click to the refresh button. Calls the listener's
+         * onRefreshButtonClicked method from a new thread, so that
+         * several clicks from different view holders will not interfere
+         * with each other.
+         */
         @OnClick(R.id.button_itemCrypto_refresh)
         public void onRefreshButtonClicked() {
-            refreshButtonListener.onRefreshButtonClicked(item);
+            final String cryptoAccountId = item.getId();
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    refreshButtonListener.onRefreshButtonClicked(cryptoAccountId);
+                }
+            });
         }
     }
 }
