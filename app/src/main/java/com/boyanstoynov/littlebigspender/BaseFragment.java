@@ -26,7 +26,6 @@ public abstract class BaseFragment extends Fragment {
     public BaseFragment() {
         // Required empty public constructor
     }
-    // TODO consider putting title in actionbar in here if I can make it accept null so as not to intefere with com.boyanstoynov.littlebigspender.intro fragments
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

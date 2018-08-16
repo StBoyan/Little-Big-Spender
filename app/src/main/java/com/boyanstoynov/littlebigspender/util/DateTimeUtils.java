@@ -16,6 +16,7 @@ public class DateTimeUtils {
 
     private static Locale defaultLocale = Locale.getDefault();
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", defaultLocale);
+    private static SimpleDateFormat dayMonthFormat = new SimpleDateFormat("MMM d", defaultLocale);
 
     /**
      * Returns an integer representing today's year.
@@ -51,6 +52,15 @@ public class DateTimeUtils {
     }
 
     /**
+     * Formats a Date according to the MMM d format.
+     * @param date Date object
+     * @return String formatted date
+     */
+    public static String formatDayMonth(Date date) {
+        return dayMonthFormat.format(date);
+    }
+
+    /**
      * Returns a Date representing the start of the day (i.e. 00:00:00)
      * for the given Date object.
      * @param date arbitrary Date
@@ -78,6 +88,21 @@ public class DateTimeUtils {
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+
+        return calendar.getTime();
+    }
+
+    /**
+     * Returns a date representing the start of the current week (Monday).
+     * @return Date Monday of this week
+     */
+    public static Date getStartOfWeek() {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.clear(Calendar.MINUTE);
+        calendar.clear(Calendar.SECOND);
+        calendar.clear(Calendar.MILLISECOND);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
 
         return calendar.getTime();
     }
@@ -155,6 +180,19 @@ public class DateTimeUtils {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, 7);
+        return calendar.getTime();
+    }
+
+    /**
+     * Returns a date that is a day in the future from the
+     * given date.
+     * @param date date
+     * @return Date a day in the future
+     */
+    public static Date addDay(Date date) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR,1);
         return calendar.getTime();
     }
 

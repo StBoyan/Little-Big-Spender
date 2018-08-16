@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private final RealmManager realmManager = new RealmManager();
-    //TODO consider making toolbar part of a superclass to use in other activities
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

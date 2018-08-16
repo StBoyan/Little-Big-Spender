@@ -28,9 +28,9 @@ The table below summarises the lines of code that make up the project, including
 
 | Language      | Number of files | Blank lines | Comment lines | Lines of code |
 | ------------- | --------------- | ----------- | ------------- | ------------- |
-| **Java**      |               45|          759|            506|           3025|
-| **XML**       |               43|          187|             15|           1448|
-| **Total**     |               88|          946|            521|           4473|
+| **Java**      |               50|          976|           1129|           4270|
+| **XML**       |               48|          281|             22|           2359|
+| **Total**     |               98|         1257|           1151|           6629|
 
 ## License
     MIT License

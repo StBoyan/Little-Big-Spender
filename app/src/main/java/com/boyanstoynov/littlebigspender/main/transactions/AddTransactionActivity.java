@@ -32,6 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.boyanstoynov.littlebigspender.main.overview.OverviewFragment.TAB_SELECT_KEY;
 import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_AFTER_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.CRYPTO_DIGITS_BEFORE_ZERO_FILTER;
 import static com.boyanstoynov.littlebigspender.util.Constants.EXPENSE_POSITION;
@@ -97,6 +98,13 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
         //Display first tab on create
         tabLayout.getTabAt(1).select();
         tabLayout.getTabAt(0).select();
+
+        //If activity is started from overview screen, select tab and hide the TabLayout
+        Bundle extraArgs = getIntent().getExtras();
+        if (extraArgs != null) {
+            tabLayout.getTabAt(extraArgs.getInt(TAB_SELECT_KEY)).select();
+            tabLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -309,25 +317,27 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
             return false;
         }
 
-        BigDecimal accountBalance = new BigDecimal(
-                accountsList.get(accountSpinner.getSelectedItemPosition()).getBalance().toString());
+        if (tabLayout.getSelectedTabPosition() == EXPENSE_POSITION) {
+            BigDecimal accountBalance = new BigDecimal(
+                    accountsList.get(accountSpinner.getSelectedItemPosition()).getBalance().toString());
         /* Check if transaction will bring cryptocurrency below 0
            which is not allowed. */
-        if (accountsList.get(accountSpinner.getSelectedItemPosition()).isCrypto()) {
-            if (transactionAmount.compareTo(accountBalance) > 0) {
-                inputAmount.setError(getResources().getString(R.string.transaction_crypto_negative_balance_error));
-                return false;
+            if (accountsList.get(accountSpinner.getSelectedItemPosition()).isCrypto()) {
+                if (transactionAmount.compareTo(accountBalance) > 0) {
+                    inputAmount.setError(getResources().getString(R.string.transaction_crypto_negative_balance_error));
+                    return false;
+                }
             }
-        }
 
         /* Check if user allows transactions to bring account to
            negative (go into overdraft). Only for fiat currencies.
            Cryptocurrencies cannot be negative */
-        if (!SharedPrefsManager.read(
-                getResources().getString(R.string.allowTransactionOverdraft), false)) {
-            if (transactionAmount.compareTo(accountBalance) > 0) {
-                inputAmount.setError(getResources().getString(R.string.transaction_fiat_negative_balance_error));
-                return false;
+            if (!SharedPrefsManager.read(
+                    getResources().getString(R.string.allowTransactionOverdraft), false)) {
+                if (transactionAmount.compareTo(accountBalance) > 0) {
+                    inputAmount.setError(getResources().getString(R.string.transaction_fiat_negative_balance_error));
+                    return false;
+                }
             }
         }
 

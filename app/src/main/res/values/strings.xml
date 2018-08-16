@@ -79,6 +79,13 @@
     <string name="accounts_cryptoAdd_addToast">New cryptocurrency added</string>
     <string name="accounts_cryptoAdd_discardToast">New cryptocurrency discarded</string>
 
+    <!--Overview-->
+    <string name="overview_net_worth">Net worth</string>
+    <string name="overview_total">Total</string>
+    <string name="overview_day">Day:</string>
+    <string name="overview_week">Week:</string>
+    <string name="overview_add_income">Add Income</string>
+    <string name="overview_add_expense">Add Expense</string>
 
     <!--Categories-->
     <string name="categories_delete_toast">Category deleted</string>
