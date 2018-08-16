@@ -345,7 +345,10 @@ public class MainActivity extends BaseActivity
     public void showEditTransactionDialog(Transaction transaction) {
         EditTransactionDialog dialog = new EditTransactionDialog();
         dialog.setData(transactionDao.getUnmanaged(transaction));
-        dialog.setAccountsList(accountDao.getAll());
+        if (transaction.getAccount().isCrypto())
+            dialog.setAccountsList(accountDao.getAll());
+        else
+            dialog.setAccountsList(accountDao.getAllFiat());
 
         if (transaction.getCategory().getType() == Category.Type.INCOME)
             dialog.setCategoriesList(categoryDao.getAllIncomeCategories());
@@ -367,11 +370,26 @@ public class MainActivity extends BaseActivity
 
     /**
      * Modifies the transaction and saves its values to the database.
+     * Also, if account is changed old account is refunded or debited
+     * the funds of the transaction and the new one is is charged or
+     * credited appropriately.
      * @param editedTransaction unmanaged Transaction object
      */
     public void editTransaction(Transaction editedTransaction) {
-        //TODO also modify amounts in accounts here
         Transaction transaction = transactionDao.getById(editedTransaction.getId());
+
+        //Subtract income from old account and add it to new one
+        if (transaction.getCategory().getType() == Category.Type.INCOME) {
+            accountDao.subtractAmount(transaction.getAccount(), transaction.getAmount());
+            accountDao.addAmount(
+                    accountDao.getById(editedTransaction.getAccount().getId()), editedTransaction.getAmount());
+        }
+        else {//Refund expense to old account and take it from new one
+            accountDao.addAmount(transaction.getAccount(), transaction.getAmount());
+            accountDao.subtractAmount(
+                    accountDao.getById(editedTransaction.getAccount().getId()), editedTransaction.getAmount());
+        }
+
         transactionDao.editAccount(transaction, editedTransaction.getAccount());
         transactionDao.editCategory(transaction, editedTransaction.getCategory());
         transactionDao.editAmount(transaction, editedTransaction.getAmount());
@@ -429,7 +447,6 @@ public class MainActivity extends BaseActivity
      */
     @Override
     public void onFetchSuccessful(final BigDecimal fiatValue) {
-        //TODO this might need refactoring see variable at top
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

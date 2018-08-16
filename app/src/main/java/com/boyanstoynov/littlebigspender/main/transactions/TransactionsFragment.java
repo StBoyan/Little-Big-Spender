@@ -33,8 +33,7 @@ import io.realm.RealmResults;
  * @author Boyan Stoynov
  */
 public class TransactionsFragment extends BaseFragment {
-    //TODO if this fragment /accounts /categories aren't updated when a new entry is added
-    //TODO could try to manually notify adapter of changes onResume
+
     @BindView(R.id.recyclerview_transactions) RecyclerView recyclerView;
 
     private TransactionsAdapter adapter;

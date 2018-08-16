@@ -90,6 +90,16 @@ public class OverviewFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        populateNetWorthCard();
+
+        populateTodayCashFlowCard();
+
+        populateWeekCashFlowCard();
+    }
+
+    @Override
     protected int getLayoutResource() {
         return R.layout.fragment_overview;
     }
@@ -146,7 +156,7 @@ public class OverviewFragment extends BaseFragment {
     private void populateTodayCashFlowCard() {
         //Display today's date
         Date today = new Date();
-        String todayText = textDay.getText().toString();
+        String todayText = getResources().getString(R.string.overview_day);
         todayText += " " + DateTimeUtils.formatDayMonth(today);
         textDay.setText(todayText);
 
@@ -175,7 +185,7 @@ public class OverviewFragment extends BaseFragment {
         Date dayOfWeek = DateTimeUtils.getStartOfWeek();
 
         //Set Monday of current week to title
-        String weekTextTitle = textWeek.getText().toString();
+        String weekTextTitle = getResources().getString(R.string.overview_week);
         weekTextTitle += " " + DateTimeUtils.formatDayMonth(dayOfWeek);
 
         BigDecimal weekIncome = new BigDecimal(0);

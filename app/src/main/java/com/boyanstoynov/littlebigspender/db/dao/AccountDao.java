@@ -17,7 +17,7 @@ import io.realm.RealmResults;
  * @author Boyan Stoynov
  */
 public class AccountDao extends BaseDao<Account> {
-    //TODO If performance continues to be an issue. Revert back to asynchronous calls to DB and have a helper class to execute queries to isLoaded on a background thread with an executor
+
     AccountDao(@NonNull Realm realm) {
         super(realm);
     }
