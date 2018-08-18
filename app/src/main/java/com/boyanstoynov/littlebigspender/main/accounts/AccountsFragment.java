@@ -59,6 +59,12 @@ public class AccountsFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected int getLayoutResource() {
         return R.layout.fragment_accounts;
     }

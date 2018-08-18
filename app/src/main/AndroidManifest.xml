@@ -26,8 +26,7 @@
         <activity android:name=".main.transactions.AddTransactionActivity" />
         <activity
             android:name=".statistics.StatisticsActivity"
-            android:parentActivityName=".main.MainActivity"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".recurring.RecurringActivity"
             android:parentActivityName=".main.MainActivity" />

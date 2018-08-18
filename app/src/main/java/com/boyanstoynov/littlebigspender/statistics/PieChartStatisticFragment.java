@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.boyanstoynov.littlebigspender.BaseFragment;
 import com.boyanstoynov.littlebigspender.R;
 import com.boyanstoynov.littlebigspender.db.dao.TransactionDao;
+import com.boyanstoynov.littlebigspender.db.model.Account;
 import com.boyanstoynov.littlebigspender.db.model.Category;
 import com.boyanstoynov.littlebigspender.db.model.Transaction;
 import com.github.mikephil.charting.charts.PieChart;
@@ -27,26 +28,31 @@ import java.util.List;
 import butterknife.BindView;
 import io.realm.RealmResults;
 
+import static com.boyanstoynov.littlebigspender.statistics.StatisticsActivity.STATISTIC_TYPE_CRYPTO;
+import static com.boyanstoynov.littlebigspender.statistics.StatisticsActivity.STATISTIC_TYPE_EXPENSE;
+import static com.boyanstoynov.littlebigspender.statistics.StatisticsActivity.STATISTIC_TYPE_INCOME;
+import static com.boyanstoynov.littlebigspender.statistics.StatisticsActivity.STATISTIC_TYPE_KEY;
+
 /**
- * Bar Chart Fragment for Income and Expense statistics.
+ * Pie chart fragment which gets the data according to the argument
+ * passed to it and visualises it in a Pie Chart formatted with
+ * percentages.
  *
  * @author Boyan Stoynov
  */
 public class PieChartStatisticFragment extends BaseFragment {
 
     @BindView(R.id.pieChart_incomeExpenseStatistic) PieChart chart;
-    Category.Type statisticType;
+
+    private TransactionDao transactionDao;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (statisticType == null)
-            throw new IllegalStateException("Statistic Type not set. Need to call setStatisticType() first.");
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         chart.setUsePercentValues(true);
         chart.setExtraOffsets(5, 10, 5, 5);
-
         chart.setRotationAngle(0);
         chart.setRotationEnabled(true);
         chart.setHighlightPerTapEnabled(true);
@@ -61,30 +67,24 @@ public class PieChartStatisticFragment extends BaseFragment {
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
 
-        //TODO may need to reconsider architecture (i.e. no direct access to database)
-        // TODO could make it extend a special fragment class that has access to database (for convenience)
-        //TODO or somehow take it from the activity
-        TransactionDao transactionDao = getRealmManager().createTransactionDao();
-        final RealmResults<Category> categories;
+        List<PieEntry> dataEntries = null;
 
-        if (statisticType == Category.Type.INCOME)
-            categories = getRealmManager().createCategoryDao().getAllIncomeCategories();
-        else
-            categories = getRealmManager().createCategoryDao().getAllExpenseCategories();
-
-        List<PieEntry> dataEntries = new ArrayList<>();
-
-        int i = 0;
-        for (Category category : categories) {
-            RealmResults<Transaction> categoryTransactions = transactionDao.getByCategory(category);
-            float categorySum = 0.0f;
-
-            for (Transaction transaction : categoryTransactions) {
-                categorySum += transaction.getAmount().floatValue();
-            }
-
-            dataEntries.add(new PieEntry(categorySum, category.getName()));
-            i++;
+        // Depending on argument populates the pie chart with the relevant data
+        switch (getArguments().getString(STATISTIC_TYPE_KEY)) {
+            case STATISTIC_TYPE_INCOME:
+                transactionDao = getRealmManager().createTransactionDao();
+                List<Category> incomeCategories = getRealmManager().createCategoryDao().getAllIncomeCategories();
+                dataEntries = getCategoryDataEntries(incomeCategories);
+                break;
+            case STATISTIC_TYPE_EXPENSE:
+                transactionDao = getRealmManager().createTransactionDao();
+                List<Category> expenseCategories = getRealmManager().createCategoryDao().getAllExpenseCategories();
+                dataEntries = getCategoryDataEntries(expenseCategories);
+                break;
+            case STATISTIC_TYPE_CRYPTO:
+                List<Account> cryptoAccounts = getRealmManager().createAccountDao().getAllCrypto();
+                dataEntries = getAccountDataEntries(cryptoAccounts);
+                break;
         }
 
         PieDataSet dataSet = new PieDataSet(dataEntries, "");
@@ -105,11 +105,57 @@ public class PieChartStatisticFragment extends BaseFragment {
         return R.layout.fragment_pie_chart_statistic;
     }
 
-    protected void setStatisticType(Category.Type statisticType) {
-        this.statisticType = statisticType;
+    /**
+     * Gets PieChart data for the list of categories.
+     * @param categories List of categories
+     * @return List<PieEntry> pie chart data
+     */
+    private List<PieEntry> getCategoryDataEntries(List<Category> categories) {
+        List<PieEntry> categoryEntries = new ArrayList<>();
+
+        for (Category category : categories) {
+            RealmResults<Transaction> categoryTransactions = transactionDao.getByCategory(category);
+            float categorySum = 0.0f;
+
+            for (Transaction transaction : categoryTransactions) {
+                if (transaction.getAccount().isCrypto()) {
+                    float fiatValue = transaction.getAccount().getFiatValue().floatValue();
+                    if (fiatValue > 0.0f)
+                        categorySum += transaction.getAmount().floatValue() * fiatValue;
+                }
+                else
+                    categorySum += transaction.getAmount().floatValue();
+            }
+
+            categoryEntries.add(new PieEntry(categorySum, category.getName()));
+        }
+
+        return categoryEntries;
     }
 
-    // TODO could implement choosing colors here
+    /**
+     * Gets PieChart data for the list of accounts.
+     * @param accounts List of accounts
+     * @return LIst<PieEntry> pie chart data
+     */
+    private List<PieEntry> getAccountDataEntries(List<Account> accounts) {
+        List<PieEntry> accountEntries = new ArrayList<>();
+
+        for (Account account : accounts) {
+            float accountBalance = account.getBalance().floatValue() *
+                    account.getFiatValue().floatValue();
+            if (accountBalance != 0.0f)
+                accountEntries.add(new PieEntry(accountBalance, account.getName()));
+
+        }
+        return accountEntries;
+    }
+
+    /**
+     * Gets all colors provided with the MPAndroidChart database
+     * and add the to a List in a shuffled order.
+     * @return List of colors
+     */
     private List<Integer> getColors() {
         ArrayList<Integer> colors = new ArrayList<>();
 
@@ -129,7 +175,6 @@ public class PieChartStatisticFragment extends BaseFragment {
             colors.add(c);
 
         Collections.shuffle(colors);
-
         return colors;
     }
 

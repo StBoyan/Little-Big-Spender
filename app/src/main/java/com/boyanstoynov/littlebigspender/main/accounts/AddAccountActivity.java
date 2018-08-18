@@ -122,7 +122,12 @@ public class AddAccountActivity extends BaseActivity {
      * @return boolean whether valid or not
      */
     private boolean isBalanceValid() {
-        return !balanceInput.getText().toString().equals("");
+        if (balanceInput.getText().toString().equals("")) {
+            balanceInput.setError(getString(R.string.all_blank_field_error));
+            return false;
+        }
+        else
+            return true;
     }
 }
 

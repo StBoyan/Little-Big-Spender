@@ -60,6 +60,12 @@ public class CategoriesFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         categoriesRealmResults.removeAllChangeListeners();
