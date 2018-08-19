@@ -437,7 +437,14 @@ public class MainActivity extends BaseActivity
      */
     @Override
     public void onFetchUnsuccessful() {
-        Toast.makeText(this, R.string.accounts_refreshFailed, Toast.LENGTH_SHORT).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(
+                        MainActivity.this, R.string.accounts_refreshFailed, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     /**

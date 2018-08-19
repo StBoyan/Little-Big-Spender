@@ -74,6 +74,9 @@ public class CryptoClient {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                if (Looper.myLooper() == null)
+                    Looper.prepare();
+
                 call.cancel();
                 callbackListener.onFetchUnsuccessful();
             }
