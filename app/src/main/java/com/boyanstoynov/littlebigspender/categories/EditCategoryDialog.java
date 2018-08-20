@@ -80,7 +80,7 @@ public class EditCategoryDialog extends BaseEditorDialog<Category> {
             return false;
         }
         Category duplicateCategory = categoryDao.getByName(name);
-        if (duplicateCategory != null) {
+        if (duplicateCategory != null && !duplicateCategory.getName().equals(item.getName())) {
             nameInput.setError(getResources().getString(R.string.categories_name_exist_error));
             return false;
         }
