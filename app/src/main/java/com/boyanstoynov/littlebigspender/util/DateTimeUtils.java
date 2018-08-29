@@ -20,6 +20,7 @@ public class DateTimeUtils {
 
     /**
      * Returns an integer representing today's year.
+     *
      * @return int today's year
      */
     public static int yearToday() {
@@ -28,6 +29,7 @@ public class DateTimeUtils {
 
     /**
      * Returns an integer representing today's month.
+     *
      * @return int today's month
      */
     public static int monthToday() {
@@ -36,6 +38,7 @@ public class DateTimeUtils {
 
     /**
      * Returns an integer representing today's day.
+     *
      * @return int today's day
      */
     public static int dayToday() {
@@ -44,6 +47,7 @@ public class DateTimeUtils {
 
     /**
      * Formats a Date according to the dd-MM-yyyy format.
+     *
      * @param date Date object
      * @return String formatted date
      */
@@ -53,6 +57,7 @@ public class DateTimeUtils {
 
     /**
      * Formats a Date according to the MMM d format.
+     *
      * @param date Date object
      * @return String formatted date
      */
@@ -63,6 +68,7 @@ public class DateTimeUtils {
     /**
      * Returns a Date representing the start of the day (i.e. 00:00:00)
      * for the given Date object.
+     *
      * @param date arbitrary Date
      * @return Date start of day
      */
@@ -79,6 +85,7 @@ public class DateTimeUtils {
     /**
      * Returns a Date representing the end of the day (i.e. 24:00:00)
      * for the given Date object.
+     *
      * @param date arbitrary Date
      * @return Date end of day
      */
@@ -94,6 +101,7 @@ public class DateTimeUtils {
 
     /**
      * Returns a date representing the start of the current week (Monday).
+     *
      * @return Date Monday of this week
      */
     public static Date getStartOfWeek() {
@@ -109,6 +117,7 @@ public class DateTimeUtils {
 
     /**
      * Returns True if and only if the date is equal to today's date.
+     *
      * @param date Date to be checked
      * @return boolean whether date is today
      */
@@ -119,11 +128,12 @@ public class DateTimeUtils {
         compareCalendar.setTime(date);
 
         return todayCalendar.get(Calendar.YEAR) == compareCalendar.get(Calendar.YEAR) &&
-        todayCalendar.get(Calendar.DAY_OF_YEAR) == compareCalendar.get(Calendar.DAY_OF_YEAR);
+                todayCalendar.get(Calendar.DAY_OF_YEAR) == compareCalendar.get(Calendar.DAY_OF_YEAR);
     }
 
     /**
      * Returns true if and only if the date has past.
+     *
      * @param date Date to be checked
      * @return boolean whether date has passed
      */
@@ -147,6 +157,7 @@ public class DateTimeUtils {
     /**
      * Returns a date that is a month in the future from the
      * given date.
+     *
      * @param date date
      * @return Date a month in the future
      */
@@ -160,6 +171,7 @@ public class DateTimeUtils {
     /**
      * Returns a date that is 2 weeks in the future from the
      * given date.
+     *
      * @param date date
      * @return Date 2 weeks in the future
      */
@@ -173,6 +185,7 @@ public class DateTimeUtils {
     /**
      * Returns a date that is a week in the future from the
      * given date.
+     *
      * @param date date
      * @return Date a week in the future
      */
@@ -186,18 +199,34 @@ public class DateTimeUtils {
     /**
      * Returns a date that is a day in the future from the
      * given date.
+     *
      * @param date date
      * @return Date a day in the future
      */
     public static Date addDay(Date date) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_YEAR,1);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        return calendar.getTime();
+    }
+
+    /**
+     * Returns a date that is the specified number of days in advance
+     * from the given date.
+     * @param date date
+     * @param numOfDays number of days in advance
+     * @return Date Date object that is number of days in advance
+     */
+    public static Date subtractDays(Date date, int numOfDays) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_YEAR, -numOfDays);
         return calendar.getTime();
     }
 
     /**
      * Gets the current time denoted in epoch time in milliseconds.
+     *
      * @return long current epoch time
      */
     public static long getCurrentTimeInMillis() {
@@ -207,6 +236,7 @@ public class DateTimeUtils {
     /**
      * Returns the elapsed time in milliseconds between the specified
      * time and the present moment.
+     *
      * @param epochTime epoch time in milliseconds
      * @return long elapsed time in milliseconds
      */

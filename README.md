@@ -3,6 +3,13 @@ Personal money management Android application developed in part fulfillment of t
 
 ## Features
 * Supports Android 5.0 (API 21) and above
+* Track your accounts
+* Record income and expense transactions
+* Categorise transactions
+* Choose home currency
+* Add recurring transactions
+* View charts of your finances
+* Integrates cryptocurrencies
 
 ## Screenshots
 This section will contain screenshots from the app.
@@ -28,9 +35,9 @@ The table below summarises the lines of code that make up the project, including
 
 | Language      | Number of files | Blank lines | Comment lines | Lines of code |
 | ------------- | --------------- | ----------- | ------------- | ------------- |
-| **Java**      |               50|          976|           1129|           4270|
-| **XML**       |               48|          281|             22|           2359|
-| **Total**     |               98|         1257|           1151|           6629|
+| **Java**      |               52|         1013|           1217|           4489|
+| **XML**       |               48|          282|             23|           2363|
+| **Total**     |              100|         1295|           1240|           6852|
 
 ## License
     MIT License

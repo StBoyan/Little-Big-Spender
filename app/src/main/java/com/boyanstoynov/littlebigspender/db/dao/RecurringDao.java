@@ -24,6 +24,10 @@ public class RecurringDao extends BaseDao<Recurring> {
         super(realm);
     }
 
+    public RealmResults<Recurring> getAllRecurringTransactions() {
+        return realm.where(Recurring.class).findAll();
+    }
+
     public RealmResults<Recurring> getAllIncomeRecurringTransactions() {
         return realm.where(Recurring.class).equalTo("category.type", Category.Type.INCOME.toString()).findAll();
     }

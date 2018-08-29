@@ -198,12 +198,10 @@ public class AddTransactionActivity extends BaseActivity implements DatePickerDi
         newTransaction.setAmount(transactionAmount);
         newTransaction.setDate(date);
 
-        if (DateTimeUtils.isToday(date) || DateTimeUtils.dateHasPassed(date)) {
-            if (transactionCategory.getType() == Category.Type.INCOME)
-                accountDao.addAmount(transactionAccount, transactionAmount);
-            else
-                accountDao.subtractAmount(transactionAccount, transactionAmount);
-        }
+        if (transactionCategory.getType() == Category.Type.INCOME)
+            accountDao.addAmount(transactionAccount, transactionAmount);
+        else
+            accountDao.subtractAmount(transactionAccount, transactionAmount);
 
         getRealmManager().createTransactionDao().save(newTransaction);
     }

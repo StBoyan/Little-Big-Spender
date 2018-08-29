@@ -169,4 +169,8 @@
         ]]>
     </string>
 
+    <!--Notifications-->
+    <string name="recurring_notification_title">Recurring Transaction Reminder</string>
+    <string name="recurring_notification_text"> days before a transaction with an amount of </string>
+
 </resources>
