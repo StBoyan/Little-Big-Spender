@@ -12,7 +12,9 @@ Personal money management Android application developed in part fulfillment of t
 * Integrates cryptocurrencies
 
 ## Screenshots
-This section will contain screenshots from the app.
+![Overview](/screenshots/overview.png "Overview") ![Transactions](/screenshots/transactions.png "Transactions screen")![Accounts](/screenshots/accounts.png "Accounts")
+
+![Navigation Drawer](/screenshots/navdrawer.png "Navigation Drawer") ![Categories](/screenshots/categories.png "Categories") ![Statistics](/screenshots/statistics.png "Statistics")
 
 ## How to build and run project from Android Studio
 Instructions on how to build and run project in Android Studio.
